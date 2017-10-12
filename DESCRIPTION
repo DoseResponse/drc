@@ -1,0 +1,13 @@
+Package: drc
+Version: 3.0-5
+Date: 2017-05-20
+Title: Analysis of Dose-Response Data
+Author: Christian Ritz <ritz@bioassay.dk>, Jens C. Strebig <streibig@bioassay.dk>
+Maintainer: Christian Ritz <ritz@bioassay.dk>
+Depends: R (>= 2.0.0), MASS, stats
+Imports: car, gtools, multcomp, plotrix, scales
+LazyLoad: yes
+LazyData: yes
+Description: Analysis of dose-response data is made available through a suite of flexible and versatile model fitting and after-fitting functions.
+License: GPL-2 | file LICENCE
+URL: http://www.r-project.org, http://www.bioassay.dk

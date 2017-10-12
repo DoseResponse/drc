@@ -1,0 +1,18 @@
+citHeader("To cite the package 'drc' in publications:")
+
+citEntry(entry   = "Article",
+         title   = "Dose-Response Analysis Using R",
+         author  = personList(as.person("C. Ritz"), as.person("F. Baty"), as.person("J. C. Streibig"),
+                             as.person("D. Gerhard")),
+         journal = "PLOS ONE",
+         volume  = 10,
+         issue   = 12,
+         number  = "e0146021",
+         year    = 2015,
+         url     = "http://journals.plos.org/plosone/article?id=10.1371/journal.pone.0146021",
+
+         textVersion =
+         paste("Ritz, C., Baty, F., Streibig, J. C., Gerhard, D. (2015)",
+               "Dose-Response Analysis Using R",
+               "PLOS ONE, 10(12), e0146021")
+)

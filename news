@@ -1,0 +1,362 @@
+## Changes in 'drc' 
+
+2017-09-29: The argument checkND has been added to the predict method. It allows switching off comparing names of variables
+in the the original data frame and the "newdata" data frame: It's useful for predicting in e.g., mixture models (after a report
+by Evan Palmer-Young).
+
+2017-05-31: Confidence intervals for ED values may now be obtained using inverse regression (interval = "inv"). 
+
+2017-05-29: Species sensitivity distributions may now be fitted using drm() with type = "ssd". The predict method is now by default
+constraining predicted values to meaningful ranges. The predict method allows incorporating standard errors of estimates in the confidence
+bands for fitted SSD's.
+
+2017-01-05: Small bug in mixture() resolved (after a report by Andrew Kniss).
+
+2016-11-15: Negative binomial distributions may now be fitted using the argument type with values "negbin1" and
+"negbin2" (after a suggestion from Signe M. Jensen). 
+
+2016-10-21: Argument "conCheck" added to drmc(), to switch on/off handling of control measurements. Help page for
+the two- and three-parameter Weilbull models has been updated, removing typos 
+(after a report by Mikael Gustavsson).
+
+2016-07-25: na.omit() is now the default in drm(). New functions included: CIcomp(), CIcompX(), and plotFACI() for calculating combination indices
+based on effective doses and also effects as described in the paper by Martin-Betancor et al. (2015). An accompanying
+dataset named "metals" has also been included.
+
+2016-07-21: A small bug in printing confidence intervals has been fixed (after a report from Johannes Ranke). The
+output text has also been modified slightly. 
+
+2016-06-03: A small error for binomial data in the function estfun.drc for use with the package "sandwich" has been fixed (after a report from Andrew Kniss).
+
+2015-12-16: The predict method has been updated (after a report from Duncan Mackay). The function SI()
+has been completely replaced by the function EDcomp().
+
+2015-09-16: The function isobole() now also propagates graphical arguments to fitted isoboles.  
+
+2015-08-19: The print.summary.drc method shows a warning message in case of df<1. 
+Calculation of the log likelihood for binomial data has updated and improved.  
+
+2015-08-14: The function backfit() has been updated.
+
+2015-08-10: The function diagnostics() has been removed.
+
+2015-08-07: Help page for EDcomp() updated.
+
+2015-07-30: Robust estimation is working again (ater reports from Kathy Mutambanengwe, Sten Ilmjärv, and Corina Dueñas Roca).
+
+2015-04-14: Minor labelling issue in the plot method resolved (with help from Bert Oosthuyse). 
+
+2015-04-13: Help pages for ED() and isobole() has been updated. Some code has been tidied up.
+
+2015-04-12: The plot method extended to provide confidence bands (contribution by Gregory Warnes). 
+
+2014-12-17: The argument "pshifts" has been added to drm() to allow weights on parameters 
+(after a comment from Florent Baty).
+
+2014-11-13: The argument "control" is now correctly propagated in case separate = TRUE in drm() 
+(after a report from Andy Liaw).
+
+2014-06-30: The help page for ursa() has been improved (in particular the example section).
+
+2014-06-25: A number of not fully implemented model functions for mixture data have been removed.
+
+2014-04-23: The model function gammadr() and multi2() have been added.
+
+2014-04-06: The argument "vcov." has been added to compParm().
+
+2014-03-26: The argument "vcov." has been added to EDcomp() and predict().
+
+2014-03-19: The argument "vcov." has been added to ED() to allow choosing between the standard vcov method and 
+the sandwich function for robust standard errors. SI() has been renamed into EDcomp().
+
+2014-03-05: The bread and estfun methods have been extended to event-time data. The help page for G.aparine 
+has been improved. 
+
+2014-03-03: A number of functions depending on ED() and SI() have been updated. The predict method has been improved.
+Plot functionality for event-time data has been improved (after a report from Eshagh Keshtkar).
+
+2014-02-24: ED() and SI() return (invisible) a list with 1 components where the second can be used directly with
+the package multcomp (after a suggestion by Daniel Gerhard).
+
+2014-02-12: Small bug in the plot method (not ordering labels in legend text correctly) has been fixed 
+(after a report by Francois Keck).
+
+2013-10-22: Adding "fixed" value to output from logistic() (after a suggestion from Daniel Gerhard). 
+
+2013-10-01: Help page for "germination" has been updated. 
+
+2013-09-30: bread.drc() and estfun.drc() have been updated to handle fits for binomial and Poisson data 
+(after a suggestion by Signe M. Jensen).
+
+2013-08-22: Help page for plot.drc() has been improved regarding the explanation on the use of error bars
+(after an enquiry from Julien Delafontaine).
+
+2013-05-24: Help page for "selenium" has been improved (after a comment from Keith Taulbee).
+
+2013-05-21: An argument for specifying the reference for the normalization (after a suggestion from Sunniva Foerster).
+
+2013-05-14: An argument for showing normalized data and fitted curves has been added to the plot method (after a suggestion
+from Ludwig A. Hothorn). 
+
+2013-03-25: Help page for mselect() has been improved (after a comment from Sona Jesenska).
+
+2013-02-11: cedergreen() has been improved to provide meaningful names (after a suggestion from Dave Smithson).
+
+2013-01-11: plot methods works for fits obtained from drm() using separate = TRUE (after a report from Thomas Kroeber).
+
+2012-12-29: Model functions gaussian() and lgaussian() have been included (after a suggestion from Ismael Rodea). The method 
+for residuals has been extended to provide residuals on the transformed scale in case a Box-cox transformation
+was applied.
+
+2012-12-14: Help page for maED() has been extended.
+
+2012-11-19: Small bug in drm() related to starting values for event-time models resolved. 
+
+2012-10-22: hatvalues and cooks.distance methods have been added (after a question from Sunniva Förster). 
+noEffect() function included for testing the dose-response model against a simpler model with no dose effect 
+(after a suggestion by Ryan Hechinger).
+
+2012-09-08: backfit() function added (after a suggestion by Keld Sorensen).
+
+2012-08-25: Poisson models can be fitted weights (after a suggestion by Marie Laure Delignette-Muller).
+
+2012-08-20: Help page of NEC() has been updated.
+
+2012-07-04: Small error in plot.drc for event times fixed (after report from Christian Andreasen).
+
+2012-06-22: vcov.drc() has been updated. 
+
+2012-05-29: ED() now also works for gompertz models (after a question from Calvin Odero).
+
+2012-05-29: The dataset germination has been included.
+
+2012-05-27: The dataset chickweed has been included.
+
+2012-05-23: Help page of lettuce has been revised. 
+
+2012-05-16: The dataset selenium has been included. 
+
+2012-05-16: Limit in dose scaling has been lifted (after a report from Andreas Wernitznig). 
+
+2012-03-13: Help page for the function modelFit() has been revised (removing a typo in the title) (after a comment from John Lynch).
+
+2012-03-01: Help page for the function mr.test() has been updated. 
+
+2012-02-20: Summary output for separate = TRUE now shows the original labels (levels in the variable curveid) (thanks a comment from Radu Slobodeanu).
+
+2012-01-23: Small scaling error in fitted method has been removed (after a report from Andreas Betz).
+
+2011-12-28: Plotting for event-time data has been improved.
+
+2011-12-21: Error in calculation of ED values for fplogistic() has been fixed. 
+
+2011-12-16: Help page of drm() (type argument) has been updated (after comment from Radu Slobodeanu). 
+
+2011-12-07: Error in label ordering and calculation of standard errors in SI() have been fixed (bug report by Andrew Kniss).
+
+2011-11-06: Problem with confidence intervals in the predict method has been solved (was reported on R-help sometimes ago: 2010-11-28).
+
+2011-10-27: Help page of mixture() has been slightly improved. 
+
+2011-09-20: Problem with logDose argument in drm() and subsequent plotting has been solved (reported by Ralf Schäfer). 
+
+2011-09-02: Constrained estimation uses the actual limits provided (bug report by Andrew Kniss).
+
+2011-08-31: The functions genLoewe(), genLoewe2(), genBliss(), genBliss2(), and ursa() have been improved w.r.t. starting values. The model specification has also been simplified.
+
+2011-08-24: genBliss() and genBliss2() has been updated (after suggestions from Hugo Ceulemans). Functions iceLoewe1() and iceLoewe2.1() have
+benn added.
+
+2011-08-23: Error in ED calculation for the logistic models (e.g., L.4()) has been fixed (after a report from Daniel Gerhard). The error was caused by an update of the function deltaMethod() in alr3 has been fixed.
+
+2011-07-04: Small changes for the anova method. Adding df for event time and Poisson models.
+
+2011-07-01: Small update in the calculation of confidence intervals (after a suggestion from Scott Ray). 
+
+2011-06-24: The model function W2x.4() has been added (after a suggestion by Cécile Cornou).
+
+2011-05-24: Small improvement in the calculation of ED value for the log-normal and Weibull type 2 models. 
+"display" and "type" arguments have been added to maED(). 
+
+2011-05-19: The argument "type" can now also take the value "event" for fitting event times. 
+
+2011-05-10: The help page for spinach has been improved.
+
+2011-05-02: Simplifying the R lines in print.summary.drc() for printing the summary output of a model fit.
+
+2011-05-02: The self starter function for llogistic models can now handle infinite dose values (after a report from Marc Weimer).
+
+2011-04-09: multdrc() has been completely removed. 
+
+2011-04-04: The model function weibull2x() (a model including a sort of "lag time" parameter) 
+has been added (after a suggestion by Cécile Cornou).
+
+2011-03-23: A small bug in ED() has been fixed (after a report from Nathan Pace).
+
+2011-03-09: The BIC method has been removed (after suggestion from Prof. Brian Ripley).
+
+2011-02-04: The functions isobole() and mixture() have been modified in order to fix an error in the plotting of
+the isoboles (after a report from Andreas Betz).
+
+2010-12-16: The model function genursa2() has been replaced by actimL().
+
+2010-12-14: The model genursa2() for fitting the generalized URSA model has been included (after an idea by Hugo Ceulemans).
+
+2010-12-10: The model genursa() for fitting the generalized URSA model has been included (after an idea by Hugo Ceulemans).
+
+2010-12-09: The model function genBliss(), genBliss2(), and genLoewe2() for fitting generalized Bliss independence and Loewe additivity with different maxima has been included (after an idea by Hugo Ceulemans). 
+
+2010-11-23: The model function genLoewe() for fitting generalized Loewe additivity has been included (after an idea by Hugo Ceulemans). 
+
+2010-11-16: Small improvement in the summary output. Now the actual curve names are used.
+
+2010-11-11: A small bug in ED() (mismatch of curve names and parameter estimates) has been fixecd (after a report from Andreas Betz). 
+
+2010-11-03: A small bug in the plot produced by isobole() has been fixed (after an inquiry from Andreas Betz). 
+
+2010-10-12: A bug in the calculation of standard errors in SI() has been fixed (after a report from Andrea Onofri).
+
+2010-09-23: mselect() has been extended to include an argument for specifying the type of information criterion to use. 
+
+2010-09-20: maED() has been extended to include simple linear regression.
+
+2010-09-16: mselect() has been extended to include a few standard polynomial regression models. 
+
+2010-08-03: Studentised residuals are now also available for binomial responses (after an inquiry from Stuart Rosen). 
+
+2010-06-04: Studentised residuals are now also available (after an inquiry from John). 
+
+2010-06-02: ED values are now correct for cedergreen() models (after a bug report by Claire Della Vedova). 
+
+2010-05-31: Small bug in plot.drc() related to "xt" and "xtlab" arguments has been fixed (after a comment by Anja Coors). A small bug in comped() has also been fixed (after a question from Jochen Zubrod). 
+
+2010-05-06: The argument "clevel" has been added to ED(). The function maED() has been extended and now also handles model fits 
+involving several curves (after a suggestion from Andre Kleensang). 
+
+2010-04-29: Dataset 'ecvam' has been removed. The mixdrc() function has been temperarily removed. 
+
+2010-04-23: Minor bug in the predict method has been fixed. This means that type="bars" in the plot method now works again 
+(after a bug report by Andy Robinson). 
+
+2010-04-16: The help for NEC() has been improved (after a question from Inés González). 
+
+2010-04-15: The comped() has been re-introduced (after suggestion from Jochen Zubrod). 
+
+2010-03-17: logLik has been extended with a "nobs" attribute (provided by Tobias Verbeke). A S4 BIC method has been added 
+(also provided by Tobias Verbeke). 
+
+2010-03-12: The help page of drm() has been improved a bit w.r.t. the use of weights (after a question by Xuesong Yu). 
+
+2010-03-10: A slight modification in vcov.drc() to suppress unnecessary error messages (reported by Xuesong Yu). 
+
+2010-01-26: A slightly different bisection method has been implemented in ursa(). The corresponding help page has also been extended (more example lines). 
+
+2010-01-13: The model function ursa() for describing combination effects has been added (after an idea by Hugo Ceulemans). 
+The help page for MM.2() and MM.3() has been improved. 
+
+2010-01-11: The model function cedergreen() has been updated to ensure correct calculation of ED values (reported by Claire Della Vedova). 
+
+2009-11-17: The help page of drm() has been updated. 
+
+2009-10-13: confint has been improved to automatically use the appropriate reference distribution for the confidence intervals; 
+Internal structure of ED() has also been modified (reported by Marc Weimer). 
+
+2009-10-12: The self starter for twophase() has been slightly improved. 
+
+2009-09-03: The functions NEC.2(), NEC.3(), NEC.4() for estimation of no effect concentration have been included (after an idea by Ralf Schaefer). 
+
+2009-09-03: The function comped() has been removed. 
+
+2009-09-02: The argument "extended" has been added to the function maED(). 
+
+2009-09-01: The model function twophase() based on log-logistic models has been added (after an idea by Ida Katarina Auf der Maur Hindrichsen). 
+
+2009-07-28: Small bug in cedergreen() and ucedergreen() related to calculation of ED values has been fixed (reported by Clare Della Vedova). 
+
+2009-07-27: Small bug in the function modelFit() has been fixed (after feedback from Heike Schmitt). 
+
+2009-07-27: Help page for CRS.5a has been improved (after comment from Claire Della Vedova). 
+
+2009-07-06: The functions lin.test(), mr.test(), and neill.test() have been added. 
+
+2009-06-30: The data frame etmotc has been included. 
+
+2009-06-08: The argument 'display' (with same functionality as in Ed()) has been added for compParm() (after a suggestion from Scott Ray). 
+
+2009-06-02: The help pages for anova.drc and BC.4(), BC.5(), CRS.5.() have been improved. 
+
+2009-05-29: The dataset ecvam has been included (migrated from the package 'mrdrc'). 
+
+2009-05-28: The function maED() for parametric model averaging has been added. 
+
+2009-05-27: The functions fplogistic() and FPL.4() enable fitting dose-response models based on fractional polynomials. The function maED() 
+can be used to do model-average based estimation of ED values. 
+
+2009-05-24: Structure of self starter functions has been completely revamped. Four initial value procedure are now available for 
+almost all implemented dose-response models. 
+
+2009-05-23: The function getInitial() has been included. 
+
+2009-05-20: Help page for ED() has been improved (after comment from Claire Della Vedova). 
+
+2009-05-07: Bug in ED() concerning the arguments type="absolute" and reference="upper" has been resolved (reported by Yue Zeng-Li). 
+
+2009-04-22: Help page for gompertz() has been improved slightly. 
+
+2009-04-08: Help page for earthworms dataset has been improved. Error in likelihood calculation for some binomial models has been fixed. 
+
+2009-04-07: mixture() also works for binomial data. Argument "legendCex" in the plot method renamed into "cex.legend" in line with other cex arguments. 
+
+2009-04-01: Minor internals changes in drm() and in the plot method. 
+
+2009-03-27: The convenience functions b.3(), B.3(), b.4(), B.4(), b.5(), B.5(), and boltzmann have been removed. Use L.3(), L.4(), and L.5() instead. 
+compParm(), ED(), SI() have been  restructured. drm() has been extended to allow fitting models separately for each curve. 
+confint, summary, vcov, ED, MAX, SI have a new argument "pool" to allow pooling of separate fits. Argument "ci" in relpot() and SI() has 
+been renamed into "interval". modelFit() now also works for binomial data. 
+
+2009-03-25: The dataset "algae" has been included. vcov method has been re-structured. 
+
+2009-03-24: The function plotraw() has been removed. Initial plots of the data should be done using R's standard plotting functionality, 
+e.g. plot and xyplot(). 
+
+2009-03-19: The argument "conLevel" has a more sensible default (no longer hardcorded at 0.01). The argument "xsty" has been introduced 
+to control the arrangement of tick marks on the dose axis. 
+
+2009-03-17: The function yieldLoss() has been included to handle a different parameterization of the Michaelis-Menten model 
+(after a suggestion by Andrew Kniss). 
+
+2009-03-11: The argument "fctList" has been removed from drm(). 
+
+2009-03-06: mixture() has been completely revised with a lot of changes to the arguments. The model function richards() has been removed 
+as it is simply a different parameterization of the five-parameter log-logistic model. colFct() has also been removed. 
+
+2009-03-04: A new function modelFit() has been introduced for assessing the model fit, partly replacing the anova method. 
+
+2009-02-27: Bug in mselect() has been fixed (reported by John Lewis). 
+
+2009-02-25: Bug in boxcox.drc has been fixed. Moreover, this method has been extended to include functionality previously available through drm(). 
+
+2009-02-19: multdrc() and associated mdControl have been taken completely out of use. drm() has been improved w.r.t. handling extremely 
+small or large dose or response values. Arguments "lowerc" and "upperc" have been removed in model functions as they were redundant. 
+
+2009-02-13: Argument "ci" renames into "interval" in ED(). 
+
+2009-02-12: Bug in predict.drc fixed (thanks to Mario D'Antuono). 
+
+2009-02-09: Redundant encoding removed. Argument "fixed" added to BC.4() and BC.5() (thanks to Nina Cedergreen). 
+
+2008-12-02: Dataset "H.virescens" added. Asymptotic regression and exponential decay implemented differently. 
+
+2008-11-26: "lnormal" function has been added plus three new datasets. 
+
+2008-11-18: "gompertz" function has been added. 
+
+2008-11-13: Error in level argument in plot method has been fixed. 
+
+2008-11-03 Datasets 'lepidium' and 'nasturtium' have been added. 
+
+2008-10-31: Bug in 'level' argument in plot method has been fixed. 
+
+2008-10-02: New function mrdrm() for model-robust modelling included. Accompanying ED and predict methods also added. 
+
+2008-09-30: The lettuce dataset got correct row numbers. 
