@@ -43,7 +43,9 @@
     binomial = qnorm(1 - alphah), 
     continuous = qt(1 - alphah, dfres),
     event = qnorm(1 - alphah),
-    Poisson = qnorm(1 - alphah))
+    Poisson = qnorm(1 - alphah),
+    negbin1 = qnorm(1 - alphah),
+    negbin2 = qnorm(1 - alphah))
     
     estVec <- estMat[, 1]
     halfLength <- tailPercentile * estMat[, 2]
