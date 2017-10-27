@@ -119,12 +119,6 @@
 %  additive models for the parameters.
 }
 
-\seealso{
-  Examples using \code{\link{drm}} found in the help pages of \code{\link{ryegrass}} (continuous data), 
-  \code{\link{secalonic}} (continuous data), and \code{\link{selenium}} (binomial data), 
-  as well as for a number of other datasets and functions in \code{drc}.
-}
-
 %\examples{}
 
 \keyword{models}

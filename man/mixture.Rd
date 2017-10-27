@@ -42,10 +42,6 @@
 
 \author{Christian Ritz}
 
-\seealso{
-  The examples in \code{\link{acidiq}} (the Hewlett model), \code{\link{glymet}} (dose/concentration addition) 
-  and \code{\link{mecter}} (the Voelund model).
-}
 
 %\examples{}
 

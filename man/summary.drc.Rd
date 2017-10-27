@@ -27,9 +27,7 @@
 
 \author{Christian Ritz}
 
-\note{
-  Examples on usage are for instance found in the help pages of \code{\link{ryegrass}} and \code{\link{secalonic}}.
-}
+
 
 %\examples{}
 

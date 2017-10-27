@@ -93,9 +93,6 @@
 \seealso{
   The log-logistic model (\code{\link{llogistic}}) is very similar to the log-normal model at least in the middle,
   but they may differ in the tails and thus provide different estimates of low effect concentrations EC/ED.
-  
-  Examples are provided in the help pages of the datasets \code{\link{S.capricornutum}}, \code{\link{P.promelas}},
-  and \code{\link{M.bahia}}.
 }
 
 %\examples{}

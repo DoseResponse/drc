@@ -48,10 +48,6 @@ xaxis = "100", xlab, ylab, xlim, ylim, ...)
 
 %\note{}
 
-\seealso{
-  The examples in \code{\link{acidiq}}, \code{\link{glymet}} and \code{\link{mecter}}.
-}
-
 %\examples{}
 
 \keyword{models}

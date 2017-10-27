@@ -46,7 +46,6 @@
 
 \author{Christian Ritz}
 
-\note{See the example for the dataset \code{\link{heartrate}}.}
 
 %\examples{}
 

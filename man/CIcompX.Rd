@@ -86,7 +86,6 @@ Christian Ritz and Ismael Rodea-Palomares
 \seealso{
 See \code{\link{mixture}} for simultaneous modelling of several mixture ratios, but only at the ED50 level.
 
-See also the help page for \code{\link{metals}}.
 }
 
 \examples{
