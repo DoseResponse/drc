@@ -9,5 +9,5 @@ Imports: car, gtools, multcomp, plotrix, scales
 LazyLoad: yes
 LazyData: yes
 Description: Analysis of dose-response data is made available through a suite of flexible and versatile model fitting and after-fitting functions.
-License: GPL-2 | file LICENCE
+License: GPL-2
 URL: http://www.r-project.org, http://www.bioassay.dk
