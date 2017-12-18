@@ -1,5 +1,7 @@
 ## Changes in 'drc' 
 
+2017-12-19: Updating the event-time part of "drc", in particular in drm() (improved code provided by Andrea Onofri).
+
 2017-09-29: The argument checkND has been added to the predict method. It allows switching off comparing names of variables
 in the the original data frame and the "newdata" data frame: It's useful for predicting in e.g., mixture models (after a report
 by Evan Palmer-Young).
