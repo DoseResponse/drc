@@ -1,6 +1,6 @@
 Package: drc
-Version: 3.0-5
-Date: 2017-05-20
+Version: 3.0-6
+Date: 2017-12-19
 Title: Analysis of Dose-Response Data
 Author: Christian Ritz <ritz@bioassay.dk>, Jens C. Strebig <streibig@bioassay.dk>
 Maintainer: Christian Ritz <ritz@bioassay.dk>
