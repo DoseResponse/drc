@@ -1399,7 +1399,14 @@ pshifts = NULL)
         lenVec <- as.vector(unlist(lapply(lapList, length)))
         plotid <- as.factor(as.vector(unlist(mapply(function(x,y){x[1:y]}, 
                                                     listCI, lenVec))))
-        plotid2 <- as.factor(as.vector(unlist(listCI))[is.finite(dose0)])
+#        plotid2 <- as.factor(as.vector(unlist(listCI))[is.finite(dose0)])
+        if(is.vector(dose0))
+        { 
+            plotid2 <- as.factor(as.vector(unlist(listCI))[is.finite(dose0)]) 
+        }else{ 
+            plotid2 <- as.factor(as.vector(unlist(listCI))[is.finite(dose0[, 1])]) 
+        } 
+        
         levels(plotid) <- unique(assayNoOld)
         levels(plotid2) <- unique(assayNoOld)
     } else {
