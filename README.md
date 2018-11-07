@@ -1,5 +1,5 @@
 
-[![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/drc)](https://cran.r-project.org/package=medrc) [![Build Status](https://travis-ci.org/DoseResponse/drc.svg?branch=master)](https://travis-ci.org/DoseResponse/medrc) [![Downloads](https://cranlogs.r-pkg.org/badges/drc)](https://cranlogs.r-pkg.org/)
+[![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/drc)](https://cran.r-project.org/package=drc) [![Build Status](https://travis-ci.org/DoseResponse/drc.svg?branch=master)](https://travis-ci.org/DoseResponse/drc) [![Downloads](https://cranlogs.r-pkg.org/badges/drc)](https://cranlogs.r-pkg.org/)
 
 drc
 ===
