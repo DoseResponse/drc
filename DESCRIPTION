@@ -3,7 +3,7 @@ Version: 3.0-6
 Date: 2017-12-19
 Title: Analysis of Dose-Response Data
 Authors@R: c(person("Christian" , "Ritz", role = c("aut", "cre"), email="ritz@bioassay.dk"), 
-             person("Jens", "Strebig", middel="C.", email="streibig@bioassay.dk", role = "aut"))
+             person("Jens", "Strebig", middle="C.", email="streibig@bioassay.dk", role = "aut"))
 Maintainer: Christian Ritz <ritz@bioassay.dk>
 Depends: R (>= 2.0.0), MASS, stats, drcData
 Imports: car, gtools, multcomp, plotrix, scales
