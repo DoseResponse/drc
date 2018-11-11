@@ -175,21 +175,21 @@
 #&gt; Parameter estimates:
 #&gt; 
 #&gt;               Estimate Std. Error t-value   p-value    
-#&gt; b:(Intercept) 1.334173   0.358675  3.7197  0.004773 ** 
-#&gt; c:(Intercept) 0.447962   0.080700  5.5510  0.000356 ***
-#&gt; d:(Intercept) 1.035658   0.077323 13.3940 3.004e-07 ***
-#&gt; e:(Intercept) 1.337869   1.185153  1.1289  0.288148    
-#&gt; f:(Intercept) 1.993259   2.017541  0.9880  0.348985    
+#&gt; b:(Intercept) 1.333664   0.357704  3.7284 0.0047091 ** 
+#&gt; c:(Intercept) 0.448009   0.080642  5.5555 0.0003539 ***
+#&gt; d:(Intercept) 1.035610   0.077348 13.3890 3.014e-07 ***
+#&gt; e:(Intercept) 1.331868   1.181015  1.1277 0.2885991    
+#&gt; f:(Intercept) 2.003672   2.028685  0.9877 0.3491213    
 #&gt; ---
 #&gt; Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 #&gt; 
 #&gt; Residual standard error:
 #&gt; 
-#&gt;  0.1305067 (9 degrees of freedom)</div><div class='input'><span class='fu'><a href='ED.drc.html'>ED</a></span>(<span class='no'>lettuce.m1</span>, <span class='fu'>c</span>(<span class='fl'>50</span>))</div><div class='output co'>#&gt; 
+#&gt;  0.1305032 (9 degrees of freedom)</div><div class='input'><span class='fu'><a href='ED.drc.html'>ED</a></span>(<span class='no'>lettuce.m1</span>, <span class='fu'>c</span>(<span class='fl'>50</span>))</div><div class='output co'>#&gt; 
 #&gt; Estimated effective doses
 #&gt; 
 #&gt;        Estimate Std. Error
-#&gt; e:1:50   5.5439     1.9480</div><div class='input'>
+#&gt; e:1:50   5.5406     1.9453</div><div class='input'>
 <span class='no'>lettuce.m2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='drm.html'>drm</a></span>(<span class='no'>lettuce</span>[,<span class='fu'>c</span>(<span class='fl'>2</span>,<span class='fl'>1</span>)], <span class='kw'>fct</span><span class='kw'>=</span><span class='fu'>CRS.5b</span>())
 <span class='fu'>summary</span>(<span class='no'>lettuce.m2</span>)</div><div class='output co'>#&gt; 
 #&gt; Model fitted: Cedergreen-Ritz-Streibig (alpha=.5) (5 parms)
@@ -197,21 +197,21 @@
 #&gt; Parameter estimates:
 #&gt; 
 #&gt;               Estimate Std. Error t-value   p-value    
-#&gt; b:(Intercept) 0.814273   0.414051  1.9666   0.08078 .  
-#&gt; c:(Intercept) 0.320033   0.165120  1.9382   0.08456 .  
-#&gt; d:(Intercept) 0.971182   0.081719 11.8844 8.361e-07 ***
-#&gt; e:(Intercept) 0.851872   2.178950  0.3910   0.70492    
-#&gt; f:(Intercept) 3.183596   5.641813  0.5643   0.58634    
+#&gt; b:(Intercept)  0.82455    0.35455  2.3256   0.04507 *  
+#&gt; c:(Intercept)  0.32220    0.15014  2.1460   0.06043 .  
+#&gt; d:(Intercept)  0.97180    0.08161 11.9079 8.222e-07 ***
+#&gt; e:(Intercept)  0.92084    1.78266  0.5166   0.61792    
+#&gt; f:(Intercept)  3.01375    4.11800  0.7318   0.48288    
 #&gt; ---
 #&gt; Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 #&gt; 
 #&gt; Residual standard error:
 #&gt; 
-#&gt;  0.1168455 (9 degrees of freedom)</div><div class='input'><span class='fu'><a href='ED.drc.html'>ED</a></span>(<span class='no'>lettuce.m2</span>, <span class='fu'>c</span>(<span class='fl'>50</span>))</div><div class='output co'>#&gt; 
+#&gt;  0.1169752 (9 degrees of freedom)</div><div class='input'><span class='fu'><a href='ED.drc.html'>ED</a></span>(<span class='no'>lettuce.m2</span>, <span class='fu'>c</span>(<span class='fl'>50</span>))</div><div class='output co'>#&gt; 
 #&gt; Estimated effective doses
 #&gt; 
 #&gt;        Estimate Std. Error
-#&gt; e:1:50  11.4113     7.1885</div><div class='input'>
+#&gt; e:1:50  11.2735     6.5352</div><div class='input'>
 <span class='no'>lettuce.m3</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='drm.html'>drm</a></span>(<span class='no'>lettuce</span>[,<span class='fu'>c</span>(<span class='fl'>2</span>,<span class='fl'>1</span>)], <span class='kw'>fct</span><span class='kw'>=</span><span class='fu'>CRS.5c</span>())
 <span class='fu'>summary</span>(<span class='no'>lettuce.m3</span>)</div><div class='output co'>#&gt; 
 #&gt; Model fitted: Cedergreen-Ritz-Streibig (alpha=.25) (5 parms)
