@@ -2,6 +2,55 @@ reference:
 - title: Fitting dose resonse models
   contents:
   - drm
+- title: Methods
+  contents:
+  - anova.drc
+  - boxcox.drc
+  - bread.drc
+  - coef.drc
+  - confint.drc
+  - cooks.distance.drc
+  - ED.drc
+  - estfun.drc
+  - fitted.drc
+  - hatvalues.drc
+  - loglik.drc
+  - plot.drc
+  - predict.drc
+  - print.drc
+  - print.summary.drc
+  - residuals.drc
+  - summary.drc
+  - vcov.drc
+- title: Misc
+  contents:
+  - backfit
+  - CIcomp
+  - CIcompX
+  - comped
+  - compParm
+  - drmc
+  - ED
+  - EDcomp
+  - getInitial
+  - getMeanFunctions
+  - isobole
+  - lin.test
+  - maED
+  - MAX
+  - mixture
+  - modelFit
+  - mr.test
+  - mselect
+  - neill.test
+  - noEffect
+  - plotFACI
+  - PR
+  - rdrm
+  - relpot
+  - searchdrc
+  - simDR
+  - yieldloss
 - title: Dose-response functions
   contents:
   - AR.2
@@ -109,3 +158,4 @@ reference:
   - w4
   - weibull1
   - weibull2
+  
