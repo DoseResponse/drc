@@ -49,7 +49,10 @@ display = TRUE, pool = TRUE, logBase = NULL, multcomp = FALSE, intType = "confid
 #    } else {
 #        vcMat <- vcov(object, od = od, pool = pool)
 #    }
-    vcMat <- vcov.(object)
+    #vcMat <- vcov.(object)
+    if (is.function(vcov.)) 
+            vcMat <- vcov.(object)
+        else vcMat <- vcov.
     
     ## Defining vectors and matrices needed
     ncolIM <- ncol(indexMat)
