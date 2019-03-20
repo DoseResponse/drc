@@ -3,7 +3,7 @@ formula, curveid, pmodels, weights, data = NULL, subset, fct,
 type = c("continuous", "binomial", "Poisson", "negbin1", "negbin2", "event", "ssd"), bcVal = NULL, bcAdd = 0, 
 start, na.action = na.omit, robust = "mean", logDose = NULL, 
 control = drmc(), lowerl = NULL, upperl = NULL, separate = FALSE,
-pshifts = NULL)
+pshifts = NULL, varcov = NULL)
 {
 #    ## Matching 'adjust' argument
 #    adjust <- match.arg(adjust)
@@ -140,7 +140,6 @@ pshifts = NULL)
     
     dose <- model.matrix(mt, mf)[,-c(1)]  # with no intercept
     xDim <- ncol(as.matrix(dose))
-#    print(is.null(dose))
     resp <- model.response(mf, "numeric")
     if (is.null(resp)) 
     {
@@ -712,7 +711,8 @@ pshifts = NULL)
 ## Starting values need to be calculated after BC transformation!!!        
 
         # Retrieving scaling vector
-        longScaleVec <- rep(scaleFct(doseScaling, respScaling), as.vector(unlist(lapply(parmIndex, length))))
+        longScaleVec <- rep(scaleFct(doseScaling, respScaling), 
+                            as.vector(unlist(lapply(parmIndex, length))))
         
     } else {
         doseScaling <- 1
@@ -759,26 +759,17 @@ pshifts = NULL)
         
         if (identical(type, "event"))
         {
-            # dr2 <- doseresp[, 3]
-            # isFinite <- is.finite(doseresp[, 2])
-            # respVec <- rep(NA, length(dr2))
-            # respVec[isFinite] <- cumsum(dr2[isFinite]) / sum(dr2)
-            # doseresp <- (data.frame(x = doseresp[, 1], y = respVec))[isFinite, ]
-            dr2 <- doseresp[, length(doseresp[1,])]
+            dr2 <- doseresp[, 3]
+#            print(doseresp[, 2:3])
             isFinite <- is.finite(doseresp[, 2])
             respVec <- rep(NA, length(dr2))
-            #respVec[isFinite] <- cumsum(dr2[isFinite]) / sum(dr2) #This works only with one curve
-            #This cumulative proportion needs to be built for each Petri Dish
-            #We need to assume that data are ordered by Time and the last obs is always Inf per each dish
-            Dish <- c()
-            cont <- 1
-            for(i in 1:length(dr2)) {Dish[i] <- cont; if(!is.finite(doseresp[i,2])) cont <- cont+1}
-            total <- ( tapply(dr2, list(as.factor(Dish)), sum ) )
-            number <- ( tapply(dr2, list(as.factor(Dish)), length ) )
-            divideBy <- rep(total, number)
-            respVec[isFinite] <- unlist( tapply(dr2, Dish, cumsum ) )[isFinite]/divideBy[isFinite]
-            nCols <- c(2:(length(doseresp[1,])-1))
-            doseresp <- (data.frame(x = doseresp[, nCols], y = respVec))[isFinite, ]
+            respVec[isFinite] <- cumsum(dr2[isFinite]) / sum(dr2)
+#            doseresp[, 3] <- cumsum(dr2[isFinite]) / sum(dr2)
+##            doseresp[!is.finite(doseresp[, 2]), 1] <- NA              
+#            doseresp <- doseresp[isFinite, c(1, 3)]
+#            names(doseresp) <- c("x", "y") 
+            doseresp <- (data.frame(x = doseresp[, 1], y = respVec))[isFinite, ]
+#            print(doseresp)           
         } else {
             isFinite <- is.finite(doseresp[, 2])
         }
@@ -1027,7 +1018,7 @@ pshifts = NULL)
     {
         ## Ordinary least squares estimation
         estMethod <- drmEMls(dose, resp, multCurves2, startVecSc, robustFct, wVec, rmNA, dmf = dmatfct, 
-        doseScaling = doseScaling, respScaling = respScaling)
+        doseScaling = doseScaling, respScaling = respScaling, varcov = varcov)
         
 #        if (adjust == "vp")  #(varPower)
 #        {        
@@ -1309,110 +1300,47 @@ pshifts = NULL)
     {
 #        dose <- dose[isFinite, 2]
 #        resp <- (as.vector(unlist(tapply(resp, assayNo, function(x){cumsum(x) / sum(x)}))))[isFinite]
+
 #        orderDose <- order(dose0)
 #        dose1 <- dose0[orderDose]
 
-        # assayNo0 <- assayNo[isFinite]
-        # dose0 <- dose[, 2]
-        # dose1 <- dose0[isFinite]
-        # dose <- as.vector(unlist(tapply(dose1, assayNo0, function(x){unique(sort(x))})))
-        
         assayNo0 <- assayNo[isFinite]
-        dose0 <- dose[, -1]  # original dose
-      
-        if(is.vector(dose0)){
-            dose <- dose0[is.finite(dose0)]
-            dose1 <- dose0[is.finite(dose0)] 
-            dose <- as.vector(unlist(tapply(dose1, 
-                                            assayNo0, 
-                                            function(x){unique(sort(x))})))
-            Dish <- c()
-            cont <- 1
-            for(i in 1:length(dose0)) {Dish[i] <- cont; if(!is.finite(dose0[i])) cont <- cont+1}
-        }else{
-            dose <- dose0[is.finite(dose0[,1]),]
-            dose1 <- dose0[is.finite(dose0[,1]),] 
-            dose <- dose[order(dose[,1]),]
-            Dish <- c()
-            cont <- 1
-            for(i in 1:length(dose0[,1])) {Dish[i] <- cont; if(!is.finite(dose0[i, 1])) cont <- cont+1}
-        }
-      
-              
+        dose0 <- dose[, 2]
+        dose1 <- dose0[isFinite]
+        dose <- as.vector(unlist(tapply(dose1, assayNo0, function(x){unique(sort(x))})))
+        
         ## Rescaling per curve id
-        # idList <- split(data.frame(dose0, resp), assayNo)
-        # 
-        # respFct <- function(idListElt)
-        # {
-        #     doseVec <- idListElt[, 1]
-        #     dose2 <- unique(sort(doseVec))
-        #     orderDose <- order(doseVec)
-        #     resp1 <- tapply(idListElt[orderDose, 2], doseVec[orderDose], sum)  # obtaining one count per time interval
-        #     resp2 <- cumsum(resp1) / sum(resp1)
-        #     
-        #     cbind(dose2, resp2)[is.finite(dose2), , drop = FALSE]
-        # }
-        # drList <- lapply(idList, respFct)
-        # lapList <- lapply(drList, function(x){x[, 1]})
-        # dose <- as.vector(unlist(lapList))
-        # resp <- as.vector(unlist(lapply(drList, function(x){x[, 2]})))
-        idList <- split(data.frame(dose0, resp), assayNo) #For assay
-        idList2 <- split(data.frame(dose0, resp), Dish) #For Dish
+        idList <- split(data.frame(dose0, resp), assayNo)
+#        print(idList)
+        
         respFct <- function(idListElt)
-        { 
+        {
             doseVec <- idListElt[, 1]
             dose2 <- unique(sort(doseVec))
             orderDose <- order(doseVec)
             resp1 <- tapply(idListElt[orderDose, 2], doseVec[orderDose], sum)  # obtaining one count per time interval
             resp2 <- cumsum(resp1) / sum(resp1)
+            
             cbind(dose2, resp2)[is.finite(dose2), , drop = FALSE]
         }
-        
-        #These functions here do not work properly with replicates.
-        drList <- lapply(idList, respFct) #dose/resp per assay
-        drList2 <- lapply(idList2, respFct) #dose/resp per dish
-        lapList <- lapply(drList, function(x){x[, 1]}) 
-        
-        #dose <- as.vector(unlist(lapList))
-        #Here resp and resp2 represent respectively the predictions 
-        # for the means (if there are replicates per each AssayNo) 
-        # and the individual responses
-        resp <- as.vector(unlist(lapply(drList, function(x){x[, 2]}))) #This are the means
-        resp2 <- as.vector(unlist(lapply(drList2, function(x){x[, 2]}))) #This are the data
+        drList <- lapply(idList, respFct)
+        lapList <- lapply(drList, function(x){x[, 1]})
+        dose <- as.vector(unlist(lapList))
+        resp <- as.vector(unlist(lapply(drList, function(x){x[, 2]})))
         
 #        listCI <- split(assayNoOld[isFinite], assayNoOld[isFinite])
 #        splitFactor <- factor(assayNoOld[isFinite], exclude = NULL)
-        
-#         splitFactor <- factor(assayNo, exclude = NULL)        
-#         listCI <- split(splitFactor, splitFactor)
-#         lenVec <- as.vector(unlist(lapply(lapList, length)))
-# #        print(listCI)
-# #        print(lenVec)
-#         plotid <- as.factor(as.vector(unlist(mapply(function(x,y){x[1:y]}, listCI, lenVec))))
-# #        plotid <- plotid[complete.cases(plotid)] 
-#         levels(plotid) <- unique(assayNoOld)
-#     } else {
-#         plotid <- NULL
-#     }
-        splitFactor <- factor(assayNo, exclude = NULL)
+        splitFactor <- factor(assayNo, exclude = NULL)        
         listCI <- split(splitFactor, splitFactor)
         lenVec <- as.vector(unlist(lapply(lapList, length)))
-        plotid <- as.factor(as.vector(unlist(mapply(function(x,y){x[1:y]}, 
-                                                    listCI, lenVec))))
-#        plotid2 <- as.factor(as.vector(unlist(listCI))[is.finite(dose0)])
-        if(is.vector(dose0))
-        { 
-            plotid2 <- as.factor(as.vector(unlist(listCI))[is.finite(dose0)]) 
-        }else{ 
-            plotid2 <- as.factor(as.vector(unlist(listCI))[is.finite(dose0[, 1])]) 
-        } 
-        
+#        print(listCI)
+#        print(lenVec)
+        plotid <- as.factor(as.vector(unlist(mapply(function(x,y){x[1:y]}, listCI, lenVec))))
+#        plotid <- plotid[complete.cases(plotid)] 
         levels(plotid) <- unique(assayNoOld)
-        levels(plotid2) <- unique(assayNoOld)
     } else {
         plotid <- NULL
     }
-    
 
     
     if (identical(type, "ssd"))
@@ -1678,23 +1606,14 @@ pshifts = NULL)
 #    plotFct(0:10)
 
 
-    ## Calculation of fitted values and residuals
-    if (identical(type, "event"))
-    {
-        dose <- dose1
-    }  
+    ## Computation of fitted values and residuals
     if (identical(type, "event") || identical(type, "ssd"))
     {
         multCurves2 <- modelFunction(dose, parm2mat, drcFct, cm, assayNoOld, upperPos, fct$"retFct", 
                                      doseScaling, respScaling, isFinite)
     }
-    predVec <- multCurves2(dose, fixedParm)
-    if (identical(type, "event"))
-    {
-        resVec <- resp2 - predVec
-    } else {    
-        resVec <- resp - predVec
-    }
+    predVec <- multCurves2(dose, fixedParm)        
+    resVec <- resp - predVec
     resVec[is.nan(predVec)] <- 0    
 
     diagMat <- matrix(c(predVec, resVec), length(dose), 2)
@@ -1746,9 +1665,9 @@ pshifts = NULL)
 #    print(varNames0)
     if (identical(type, "event"))
     {
-        names(dataSet) <- c(varNames0[c(2, 3, 1)], anName, anName, "weights")
+        names(dataSet) <- c(varNames0[c(2, 3, 1)], anName, paste("orig.", anName, sep = ""), "weights")
     } else {
-        names(dataSet) <- c(varNames0[c(2, 1)], anName, anName, "weights")
+        names(dataSet) <- c(varNames0[c(2, 1)], anName, paste("orig.", anName, sep = ""), "weights")
     }
 
 
@@ -1842,8 +1761,8 @@ pshifts = NULL)
     names = list(dName = varNames[1], orName = varNames[2], wName = wName, cNames = anName, rName = ""))
     if (identical(type, "event"))
     {
-        dataList <- list(dose = dose, origResp = resp2, weights = wVec[isFinite], 
-        curveid = assayNoOld[isFinite], plotid = plotid2, resp = resp2,
+        dataList <- list(dose = dose, origResp = resp, weights = wVec[isFinite], 
+        curveid = assayNoOld[isFinite], plotid = plotid, resp = resp,
         names = list(dName = varNames[1], orName = varNames[2], wName = wName, cNames = anName, rName = ""))
     }
     if (identical(type, "ssd"))
@@ -1871,7 +1790,8 @@ pshifts = NULL)
     coefVec, bcVec,
     indexMat2)
     
-    names(returnList) <- c("varParm", "fit", "curve", "summary", "start", "parNames", "predres", "call", "data", 
+    names(returnList) <- c("varParm", "fit", "curve", "summary", "start", "parNames", 
+                           "predres", "call", "data", 
 #    names(returnList) <- c("fit", "curve", "summary", "start", "parNames", "predres", "call", "data", 
     "parmMat", "fct", "robust", "estMethod", "df.residual", 
 #    "anova", "gofTest", 

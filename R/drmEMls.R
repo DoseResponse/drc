@@ -1,6 +1,6 @@
 "drmEMls" <- 
 function(dose, resp, multCurves, startVec, robustFct, weights, rmNA, dmf = NULL, 
-doseScaling = 1, respScaling = 1)
+doseScaling = 1, respScaling = 1, varcov = NULL)
 {
 #    ## Defining lack-of-fit/goodness-of-fit tests
 #    anovaTest <- contAnovaTest()
@@ -20,10 +20,20 @@ doseScaling = 1, respScaling = 1)
 #        print(c(parm, as.vector(multCurves((dose / doseScaling), parm)[1:5])))
 #        print(as.vector(robustFct(((resp / respScaling) - multCurves((dose / doseScaling), parm)) * weights)))
 #        print(multCurves((dose / doseScaling), parm))
-        sum(robustFct(((resp / respScaling) - multCurves((dose / doseScaling), parm)) * weights), na.rm = rmNA)          
+        sum(robustFct(((resp / respScaling) - multCurves((dose / doseScaling), parm)) * weights), 
+            na.rm = rmNA)          
         # weights enter multiplicatively before being squared!
 #        }
     }
+    
+    if (!is.null(varcov))  # Note: robustFct() not used; derivatives don't work with this version
+    {
+        opfct <- function(parm)
+        {  
+            resVec <- (resp / respScaling) - multCurves((dose / doseScaling), parm)  
+            resVec %*% solve(varcov) %*% resVec  # maybe a generalized inverse
+        }    
+    }  
     
     if (!is.null(dmf))
     {
