@@ -49,7 +49,8 @@ function(object, fctList = NULL, nested = FALSE, sorted = c("IC", "Res var", "La
         for (i in 1:lenFL)
         {
 #            tempObj <- update(object, fct = fctList[[i]])  # try(update(object, fct = fctList[[i]]), silent = TRUE)
-            tempObj <- try(update(object, fct = fctList[[i]]), silent = TRUE)            
+            tempObj <- try(update(object, fct = fctList[[i]],
+                                  data = object[["origData"]]), silent = TRUE)            
             fctList2[i+1] <- fctList[[i]]$"name"            
             if (!inherits(tempObj, "try-error"))
             {   
