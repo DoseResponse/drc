@@ -1,54 +1,29 @@
 ## functions
 export(
-
 AR.2, AR.3,
-
 baro5, 
-
 braincousens, BC.5, BC.4, bcl3, bcl4, 
-
 cedergreen, CRS.4a, CRS.4b, CRS.4c, CRS.5a, CRS.5b, CRS.5c, CRS.6, ml3a, ml3b, ml3c, ml4a, ml4b, ml4c, 
-
 ucedergreen, UCRS.4a, UCRS.4b, UCRS.4c, UCRS.5a, UCRS.5b, UCRS.5c, uml3a, uml3b, uml3c, uml4a, uml4b, uml4c, 
-
 EXD.2, EXD.3, 
-
 fplogistic, FPL.4,
-
 gammadr,
-
 gaussian, lgaussian,
-
 gompertz, G.2, G.3, G.3u, G.4,
-
 gompertzd,
-
 logistic, L.3, L.4, L.5,
-
 llogistic, LL.2, LL.3, LL.3u, LL.4, LL.5, l2, l3, l3u, l4, l5,
-
 llogistic2, LL2.2, LL2.3, LL2.3u, LL2.4, LL2.5,
-
 lnormal, LN.2, LN.3, LN.3u, LN.4,
-
 MM.2, MM.3, 
-
 multi2,
-
 NEC.2, NEC.3, NEC.4,
-
 twophase,
-
 ursa,
-
 weibull1, W1.2, W1.3, W1.3u, W1.4, w2, w3, w4, 
-
 weibull2, W2.2, W2.3, W2.3u, W2.4,
-
 weibull2x, W2x.3, W2x.4,
-
 bread.drc, estfun.drc,
-
 backfit, CIcomp, CIcompX, comped, compParm, drm, drmc, ED, EDcomp, getInitial, getMeanFunctions, isobole, 
 lin.test, MAX, maED, mixture, modelFit, mr.test, mselect, neill.test, noEffect, plotFACI, PR, rdrm, relpot, searchdrc, 
 simDR, yieldLoss)
@@ -80,8 +55,6 @@ importFrom("stats", "AIC", "anova", "as.formula", "binomial", "coef",
            "vcov", "weights")
 
 importFrom("utils", "head", "tail")
-
-
 
 ## S3 methods
 S3method(anova, drc)
