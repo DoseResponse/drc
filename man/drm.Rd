@@ -5,7 +5,8 @@
 \title{Fitting dose-response models}
 
 \description{
-  A general model fitting function for analysis of concentration/dose/time-effect/response data.
+  A general model fitting function for analysis of various types of dose-response data where
+  response values are assumed to be mutually independent.
 }
 
 \usage{
@@ -13,7 +14,8 @@
   type = c("continuous", "binomial", "Poisson", "negbin1", "negbin2", "event", "ssd"), 
   bcVal = NULL, bcAdd = 0, 
   start, na.action = na.omit, robust = "mean", logDose = NULL, 
-  control = drmc(), lowerl = NULL, upperl = NULL, separate = FALSE, pshifts = NULL)
+  control = drmc(), lowerl = NULL, upperl = NULL, separate = FALSE, 
+  pshifts = NULL, varcov = NULL)
 }
 
 \arguments{
@@ -80,7 +82,9 @@
   \item{separate}{logical value indicating whether curves should be fit separately (independent of each other).}
   
   \item{pshifts}{a matrix of constants to be added to the matrix of parameters. Default is no shift for all parameters.}
-}
+  
+  \item{varcov}{an optional user-defined known variance-covariance matrix for the responses. Default is the identity matrix (NULL), corresponding to independent response values with a common standard deviation, which will be estimated from the data.}  
+} 
 
 \details{
   This function relies on the general optimiser function \code{\link{optim}} for the minimisation of negative log likelihood function. 
@@ -96,6 +100,9 @@
   
   The columns of a data frame argument to \code{pmodels} are automatically converted into factors. 
   This does not happen if a list is specified.   
+  
+  For robust estimation MAD (median abslolute deviance) is used to estimate the residual variance.  
+  
 }
 
 \value{
@@ -106,18 +113,7 @@
 
 \author{Christian Ritz and Jens C. Streibig}
 
-\note{
-%  The argument \code{curveid} is subsequently used for plotting dose-response curves. For large datasets 
-%  it need not represent the actual curves, but it could represent several curves having the parameters 
-%  (to avoid too many curves in the plot). The same applies for use with the function \code{\link{ED.drc}} 
-%  and \code{\link{SI}}.
-
-  For robust estimation MAD (median abslolute deviance) is used to estimate the residual variance.  
-  
-%  The data frame argument allows collapsing parameters for 
-%  some or all curves (using \code{\link{colFct}}), whereas the list argument allows specification of 
-%  additive models for the parameters.
-}
+%\note{}
 
 %\examples{}
 
