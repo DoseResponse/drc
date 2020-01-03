@@ -1,5 +1,7 @@
 "EDhelper" <- function(parmVec, respl, reference, typeCalc, cond = TRUE)
 {
+    ## Works for log-logistic type dose-response models
+  
     ## Converting absolute to relative
     if (typeCalc == "absolute") 
     {
@@ -22,4 +24,20 @@
         }
     }
     p
+}
+
+## Used for FP models
+"EDhelper2" <- function(parmVec, respl, reference, typeCalc, increasing)
+{
+  ## Converting absolute to relative
+  if (typeCalc == "absolute") 
+  {
+    p <- 100 * (1 - (parmVec[3] - respl) / (parmVec[3] - parmVec[2]))
+
+  } else {  
+
+    if (increasing) {p <- respl} else {p <- 100 - respl}
+  }
+
+  p
 }

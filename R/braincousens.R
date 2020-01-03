@@ -134,14 +134,14 @@ if (FALSE)
 
 
     ## Defining the ED function
-    edfct <- function(parm, p, reference, type, lower = 1e-3, upper = 1000, ...)
+    edfct <- function(parm, respl, reference, type, lower = 1e-3, upper = 1000, ...)
     {
 #        if (is.missing(upper)) {upper <- 1000}
         interval <- c(lower, upper)     
      
         parmVec[notFixed] <- parm
 
-        p <- EDhelper(parmVec, p, reference, type)
+        p <- EDhelper(parmVec, respl, reference, type)
         tempVal <- (100-p)/100
 
         helpEqn <- function(dose) 

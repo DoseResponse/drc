@@ -99,7 +99,7 @@ fctName, fctText)
     edfct <- function(parm, respl, reference, type, loged = FALSE, ...)
     {
         parmVec[notFixed] <- parm
-        p <- EDhelper(parmVec, respl, reference, type)
+        p <- EDhelper2(parmVec, respl, reference, type, parmVec[1] > 0)
 
         invfp <- function(resp, b, e)
         {
