@@ -14,7 +14,7 @@
   \method{ED}{drc}(object, respLev, interval = c("none", "delta", "fls", "tfls", "inv"), 
   clevel = NULL, level = ifelse(!(interval == "none"), 0.95, NULL),
   reference = c("control", "upper"), type = c("relative", "absolute"), lref, uref,
-  bound = TRUE, od = FALSE, vcov. = vcov, display = TRUE, pool = TRUE, logBase = NULL, 
+  bound = TRUE, vcov. = vcov, display = TRUE, pool = TRUE, logBase = NULL, 
   multcomp = FALSE, intType = "confidence", ...)  
 }
 

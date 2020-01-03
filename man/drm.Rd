@@ -5,8 +5,7 @@
 \title{Fitting dose-response models}
 
 \description{
-  A general model fitting function for analysis of various types of dose-response data where
-  response values are assumed to be mutually independent.
+  A general model fitting function for analysis of various types of dose-response data.
 }
 
 \usage{
@@ -64,11 +63,8 @@
   least median of squares ("lms"), least trimmed squares ("lts"), metric trimming ("trimmed"), 
   metric winsorizing ("winsor") and Tukey's biweight ("tukey").}
   
-  \item{logDose}{a numeric value or NULL. If log doses value are provided the base of the logarithm should be specified (exp(1) for the natural logarithm
-  and 10 for 10-logarithm).}
+  \item{logDose}{a numeric value or NULL. If log doses value are provided the base of the logarithm should be specified (exp(1) for the natural logarithm and 10 for the base 10 logarithm).}
 
-%  \item{fctList}{a list of functions in case different functions need to be fit to different curves.}
-  
   \item{control}{a list of arguments controlling constrained optimisation (zero as boundary), 
   maximum number of iteration in the optimisation,
   relative tolerance in the optimisation, warnings issued during the optimisation.}
@@ -87,26 +83,27 @@
 } 
 
 \details{
-  This function relies on the general optimiser function \code{\link{optim}} for the minimisation of negative log likelihood function. 
-  For a continuous response this reduces to least squares estimation, which is carried out by minimising the following sums of squares
+  Response values are assumed to be mutually independent unless the argument \code{varcov} is specified (in which the correlation structure is assumed to be completely known). 
+
+  This function relies on the general optimiser function \code{\link{optim}} for the minimisation of negative log likelihood function. For a continuous response this reduces to least squares estimation, which is carried out by minimising the following sums of squares
   
   \deqn{\sum_{i=1}^N [w_i (y_i-f_i)]^2}
   
   where \eqn{y_i}, \eqn{f_i}, and \eqn{w_i} correspond to the observed value, expected value, and the weight respectively, for the ith observation (from 1 to \eqn{N}).
-     
-  The control arguments are specified using the function \code{\link{drmc}}.
+
+  For robust estimation MAD (median abslolute deviance) is used to estimate the residual variance.  
   
   Setting \code{lowerl} and/or \code{upperl} automatically invokes constrained optimisation.
   
   The columns of a data frame argument to \code{pmodels} are automatically converted into factors. 
   This does not happen if a list is specified.   
-  
-  For robust estimation MAD (median abslolute deviance) is used to estimate the residual variance.  
+
+  The control arguments are specified using the function \code{\link{drmc}}.
   
 }
 
 \value{
-  An object of class 'drc'. 
+  An object of (S3) class 'drc'. 
 }
 
 %\references{ ~put references to the literature/web site here ~ }

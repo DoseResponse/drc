@@ -107,24 +107,6 @@ if (FALSE)
 #        scaleInd <- NULL
 #    }
 
-#    ## Constructing a helper function
-#    ##  also used in 'llogistic' and 'llogistic2'
-#    xlogx <- function(x, p)
-#    {
-#        lv <- (x < 1e-12)
-#        nlv <- !lv
-#        
-#        rv <- rep(0, length(x))
-#        
-#        xlv <- x[lv] 
-#        rv[lv] <- log(xlv^(xlv^p[lv]))
-#        
-#        xnlv <- x[nlv]
-#        rv[nlv] <- (xnlv^p[nlv])*log(xnlv)
-#    
-#        rv
-#    }
-    
     ## Defining derivatives
     deriv1 <- function(dose, parm)
     {
@@ -152,13 +134,14 @@ if (FALSE)
 
 
     ## Defining the ED function
-    edfct <- function(parm, p, lower = 1e-3, upper = 1000, ...)
+    edfct <- function(parm, p, reference, type, lower = 1e-3, upper = 1000, ...)
     {
 #        if (is.missing(upper)) {upper <- 1000}
         interval <- c(lower, upper)     
      
         parmVec[notFixed] <- parm
 
+        p <- EDhelper(parmVec, p, reference, type)
         tempVal <- (100-p)/100
 
         helpEqn <- function(dose) 

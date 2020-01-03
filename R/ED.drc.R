@@ -3,7 +3,7 @@ ED <- function (object, ...) UseMethod("ED", object)
 "ED.drc" <-
 function(object, respLev, interval = c("none", "delta", "fls", "tfls", "inv"), clevel = NULL,
 level = ifelse(!(interval == "none"), 0.95, NULL), reference = c("control", "upper"), 
-type = c("relative", "absolute"), lref, uref, bound = TRUE, od = FALSE, vcov. = vcov, # robust = false,
+type = c("relative", "absolute"), lref, uref, bound = TRUE, vcov. = vcov, # robust = false,
 display = TRUE, pool = TRUE, logBase = NULL, multcomp = FALSE, intType = "confidence", ...)
 {
     interval <- match.arg(interval)
