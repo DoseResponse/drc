@@ -31,11 +31,9 @@
   \item{lref}{numeric value specifying the lower limit to serve as reference.}
   \item{uref}{numeric value specifying the upper limit to serve as reference (e.g., 100\%).}  
   \item{bound}{logical. If TRUE only ED values between 0 and 100\% are allowed. FALSE is useful for hormesis models.}
-  \item{od}{logical. If TRUE adjustment for over-dispersion is used.}
-  \item{vcov.}{function providing the variance-covariance matrix. \code{\link{vcov}} is the default, 
+  \item{vcov.}{function providing the variance-covariance matrix or a variance-covariance matrix. \code{\link{vcov}} is the default, 
   but \code{sandwich} is also an option (for obtaining robust standard errors).}
   \item{display}{logical. If TRUE results are displayed. Otherwise they are not (useful in simulations).}
-  \item{pool}{logical. If TRUE curves are pooled. Otherwise they are not. This argument only works for models with independently fitted curves as specified in \code{\link{drm}}.}
   \item{logBase}{numeric. The base of the logarithm in case logarithm transformed dose values are used.}  
   \item{multcomp}{logical to switch on output for use with the package multcomp (which needs to be activated first). Default is FALSE (corresponding to the original output).}
   \item{intType}{string specifying the type of interval to use with the predict method in case the type of confidence
