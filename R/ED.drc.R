@@ -31,11 +31,8 @@ ED <- function (object, ...) UseMethod("ED", object)
     EDlist <- object$fct[["edfct"]]  
     if (is.null(EDlist)) {stop("ED values cannot be calculated")}         
     indexMat <- object[["indexMat"]]
-#    parmMat <- matrix(coef(object)[indexMat], ncol = ncol(indexMat))   
     parmMat <- object[["parmMat"]]
-#    strParm0 <- colnames(parmMat)    
-#    strParm0 <- sort(colnames(object$"parmMat"))
-    
+
     curveNames <- colnames(parmMat)  # colnames(object$"parmMat")
     options(warn = -1)  # switching off warnings caused by coercion in the if statement
     if (any(is.na(as.numeric(curveNames))))
@@ -51,7 +48,13 @@ ED <- function (object, ...) UseMethod("ED", object)
     parmMat <- parmMat[, curveOrder, drop = FALSE]
     
     strParm <- strParm0
-    vcMat <- vcov.(object)
+    #vcMat <- vcov.(object)
+    if (is.function(vcov.))  # following a suggestion by Andrea Onofri
+    {
+      vcMat <- vcov.(object)
+    } else {
+      vcMat <- vcov.
+    }
     
     ## Defining vectors and matrices needed
     ncolIM <- ncol(indexMat)
@@ -64,10 +67,8 @@ ED <- function (object, ...) UseMethod("ED", object)
     oriMat <- matrix(0, noRows, 2)  # lenEB*lenPV, 2)
 
     ## Skipping curve id if only one curve is present
-#    lenIV <- lenEB  # ncol(indexMat)
     if (identical(length(unique(strParm)), 1)) 
     {
-#        strParm[1:lenIV] <- rep("", lenIV)
         strParm[indexVec] <- rep("", ncolIM)
     } else {
         strParm <- paste(strParm, ":", sep = "")
@@ -81,7 +82,6 @@ ED <- function (object, ...) UseMethod("ED", object)
     for (i in indexVec)
     {
         parmChosen <- parmMat[, i]
-#        print(parmChosen)
         parmInd <- indexMat[, i]
         varCov <- vcMat[parmInd, parmInd]
 
@@ -92,8 +92,6 @@ ED <- function (object, ...) UseMethod("ED", object)
             EDeval <- EDlist(parmChosen, respLev[j], reference = reference, type = type, ...)            
             EDval <- EDeval[[1]]
             dEDval <- EDeval[[2]]
-#            print(c(i,j,parmInd))
-#            print(dEDval)
             dEDmat[(i-1)*lenPV + j, parmInd] <- dEDval 
             
             oriMat[rowIndex, 1] <- EDval
@@ -127,40 +125,15 @@ ED <- function (object, ...) UseMethod("ED", object)
     ## Defining column names
     colNames <- c("Estimate", "Std. Error")
     
-#    ## Using t-distribution for continuous data
-#    ## (only under the normality assumption)
-#    if (object$"type" == "continuous")
-#    {
-#        qFct <- function(x) {qt(x, df.residual(object))}
-#    } else { # Otherwise the standard normal distribution is used
-#        qFct <- qnorm
-#    }
-
     ## Calculating the confidence intervals
     if (interval == "delta")
     {
-#        colNames <- c(colNames, "Lower", "Upper")    
-#        ciMat <- matrix(0, lenEB*lenPV, 2)
-#        tquan <- qFct(1 - (1 - level)/2)        
-#        ciMat[, 1] <- EDmat[, 1] - tquan * EDmat[, 2]
-#        ciMat[, 2] <- EDmat[, 1] + tquan * EDmat[, 2]
-        
-#        print(EDmat)
         intMat <- confint.basic(EDmat, level, object$"type", df.residual(object), FALSE)
-#        print(intMat)
         intLabel <- "Delta method"
     }
     
     if (interval == "tfls")
     {
-#        colNames <- c( colNames, "Lower", "Upper")     
-#        lsVal <- log(oriMat[, 1])
-#        lsdVal <- oriMat[, 2]/oriMat[, 1]
-#        ciMat <- matrix(0, lenEB*lenPV, 2)
-#        tquan <- qFct(1 - (1 - level)/2)                       
-#        ciMat[, 1] <- exp(lsVal - tquan * lsdVal)
-#        ciMat[, 2] <- exp(lsVal + tquan * lsdVal)
-        
         intMat <- exp(confint.basic(matrix(c(log(oriMat[, 1]), oriMat[, 2] / oriMat[, 1]), ncol = 2), 
         level, object$"type", df.residual(object), FALSE))
         intLabel <- "To and from log scale"       
@@ -168,15 +141,11 @@ ED <- function (object, ...) UseMethod("ED", object)
 
     if (interval == "fls")
     {        
-#        ciMat <- matrix(0, lenEB*lenPV, 2)
-#        tquan <- qFct(1 - (1 - level)/2) 
         if (is.null(logBase)) 
         {
             logBase <- exp(1)
             EDmat[, 1] <- exp(EDmat[, 1])  # back-transforming log ED values
         }
-#        ciMat[, 1] <- logBase^(oriMat[, 1] - tquan * oriMat[, 2])
-#        ciMat[, 2] <- logBase^(oriMat[, 1] + tquan * oriMat[, 2])
 
         intMat <- logBase^(confint.basic(oriMat, level, object$"type", df.residual(object), FALSE))
         intLabel <- "Back-transformed from log scale"  
@@ -204,9 +173,6 @@ ED <- function (object, ...) UseMethod("ED", object)
     dimnames(EDmat) <- list(dimNames, colNames)
     rownames(EDmat) <- paste("e", rownames(EDmat), sep = ":")
     resPrint(EDmat, "Estimated effective doses", interval, intLabel, display = display)
-    
-    ## require(multcomp, quietly = TRUE)
-#    invisible(list(EDdisplay = EDmat, EDmultcomp = list(EDmat[, 1], dEDmat %*% vcMat %*% t(dEDmat))))  
     
     if(multcomp)
     {  
