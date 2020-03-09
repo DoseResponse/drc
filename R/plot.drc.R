@@ -55,10 +55,13 @@ normal = FALSE, normRef = 1, confidence.level = 0.95)
     ## Normalizing the response values
     if (normal)
     {
+        
         respList <- split(resp, curveid)
         resp <- unlist(mapply(normalizeLU, respList, 
                               as.list(as.data.frame(getLU(object))), 
-                              normRef = normRef))            
+                              normRef = normRef))
+        
+        resp <- resp[,levels(curveid)[order(match(levels(curveid), curveid))]] #reoder response to match original order
 #        respNew <- unlist(mapply(normalizeLU, respList, as.list(as.data.frame(getLU(object)))))    
 #        print(respNew)
 #        print(resp)
@@ -248,7 +251,17 @@ normal = FALSE, normRef = 1, confidence.level = 0.95)
 #        predictMat <- predict(object, interval = "confidence")[, 3:4]
 #        predictMat <- predict(object, interval = "confidence")[, c("Lower", "Upper")]
         predictMat <- predict(object, interval = "confidence",
-                              level = confidence.level)[, c("Lower", "Upper")]        
+                              level = confidence.level)[, c("Lower", "Upper")]  
+        
+        if(normal) {
+          predictList <- split(predictMat, curveid)
+          
+          predictMatListNorm <- mapply(normalizeLU, predictList, 
+                                as.list(as.data.frame(getLU(object))), 
+                                normRef = normRef, 
+                                SIMPLIFY = F)
+          predictMat<- do.call(rbind,lapply(predictMatListNorm, matrix, ncol = 2))
+        }
 #        print(predictMat)
     
         barFct <- function(plotPoints)
