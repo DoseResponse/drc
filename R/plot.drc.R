@@ -57,9 +57,10 @@ normal = FALSE, normRef = 1, confidence.level = 0.95)
     {
         names(resp) <- seq(length(resp))
         respList <- split(resp, curveid)
+        
         respNorm <- mapply(normalizeLU, respList, 
-                              as.list(as.data.frame(getLU(object))), 
-                              normRef = normRef, SIMPLIFY = F)
+                           as.list(as.data.frame(getLU(object)))[names(respList)], 
+                           normRef = normRef, SIMPLIFY = F)
         
         resp <- do.call(c, unname(respNorm))[as.character(seq(length(resp)))]
 #        respNew <- unlist(mapply(normalizeLU, respList, as.list(as.data.frame(getLU(object)))))    
@@ -765,13 +766,13 @@ getLU <- function(object)
 {
     parmMat <- object$"parmMat"
 #    rownames(parmMat) <- object$"parNames"[[2]]
-
     fixedVal <- object$fct$fixed
     lenFV <- length(fixedVal)
 #    parmMatExt <- matrix(NA, length(fixedVal), ncol(parmMat))
     parmMatExt <- matrix(fixedVal, length(fixedVal), ncol(parmMat))
     parmMatExt[is.na(fixedVal), ] <- parmMat
 
+    colnames(parmMatExt) <- colnames(parmMat)
     parmMatExt
 }
 
