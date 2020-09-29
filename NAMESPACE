@@ -30,7 +30,7 @@ simDR, yieldLoss)
 
 importFrom(car, deltaMethod)
 importFrom(gtools, combinations)
-importFrom(magic, adiag)
+#importFrom(magic, adiag)
 importFrom(MASS, boxcox, ginv, psi.bisquare, psi.huber)
 importFrom(multcomp, parm)
 importFrom(plotrix, axis.break, dispersion, plotCI)

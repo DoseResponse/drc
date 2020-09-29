@@ -15,8 +15,9 @@ pshifts = NULL, varcov = NULL)
 #    require(MASS, quietly = TRUE)  # used for boxcox and ginv
 
     ## Setting na.action option
-    options(na.action = deparse(substitute(na.action)))
-
+    op1 <- options(na.action = deparse(substitute(na.action)))
+    on.exit(options(op1), add=TRUE)
+    
     ## Setting control parameters
     useD <- control$"useD"
     constrained <- control$"constr"
@@ -37,8 +38,9 @@ pshifts = NULL, varcov = NULL)
     conCheck <- control$"conCheck"
             
     ## Setting warnings policy
-    options(warn = warnVal)
-
+    op2 <- options(warn = warnVal)
+    on.exit(options(op2), add=TRUE)
+    
 #    ## Setting adjustment
 #    if (adjust == "none") {boxcox <- FALSE; varPower <- FALSE}
 #    if (adjust == "bc1") {boxcox <- TRUE; varPower <- FALSE}
@@ -426,7 +428,8 @@ pshifts = NULL, varcov = NULL)
 
     
     ## Re-setting na.action
-    options(na.action = "na.omit")  # the default
+    op3 <- options(na.action = "na.omit")  # the default
+    on.exit(options(op3), add=TRUE)
 
     ## Transforming dose value if they are provided as log dose
     if ( !is.null(logDose) && is.numeric(logDose) ) 
