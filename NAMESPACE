@@ -43,6 +43,8 @@ import(drcData)
 importFrom("graphics", "abline", "axTicks", "axis", "lines", "par",
             "plot", "points", "polygon", "segments", "text")
 
+importFrom("sandwich", "estfun")
+
 importFrom("stats", "AIC", "anova", "as.formula", "binomial", "coef",
            "complete.cases", "cooks.distance", "cutree", "deriv", "deviance",
            "df.residual", "dgamma", "dist", "dnorm", "dnbinom", "fitted",
