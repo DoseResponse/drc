@@ -60,7 +60,6 @@ importFrom("utils", "head", "tail")
 ## S3 methods
 S3method(anova, drc)
 S3method(boxcox, drc)
-S3method(bread, drc)
 S3method(coef, drc)
 S3method(confint, drc)
 S3method(cooks.distance, drc)
