@@ -24,18 +24,12 @@ fctName, fctText)
     }
 
     ## Defining the self starter function  
-#    if (!is.null(ssfct))
-#    {
-#        ssfct <- ssfct  # in case it is explicitly provided
-#    } else {
+    ssfct <- function(dframe)
+    {   
+        LL4values <- llogistic.ssf(fixed = c(NA, NA, NA, NA, 1))(dframe)
+        LL4values * c(-1 / (mean(dframe[, 1])), 1, 1, 1)[notFixed]    
+    }
 
-        ssfct <- function(dframe)
-        {   
-            LL4values <- llogistic.ssf(fixed = c(fixed, 1))(dframe)
-            LL4values * c(-1 / (mean(dframe[, 1])), 1, 1, 1)    
-        }
-#    }     
-      
     ##Defining the first and second derivative (in the parameters)
     
     logGamma <- function(x, y)
