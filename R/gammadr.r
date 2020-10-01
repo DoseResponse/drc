@@ -26,8 +26,9 @@ fctName, fctText)
     ## Defining the self starter function  
     ssfct <- function(dframe)
     {   
-        LL4values <- llogistic.ssf(fixed = c(NA, NA, NA, NA, 1))(dframe)
-        LL4values * c(-1 / (mean(dframe[, 1])), 1, 1, 1)[notFixed]    
+        LL4values0 <- llogistic.ssf(fixed = c(NA, NA, NA, NA, 1))(dframe)
+        LL4values <- LL4values0 * c(-1 / (mean(dframe[, 1])), 1, 1, 1)
+        LL4values[notFixed]
     }
 
     ##Defining the first and second derivative (in the parameters)
