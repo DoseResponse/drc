@@ -43,7 +43,7 @@ import(drcData)
 importFrom("graphics", "abline", "axTicks", "axis", "lines", "par",
             "plot", "points", "polygon", "segments", "text")
 
-importFrom("sandwich", "estfun")
+importFrom("sandwich", "bread", "estfun")
 
 importFrom("stats", "AIC", "anova", "as.formula", "binomial", "coef",
            "complete.cases", "cooks.distance", "cutree", "deriv", "deviance",
@@ -62,6 +62,7 @@ importFrom("utils", "head", "tail")
 ## S3 methods
 S3method(anova, drc)
 S3method(boxcox, drc)
+S3method(bread, drc)
 S3method(coef, drc)
 S3method(confint, drc)
 S3method(cooks.distance, drc)

@@ -2,28 +2,13 @@
 function(dose, resp, multCurves, startVec, robustFct, weights, rmNA, dmf = NULL, 
 doseScaling = 1, respScaling = 1, varcov = NULL)
 {
-#    ## Defining lack-of-fit/goodness-of-fit tests
-#    anovaTest <- contAnovaTest()
-#    gofTest <- NULL
-#    if (anovaYes) {return(list(anovaTest = anovaTest, gofTest = gofTest))}
-
     ## Defining the objective function and its derivative
-    opfct <- function(parm)  # , scaling = TRUE)
+    opfct <- function(parm)
     {
-#        print(parm)
-
-#        if (scaling)
-#        { 
-#            sum( robustFct(((resp - multCurves(dose/scaleX, parm)) / scaleY)*weights), na.rm = rmNA)  
-#        } else {
-#        print(sum(robustFct(((resp / respScaling) - multCurves((dose / doseScaling), parm)) * weights), na.rm = rmNA))
-#        print(c(parm, as.vector(multCurves((dose / doseScaling), parm)[1:5])))
-#        print(as.vector(robustFct(((resp / respScaling) - multCurves((dose / doseScaling), parm)) * weights)))
-#        print(multCurves((dose / doseScaling), parm))
-        sum(robustFct(((resp / respScaling) - multCurves((dose / doseScaling), parm)) * weights), 
+        sum(robustFct(((resp / respScaling) - multCurves((dose / doseScaling), parm)) / weights), 
             na.rm = rmNA)          
-        # weights enter multiplicatively before being squared!
-#        }
+        # inverse weights enter multiplicatively before being squared 
+        # (they have to be on same scale as the response)
     }
     
     if (!is.null(varcov))  # Note: robustFct() not used; derivatives don't work with this version

@@ -27,7 +27,8 @@
   Or a list containing a formula for each parameter in the nonlinear function.}
   
   \item{weights}{
-    a numeric vector containing weights. For continuous/quantitative responses weights are multiplied inside the squared errors (see the details below).
+    a numeric vector containing weights. For continuous/quantitative responses, inverse weights are multiplied inside the squared errors; this means that weights should have the same unit as the response 
+    (see the details below).
     For binomial reponses weights provide information about the total number of binary observations used to obtain the response (which is a proportion): 
     1/2 and 10/20 lead to different analyses due to the different totals (2 vs. 20) even though the proportion in both cases is 0.5.
   }
@@ -83,23 +84,23 @@
 } 
 
 \details{
-  Response values are assumed to be mutually independent unless the argument \code{varcov} is specified (in which the correlation structure is assumed to be completely known). 
-
+  
   This function relies on the general optimiser function \code{\link{optim}} for the minimisation of negative log likelihood function. For a continuous response this reduces to least squares estimation, which is carried out by minimising the following sums of squares
   
-  \deqn{\sum_{i=1}^N [w_i (y_i-f_i)]^2}
+  \deqn{\sum_{i=1}^N [(y_i-f_i) / w_i]^2}
   
-  where \eqn{y_i}, \eqn{f_i}, and \eqn{w_i} correspond to the observed value, expected value, and the weight respectively, for the ith observation (from 1 to \eqn{N}).
+  where \eqn{y_i}, \eqn{f_i}, and \eqn{w_i} correspond to the observed response value, expected mean value, and the weight, respectively, for the ith observation (from 1 to \eqn{N}).
+  
+  Response values are assumed to be mutually independent unless the argument \code{varcov} is specified (in which case the correlation structure is assumed to be completely known). 
 
-  For robust estimation MAD (median abslolute deviance) is used to estimate the residual variance.  
+  For robust estimation MAD (median absolute deviance) is used to estimate the residual variance.  
   
   Setting \code{lowerl} and/or \code{upperl} automatically invokes constrained optimisation.
   
   The columns of a data frame argument to \code{pmodels} are automatically converted into factors. 
   This does not happen if a list is specified.   
 
-  The control arguments are specified using the function \code{\link{drmc}}.
-  
+  Control arguments may be specified using the function \code{\link{drmc}}.
 }
 
 \value{

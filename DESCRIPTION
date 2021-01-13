@@ -1,15 +1,16 @@
 Package: drc
-Version: 3.1-0
-Date: 2020-09-29
+Version: 3.2-0
+Date: 2021-01-13
 Title: Analysis of Dose-Response Data
 Authors@R: c(person("Christian" , "Ritz", role = c("aut", "cre"), email="ritz@bioassay.dk"), 
              person("Jens", "Streibig", middle="C.", email="streibig@bioassay.dk", role = "aut"))
 Maintainer: Christian Ritz <ritz@bioassay.dk>
 Depends: R (>= 2.0.0), MASS, stats, drcData
-Imports: car, gtools, multcomp, plotrix, scales
+Imports: car, gtools, multcomp, plotrix, sandwich, scales
 LazyLoad: yes
 LazyData: yes
 Description: Analysis of dose-response data is made available through a suite of flexible and versatile model fitting and after-fitting functions.
 License: GPL-2
 URL: http://www.r-project.org, http://www.bioassay.dk
 RoxygenNote: 6.1.1
+BugReports: https://github.com/DoseResponse/drc/issues/
