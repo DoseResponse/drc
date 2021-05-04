@@ -55,10 +55,14 @@ normal = FALSE, normRef = 1, confidence.level = 0.95)
     ## Normalizing the response values
     if (normal)
     {
+        names(resp) <- seq(length(resp))
         respList <- split(resp, curveid)
-        resp <- unlist(mapply(normalizeLU, respList, 
-                              as.list(as.data.frame(getLU(object))), 
-                              normRef = normRef))            
+        
+        respNorm <- mapply(normalizeLU, respList, 
+                           as.list(as.data.frame(getLU(object)))[names(respList)], 
+                           normRef = normRef, SIMPLIFY = F)
+        
+        resp <- do.call(c, unname(respNorm))[as.character(seq(length(resp)))]
 #        respNew <- unlist(mapply(normalizeLU, respList, as.list(as.data.frame(getLU(object)))))    
 #        print(respNew)
 #        print(resp)
@@ -248,7 +252,18 @@ normal = FALSE, normRef = 1, confidence.level = 0.95)
 #        predictMat <- predict(object, interval = "confidence")[, 3:4]
 #        predictMat <- predict(object, interval = "confidence")[, c("Lower", "Upper")]
         predictMat <- predict(object, interval = "confidence",
-                              level = confidence.level)[, c("Lower", "Upper")]        
+                              level = confidence.level)[, c("Lower", "Upper")]
+        
+        if(normal) {
+          names(predictMat) <- seq(length(predictMat))
+          predictList <- split(predictMat, curveid)
+          predictMatListNorm <- mapply(normalizeLU, predictList, 
+                                as.list(as.data.frame(getLU(object))), 
+                                normRef = normRef, 
+                                SIMPLIFY = F)
+          predictMatNorm <- do.call(c, unname(predictMatListNorm))[as.character(seq(length(predictMat)))]
+          predictMat<- matrix(predictMatNorm, ncol = 2)
+        }
 #        print(predictMat)
     
         barFct <- function(plotPoints)
@@ -751,13 +766,13 @@ getLU <- function(object)
 {
     parmMat <- object$"parmMat"
 #    rownames(parmMat) <- object$"parNames"[[2]]
-
     fixedVal <- object$fct$fixed
     lenFV <- length(fixedVal)
 #    parmMatExt <- matrix(NA, length(fixedVal), ncol(parmMat))
     parmMatExt <- matrix(fixedVal, length(fixedVal), ncol(parmMat))
     parmMatExt[is.na(fixedVal), ] <- parmMat
 
+    colnames(parmMatExt) <- colnames(parmMat)
     parmMatExt
 }
 
