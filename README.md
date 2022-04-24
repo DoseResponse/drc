@@ -18,5 +18,5 @@ Installation
 ## first installing drcData
 devtools::install_github("DoseResponse/drcData")
 ## then installing the development version of drc
-devtools::install_github("DoseResponse/drc")
+devtools::install_github("ryandward/drc")
 ```
