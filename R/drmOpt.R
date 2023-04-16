@@ -14,6 +14,11 @@ matchCall)
     psVec <- abs(startVec)
     psVec[psVec < 1e-4] <- 1
 
+    # Set factr to the value of relTol if the method is L-BFGS-B
+    if (optMethod == "L-BFGS-B") {
+        factr <- relTol
+    }
+
     ## Derivatives are used
     {if (!is.null(opdfct1))
     {
@@ -21,7 +26,8 @@ matchCall)
         {
             nlsObj <- try(optim(startVec, opfct, opdfct1, hessian = hes, method = "L-BFGS-B", 
             lower = lowerLimits, upper = upperLimits, 
-            control = list(maxit = maxIt, reltol = relTol, parscale = psVec)), silent = silentVal)
+            control = list(maxit = maxIt, factr = factr, parscale = psVec)), silent = silentVal)
+
         } else {
             nlsObj <- try(optim(startVec, opfct, opdfct1, hessian = hes, method = optMethod, 
             control = list(maxit = maxIt, reltol = relTol, parscale = psVec)), silent = silentVal)
