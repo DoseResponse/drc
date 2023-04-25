@@ -39,7 +39,7 @@ importFrom(scales, alpha)
 #importFrom(stats, cooks.distance, hatvalues)
 #exportMethods(BIC)
 
-import(drcData)
+# import(drcData)
 importFrom("graphics", "abline", "axTicks", "axis", "lines", "par",
             "plot", "points", "polygon", "segments", "text")
 
