@@ -1,3 +1,12 @@
+generateOptimControl <- function(maxIt, relTol, parscale, traceVal, method) {
+  if (method == "L-BFGS-B") {
+    control <- list(maxit = maxIt, factr = relTol, parscale = parscale, trace = traceVal)
+  } else {
+    control <- list(maxit = maxIt, reltol = relTol, parscale = parscale, trace = traceVal)
+  }
+  return(control)
+}
+
 "drmOpt" <- 
 function(opfct, opdfct1, startVec, optMethod, constrained, warnVal, 
 upperLimits, lowerLimits, errorMessage, maxIt, relTol, opdfct2 = NULL, parmVec, traceVal, silentVal = TRUE,
@@ -21,7 +30,7 @@ matchCall)
         {
             nlsObj <- try(optim(startVec, opfct, opdfct1, hessian = hes, method = "L-BFGS-B", 
             lower = lowerLimits, upper = upperLimits, 
-            control = list(maxit = maxIt, reltol = relTol, parscale = psVec)), silent = silentVal)
+            control = generateOptimControl(maxIt, relTol, psVec, traceVal, "L-BFGS-B")), silent = silentVal)
         } else {
             nlsObj <- try(optim(startVec, opfct, opdfct1, hessian = hes, method = optMethod, 
             control = list(maxit = maxIt, reltol = relTol, parscale = psVec)), silent = silentVal)
@@ -54,7 +63,7 @@ matchCall)
 #            print(opfct(startVec))                    
             nlsObj <- try(optim(startVec, opfct, hessian = TRUE, method = "L-BFGS-B", 
             lower = lowerLimits, upper = upperLimits, 
-            control = list(maxit = maxIt, parscale = psVec, reltol = relTol, trace = traceVal)), silent = silentVal)
+            control = generateOptimControl(maxIt, relTol, psVec, traceVal, "L-BFGS-B")), silent = silentVal)
             # parscale is needed for the example in methionine.Rd
         } else {
 #            psVec <- abs(startVec)
