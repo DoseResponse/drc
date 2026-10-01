@@ -1,4 +1,4 @@
-"ED.lin" <- function(lmObject, respLev)
+"edlin" <- function(lmObject, respLev)
 {    
     parCoef <- coef(lmObject)
     lparco <- length(parCoef)

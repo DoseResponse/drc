@@ -13,10 +13,6 @@ Installation
 ------------
 
 ``` r
-## You can install drc from GitHub
-# install.packages("devtools")
-## first installing drcData
-devtools::install_github("DoseResponse/drcData")
-## then installing the development version of drc
-devtools::install_github("DoseResponse/drc")
+# You can install drc from GitHub by
+pak::pak("DoseResponse/drc")
 ```

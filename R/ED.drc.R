@@ -12,8 +12,7 @@ ED <- function (object, ...) UseMethod("ED", object)
                      display = TRUE, 
                      logBase = NULL, 
                      multcomp = FALSE, 
-                     intType = "confidence", ...)
-{
+                     intType = "confidence", ...) {
     interval <- match.arg(interval)
     reference <- match.arg(reference)
     type <- match.arg(type)

@@ -26,9 +26,9 @@ function(dose, resp, multCurves, startVec, weightsVec, doseScaling = 1)
 #        c( sum(log(choose(total, success))) - object$"fit"$"ofvalue", object$"sumList"$"df.residual" )
         
         c(
-        -object$"fit"$value + sum(log(gamma(resp+1))),
+        -object$"fit"$value - sum(log(gamma(resp+1))),
         object$"sumList"$"df.residual"
-        )  # adding scale constant
+        )  # subtracting scale constant
     }
     
        

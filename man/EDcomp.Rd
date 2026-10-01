@@ -85,10 +85,10 @@
   3rd edition (pp. 80--82).
 
   Kotz, S. and Johnson, N. L. (1983) \emph{Encyclopedia of Statistical Sciences Volume 3}, 
-  New York: Wiley \& Sons (pp. 86--87).
+  New York: Wiley and Sons (pp. 86--87).
   
   Ritz, C. and Cedergreen, N. and Jensen, J. E. and Streibig, J. C. (2006) 
-  Relative potency in nonsimilar dose-response curves, \emph{Weed Science}, \bold{54}, 407--412.
+  Relative potency in nonsimilar dose-response curves, \emph{Weed Science} \bold{54}, 407--412.
 }
 
 \author{Christian Ritz}
@@ -105,7 +105,7 @@
 
 \examples{
 
-spinach.LL.4 <- drm(SLOPE~DOSE, CURVE, data = spinach, fct = LL.4())
+spinach.LL.4 <- drm(SLOPE ~ DOSE, CURVE, data = spinach, fct = LL.4())
 
 EDcomp(spinach.LL.4, c(50,50))
 EDcomp(spinach.LL.4, c(10,50))
@@ -123,8 +123,7 @@ EDcomp(spinach.LL.4, c(10,50), reverse = TRUE)
 
 
 ## Relative potency of two herbicides
-m2 <- drm(DryMatter~Dose, Herbicide, 
-data = S.alba, fct = LL.3())
+m2 <- drm(DryMatter ~ Dose, Herbicide, data = S.alba, fct = LL.3())
 
 EDcomp(m2, c(50, 50))  
 EDcomp(m2, c(50, 50), interval = "delta")
@@ -133,8 +132,7 @@ EDcomp(m2, c(50, 50), interval = "fieller")
 ## Comparison based on an absolute
 ##  response level
 
-m3 <- drm(SLOPE~DOSE, CURVE,
-data = spinach, fct = LL.4())
+m3 <- drm(SLOPE ~ DOSE, CURVE, data = spinach, fct = LL.4())
 
 EDcomp(m3, c(0.5,0.5), compMatch = c(2,4), type = "absolute", interval = "fieller")
 
@@ -143,7 +141,7 @@ EDcomp(m3, c(55,80), compMatch = c(2,4))
 
 
 ## Relative potency transformed from log scale
-m4 <- drm(drymatter~log(dose), treatment, data=G.aparine[-c(1:40), ], 
+m4 <- drm(drymatter ~ log(dose), treatment, data=G.aparine[-c(1:40), ], 
 pmodels = data.frame(treatment,treatment,1,treatment), fct = LL2.4())
 
 EDcomp(m4, c(50,50), interval = "fls", logBase = exp(1))

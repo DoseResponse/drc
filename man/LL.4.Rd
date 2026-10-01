@@ -8,8 +8,8 @@
 \title{The four-parameter log-logistic function}
 
 \description{
-  'LL.4' and 'LL2.4' provide the four-parameter log-logistic function, self starter function, names of the parameters and, optionally,
-  first and second derivatives for a faster estimation.  
+  'LL.4' and 'LL2.4' provide the four-parameter log-logistic function, self starter function, names of the parameters and, 
+  optionally, first and second derivatives for a faster estimation.  
 }
 
 \usage{
@@ -41,7 +41,11 @@
 }
 
 \references{
-   Seber, G. A. F. and Wild, C. J (1989) \emph{Nonlinear Regression}, New York: Wiley \& Sons (p. 330).
+   Seber, G. A. F. and Wild, C. J (1989) \emph{Nonlinear Regression}, New York: Wiley and Sons (p. 330).
+
+  Ritz, C (2010) 
+  Towards a unified approach to dose-response modeling in ecotoxicology, 
+  \emph{Environ Toxicol Chem} \bold{29}, 220--229, https://doi.org/10.1002/etc.7
 }
 
 \author{Christian Ritz and Jens C. Streibig}
@@ -52,9 +56,8 @@
 
 \examples{
 
-spinach.m1 <- drm(SLOPE~DOSE, CURVE, data = spinach, fct = LL.4())
+spinach.m1 <- drm(SLOPE ~ DOSE, CURVE, data = spinach, fct = LL.4())
 spinach.m1
-
 
 }
 

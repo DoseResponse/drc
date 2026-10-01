@@ -10,9 +10,9 @@
 }
 
 \usage{
-  bread.drc(x, ...)
-  
-  estfun.drc(x, ...)
+  \method{bread}{drc}(x, ...)
+
+  \method{estfun}{drc}(x, ...)
 }
 
 \arguments{
@@ -25,7 +25,7 @@
 }
 
 \value{
-  The unscaled hessian is returned by \code{bread.drc}, whereas \code{estfun.drc} 
+  The unscaled hessian is returned by \code{bread}, whereas \code{estfun} 
   returns the estimating function evaluated at the data and the parameter estimates.
   
   By default no clustering is assumed, corresponding to robust standard errors under independence.
@@ -35,7 +35,7 @@
 
 \references{
   Zeileis, A. (2006) Object-oriented Computation of Sandwich Estimators,
-  \emph{J. Statist. Software}, \bold{16}, Issue 9.
+  \emph{J. Statist. Software} \bold{16}, Issue 9.
 }
 
 \author{Christian Ritz}

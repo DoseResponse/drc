@@ -40,8 +40,8 @@
   \bold{73}, 615--623.
   
   McCullagh, P. and Nelder, J. A. (1989)
-  emph{Generalized Linear Models}, 
-  Second edition, Chapman \& Hall/CRC.  
+  \emph{Generalized Linear Models}, 
+  Second edition, Chapman and Hall/CRC.  
 }
 
 \author{

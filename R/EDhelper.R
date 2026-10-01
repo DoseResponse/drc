@@ -1,25 +1,24 @@
 "EDhelper" <- function(parmVec, respl, reference, typeCalc, cond = TRUE)
+# cond = TRUE for log-logistic and Weibull type 1 models
+# cond = FALSE for log-normal and Weibull type 2 models
 {
-    ## Works for log-logistic type dose-response models
-  
     ## Converting absolute to relative
-    if (typeCalc == "absolute") 
-    {
+    if (typeCalc == "absolute") {
         p <- 100 * ((parmVec[3] - respl) / (parmVec[3] - parmVec[2]))
-#        typeCalc <- "relative"
+        if (p < 0 || p > 100) {
+            warning("The specified response value is outside the range of the model fit")
+        }
     } else {  
         p <- respl
     }
-    ## Swapping p for an increasing curve
-    if (cond)
-    {
-        if ((typeCalc == "relative") && (parmVec[1] < 0) && (reference == "control"))
-        {
+
+    ## Swapping p for an increasing fitted dose-response curve
+    if (cond) {
+        if ((typeCalc == "relative") && (parmVec[1] < 0) && (reference == "control")) {
             p <- 100 - p
         }
     } else {
-        if ((typeCalc == "relative") && (reference == "control"))
-        {
+        if ((typeCalc == "relative") && (parmVec[1] > 0) && (reference == "control")) {
             p <- 100 - p
         }
     }
@@ -30,14 +29,11 @@
 "EDhelper2" <- function(parmVec, respl, reference, typeCalc, increasing)
 {
   ## Converting absolute to relative
-  if (typeCalc == "absolute") 
-  {
+  if (typeCalc == "absolute") {
     p <- 100 * (1 - (parmVec[3] - respl) / (parmVec[3] - parmVec[2]))
 
-  } else {  
-
+  } else {
     if (increasing) {p <- respl} else {p <- 100 - respl}
   }
-
   p
 }

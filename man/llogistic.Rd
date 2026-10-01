@@ -49,7 +49,7 @@
   
   is fitted using \code{\link{llogistic2}}.
   
-  Sometimes the log-logistic models are also called Hill models.
+  Sometimes the log-logistic models are also called (sigmoidal) Hill models.
 }
 
 \value{
@@ -61,19 +61,19 @@
   Finney, D. J. (1979) Bioassay and the Practise of Statistical Inference, 
   \emph{Int. Statist. Rev.}, \bold{47}, 1--12.
 
-  Seber, G. A. F. and Wild, C. J. (1989) \emph{Nonlinear Regression}, New York: Wiley \& Sons (p. 330).
+  Seber, G. A. F. and Wild, C. J. (1989) \emph{Nonlinear Regression}, New York: Wiley and Sons (p. 330).
 }
 
 \author{Christian Ritz}
 
 \note{
-  The functions are for use with the function \code{\link{drm}}.
+  These built-in model functions are for use with the function \code{\link{drm}}.
 }
 
 \seealso{
   For convenience several special cases are available: 
   \code{\link{LL.2}}, \code{\link{LL.3}}, \code{\link{LL.4}} and \code{\link{LL.5}}. 
-  Examples are provided in the help pages for these functions.
+  Examples are provided in the help pages for these model functions.
 }
 
 %\examples{}

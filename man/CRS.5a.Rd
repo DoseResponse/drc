@@ -21,10 +21,10 @@
 
 \description{
   'CRS.5a', 'CRS.5b' and 'CRS.5c' provide the Cedergreen-Ritz-Streibig modified log-logistic model for describing
-  (inverse u-shaped or j-shaped) hormesis.
+  (inverse U-shaped or J-shaped) hormesis.
   
   'UCRS.5a', 'UCRS.5b' and 'UCRS.5c' provide the Cedergreen-Ritz-Streibig modified log-logistic model for
-  describing u-shaped hormesis. 
+  describing U-shaped hormesis. 
 }
 
 \usage{
@@ -57,8 +57,8 @@
     This parameter should be positive in order for the model to make sense.
   }  
   
-  The model function for u-shaped hormetic patterns is
-  \deqn{ f(x) = c + d - \frac{d-c+f \exp(-1/x^{\alpha})}{1+\exp(b(\log(x)-\log(e)))}}
+  The model function for U-shaped hormetic patterns is
+  \deqn{ f(x) = d - \frac{d-c+f \exp(-1/x^{\alpha})}{1+\exp(b(\log(x)-\log(e)))}}
   
   This model also simplifies to the four-parameter log-logistic model in case \eqn{f=0} (in a slightly
   different parameterization as compared to the one used in \code{\link{LL.4}}).
@@ -88,15 +88,15 @@
 \examples{
 
 ## Modified logistic model
-lettuce.m1 <- drm(lettuce[,c(2,1)], fct=CRS.5a())
+lettuce.m1 <- drm(lettuce[,c(2,1)], fct = CRS.5a())
 summary(lettuce.m1)
 ED(lettuce.m1, c(50))
 
-lettuce.m2 <- drm(lettuce[,c(2,1)], fct=CRS.5b())
+lettuce.m2 <- drm(lettuce[,c(2,1)], fct = CRS.5b())
 summary(lettuce.m2)
 ED(lettuce.m2, c(50))
 
-lettuce.m3 <- drm(lettuce[,c(2,1)], fct=CRS.5c())
+lettuce.m3 <- drm(lettuce[,c(2,1)], fct = CRS.5c())
 summary(lettuce.m3)
 ED(lettuce.m3, c(50))
 

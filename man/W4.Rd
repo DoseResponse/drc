@@ -21,7 +21,7 @@
 \arguments{
   \item{fixed}{numeric vector. Specifies which parameters are fixed and at what value they are fixed. 
   NAs for parameter that are not fixed.}
-  \item{names}{a vector of character strings giving the names of the parameters. The default is reasonable.}
+  \item{names}{a vector of character strings giving the names of the parameters.}
   \item{...}{additional arguments to be passed from the convenience functions.}   
 }
 
@@ -34,11 +34,11 @@
 }
 
 \references{
-  Seber, G. A. F. and Wild, C. J (1989) \emph{Nonlinear Regression}, New York: Wiley \& Sons (pp. 330--331).
+  Seber, G. A. F. and Wild, C. J (1989) \emph{Nonlinear Regression}, New York: Wiley and Sons (pp. 330--331).
   
-  Ritz, C (2009)
-  Towards a unified approach to dose-response modeling in ecotoxicology
-  \emph{To appear in Environ Toxicol Chem}.
+  Ritz, C (2010) 
+  Towards a unified approach to dose-response modeling in ecotoxicology, 
+  \emph{Environ Toxicol Chem} \bold{29}, 220--229, https://doi.org/10.1002/etc.7
 }
 
 \author{Christian Ritz}

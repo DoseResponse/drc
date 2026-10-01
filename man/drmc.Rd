@@ -28,7 +28,7 @@
     Default is FALSE (not removed).}
   \item{useD}{logical. If TRUE derivatives are used for estimation (if available).}  
   \item{trace}{logical. If TRUE the trace from \code{\link{optim}} is displayed.}  
-  \item{otrace}{logical. If TRUE the output from \code{\link{optim}} is displayed.}  
+  \item{otrace}{logical. If TRUE any error message from the \code{\link{optim}} call is suppressed.}  
   \item{warnVal}{numeric. If equal to 0 then the warnings are stored and displayed at the end. 
     See under 'warn' in \code{\link{options}}. The default results in suppression of warnings.}
   \item{dscaleThres}{numeric value specifying the threshold for dose scaling.}
@@ -37,7 +37,7 @@
 }
 
 \value{
-  A list with 8 components, one for each of the above arguments.
+  A list with elements corresponding to each of the above arguments.
 }
 
 \author{Christian Ritz}
@@ -56,8 +56,7 @@ drmc()
 ### Using 'method' argument
 model1 <- drm(ryegrass, fct = LL.4())
 
-model2 <- drm(ryegrass, fct = LL.4(),
-control = drmc(method = "Nelder-Mead"))
+model2 <- drm(ryegrass, fct = LL.4(), control = drmc(method = "Nelder-Mead"))
 
 }
 \keyword{models}

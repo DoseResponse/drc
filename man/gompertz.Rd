@@ -52,7 +52,7 @@
 }
 
 \references{
-  Seber, G. A. F. and Wild, C. J. (1989) \emph{Nonlinear Regression}, New York: Wiley \& Sons (p. 331).
+  Seber, G. A. F. and Wild, C. J. (1989) \emph{Nonlinear Regression}, New York: Wiley and Sons (p. 331).
 }
 
 \author{Christian Ritz}

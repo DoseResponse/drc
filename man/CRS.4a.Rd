@@ -40,15 +40,16 @@
 
 \details{
   The model is given by the expression
+  
   \deqn{ f(x) = 0 + \frac{d-0+f \exp(-1/x)}{1+\exp(b(\log(x)-\log(e)))}}
   which is a five-parameter model.
   
   It is a modification of the four-parameter logistic curve to take hormesis into account.
 
-  The u-shaped model is given by the expression
-  \deqn{ f(x) = 0 + d - \frac{d-0+f \exp(-1/x^{\alpha})}{1+\exp(b(\log(x)-\log(e)))}}
+  The U-shaped model is given by the expression
+  \deqn{ f(x) = d - \frac{d-0+f \exp(-1/x^{\alpha})}{1+\exp(b(\log(x)-\log(e)))}}
   
-  The a,b,c models are obtained by setting alpha equal to 1, 0.5 and 0.25, respectively.    
+  The a, b, and c models are obtained by setting alpha equal to 1, 0.5 and 0.25, respectively.    
 }
 
 \value{
@@ -72,7 +73,7 @@
 \examples{
 
 ## Fitting modified logistic models
-lettuce.crsm1 <- drm(lettuce[,c(2,1)], fct=CRS.4a())
+lettuce.crsm1 <- drm(lettuce[,c(2,1)], fct = CRS.4a())
 summary(lettuce.crsm1)
 ED(lettuce.crsm1, c(50))
 
@@ -80,11 +81,11 @@ ED(lettuce.crsm1, c(50))
 ## is the reference in order to get ED10 and ED90 right
 ED(lettuce.crsm1, c(10, 50, 90), reference = "upper")
 
-lettuce.crsm2 <- drm(lettuce[,c(2,1)], fct=CRS.4b())
+lettuce.crsm2 <- drm(lettuce[,c(2,1)], fct = CRS.4b())
 summary(lettuce.crsm2)
 ED(lettuce.crsm2, c(50))
 
-lettuce.crsm3 <- drm(lettuce[,c(2,1)], fct=CRS.4c())
+lettuce.crsm3 <- drm(lettuce[,c(2,1)], fct = CRS.4c())
 summary(lettuce.crsm3)
 ED(lettuce.crsm3, c(50))
 

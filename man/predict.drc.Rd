@@ -13,7 +13,7 @@
 
   \method{predict}{drc}(object, newdata, se.fit = FALSE, 
   interval = c("none", "confidence", "prediction", "ssd"), 
-  level = 0.95, na.action = na.pass, od = FALSE, vcov. = vcov, 
+  level = 0.95, na.action = na.pass, vcov. = vcov, 
   ssdSEfct = NULL, constrain = TRUE, checkND = TRUE, ...)
 
 %  \method{predict}{mrdrc}(object, newdata, se.fit = FALSE, 
@@ -30,7 +30,6 @@
   \item{level}{Tolerance/confidence level.}
   \item{na.action}{function determining what should be done with missing values in 'newdata'. 
   The default is to predict 'NA'.}
-  \item{od}{logical. If TRUE adjustment for over-dispersion is used.}
   \item{vcov.}{function providing the variance-covariance matrix. \code{\link{vcov}} is the default, 
   but \code{sandwich} is also an option (for obtaining robust standard errors).}  
   \item{ssdSEfct}{specifies the function for interpolating standard errors between observed standard errors.
@@ -70,17 +69,17 @@
 \examples{
 
 ## Fitting a model
-spinach.model1 <- drm(SLOPE~DOSE, CURVE, data = spinach, fct = LL.4())
+spinach.model1 <- drm(SLOPE ~ DOSE, CURVE, data = spinach, fct = LL.4())
 
 ## Predicting values a dose=2 (with standard errors)
-predict(spinach.model1, data.frame(dose=2, CURVE=c("1", "2", "3")), se.fit = TRUE)
+predict(spinach.model1, data.frame(dose = 2, CURVE = c("1", "2", "3")), se.fit = TRUE)
 
 ## Getting confidence intervals
-predict(spinach.model1, data.frame(dose=2, CURVE=c("1", "2", "3")), 
+predict(spinach.model1, data.frame(dose = 2, CURVE = c("1", "2", "3")), 
 interval = "confidence")
 
 ## Getting prediction intervals
-predict(spinach.model1, data.frame(dose=2, CURVE=c("1", "2", "3")), 
+predict(spinach.model1, data.frame(dose = 2, CURVE = c("1", "2", "3")), 
 interval = "prediction")
 
 }

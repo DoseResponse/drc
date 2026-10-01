@@ -79,13 +79,14 @@ if (FALSE)
         return(startVal[notFixed])
     }
 }    
-    if (!is.null(ssfct))
-    {
+    if (!is.null(ssfct)) {
         ssfct <- ssfct  # in case it is explicitly provided
     } else {
         ssfct <- weibull2.ssf(method, fixed)
     }       
-
+    ## Shorter version:
+    ## if (is.null(ssfct)) {ssfct <- weibull2.ssf(method, fixed)}
+    ##   in case a self starter is not explicitly provided
    
     ## Defining names
     w2.names <- names[notFixed]
@@ -155,37 +156,55 @@ if (FALSE)
 #    
 #        return(list(EDp, EDder[notFixed]))
 #    }
-    edfct <- function(parm, p, reference, type, ...)
+    edfct <- function(parm, respl, reference, type, ...)
     {   
         parmVec[notFixed] <- parm
 
-        p <- absToRel(parmVec, p, type)
+        ## Converting absolute to relative if needed
+        p <- EDhelper(parmVec, respl, reference, type, cond = FALSE)  # cond = FALSE for Weibull type 2 models
+    
+        tempVal <- log(-log(p / 100))
+        EDp <- exp(tempVal/parmVec[1] + log(parmVec[4]))
 
-        ## Reversing p
-#        if (identical(type, "absolute"))
-#        {
-#            p <- 100 - p
-#            type <- "relative"
-#        }
-        
-        if (identical(type, "absolute") && (parmVec[1] > 0) && (reference == "control"))
-        {
-            p <- 100 - p
+        EDder <- EDp * c(-tempVal / (parmVec[1]^2), 0, 0, 1 / parmVec[4])
+    
+        EDderxFct0 <- deriv(~ exp(log(-log((p - c)/(d - c))) / b + log(e)), "p", function(p, b, c, d, e){})
+        EDderxFct <- function(p, parm) {
+            EDderxTemp <- as.vector(attr(EDderxFct0(p, parm[1], parm[2], parm[3], parm[4]), "gradient"))
+            EDderxTemp * c(0, (p - parm[3]) / ((parm[3] - parm[2])^2), (parm[2] - p) / ((parm[3] - parm[2])^2), 0)
+            # based on the chain rule
         }
-               
-#        if ( (parmVec[1] > 0) && (reference == "control") ) 
+        if (type == "absolute") {EDder <- EDder + EDderxFct(respl, parmVec)}
+
+        return(list(EDp, EDder[notFixed]))
+
+#        p <- absToRel(parmVec, p, type)
+#
+#        ## Reversing p
+##        if (identical(type, "absolute"))
+##        {
+##            p <- 100 - p
+##            type <- "relative"
+##        }
+#        
+#        if (identical(type, "absolute") && (parmVec[1] > 0) && (reference == "control"))
 #        {
 #            p <- 100 - p
-#            reference <- "upper"  # to avoid resetting of p in weibull1() called below    
 #        }
-#        if ( (parmVec[1] < 0) && (reference == "control") ) 
-#        {
-#            p <- 100 - p
-#        }
+#               
+##        if ( (parmVec[1] > 0) && (reference == "control") ) 
+##        {
+##            p <- 100 - p
+##            reference <- "upper"  # to avoid resetting of p in weibull1() called below    
+##        }
+##        if ( (parmVec[1] < 0) && (reference == "control") ) 
+##        {
+##            p <- 100 - p
+##        }
     
                 
-#        weibull1(fixed, names)$edfct(parm, 100 - p, reference, type, ...) 
-        weibull1(fixed, names)$edfct(parm, p, reference, "relative", ...) 
+##        weibull1(fixed, names)$edfct(parm, 100 - p, reference, type, ...) 
+#        weibull1(fixed, names)$edfct(parm, p, reference, "relative", ...) 
     }
 
 

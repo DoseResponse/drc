@@ -6,7 +6,7 @@ function(object, ..., details = TRUE, test = NULL)
         return(anova.drclist(object, ..., details = details, test = test))
     } else {
 #        obj1 <- object
-        stop("Use the function modelFit()")
+        stop("Please use the function modelFit() for lack-of-fit tests")
 #        modelFit(object, test = test)
     }
 

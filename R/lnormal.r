@@ -164,37 +164,40 @@ fctName, fctText, loge = FALSE)
     edfct <- function(parm, respl, reference, type, ...)
     {
         parmVec[notFixed] <- parm
-#        if (type == "absolute") 
-#        {
-#            p <- 100*((parmVec[3] - respl)/(parmVec[3] - parmVec[2]))
-#        } else {  
-#            p <- respl
-#        }
-#        if ( (parmVec[1] < 0) && (reference == "control") )
+
+        ## Converting absolute to relative if needed
+        p <- EDhelper(parmVec, respl, reference, type, cond = FALSE)
+        pProp <- 1 - p / 100
+
+##        if (type == "absolute") 
+##        {
+##            p <- 100*((parmVec[3] - respl)/(parmVec[3] - parmVec[2]))
+##        } else {  
+##            p <- respl
+##        }
+##        if ( (parmVec[1] < 0) && (reference == "control") )
+##        {
+##            p <- 100 - p
+##        }
+#        p <- absToRel(parmVec, respl, type)
+#    
+#        ## Reversing p
+#        if (identical(type, "absolute"))
 #        {
 #            p <- 100 - p
 #        }
-        p <- absToRel(parmVec, respl, type)
-    
-        ## Reversing p
-        if (identical(type, "absolute"))
-        {
-            p <- 100 - p
-        }
-        if (identical(type, "relative") && (parmVec[1] < 0) && (reference == "control"))
-        {
-            p <- 100 - p
-        }
-    
-        pProp <- 1 - (100-p) / 100
-#        EDp <- parmVec[4] * exp(qnorm(1-p) / parmVec[1])
+#        if (identical(type, "relative") && (parmVec[1] < 0) && (reference == "control"))
+#        {
+#            p <- 100 - p
+#        }
+#    
+#        pProp <- 1 - (100-p) / 100
+##        EDp <- parmVec[4] * exp(qnorm(1-p) / parmVec[1])
 
-        if (!loge)
-        {
+        if (!loge) {
             ## deriv(~e * exp(22 / b), c("b", "c", "d", "e"), function(b,c,d,e){})
             ## using "22" instead of qnorm(pProp)
-            EDfct <- function (b, c, d, e) 
-            {
+            EDfct <- function (b, c, d, e) {
                 .expr2 <- exp(qnorm(pProp) / b)
                 .value <- e * .expr2
                 .grad <- array(0, c(length(.value), 4L), list(NULL, c("b", "c", "d", "e")))
@@ -205,6 +208,9 @@ fctName, fctText, loge = FALSE)
                 attr(.value, "gradient") <- .grad
                 .value
             }
+
+            #EDderxFct0 <- deriv(~ e * exp(qnorm(1-p) / b), "p", function(p, b, c, d, e){})
+            
         } else {
 #
 #            ## Calculating ED on the original scale
@@ -239,8 +245,18 @@ fctName, fctText, loge = FALSE)
                 .value
             }
         }
+
         EDp <- EDfct(parmVec[1], parmVec[2], parmVec[3], parmVec[4])
-        EDder <- attr(EDfct(parmVec[1], parmVec[2], parmVec[3], parmVec[4]), "gradient")
+        EDder <- attr(EDp, "gradient")
+
+        EDderxFct0 <- function(p, b, c, d, e){EDp / (-dnorm(qnorm((d-p)/(d-c))) * b * (d - c))}
+        EDderxFct <- function(p, parm) {
+            EDderxTemp <- EDderxFct0(p, parm[1], parm[2], parm[3], parm[4])
+            EDderxTemp * c(0, (p - parm[3]) / ((parm[3] - parm[2])^2), (parm[2] - p) / ((parm[3] - parm[2])^2), 0)
+            # based on the chain rule
+        }
+        if (type == "absolute") {EDder <- EDder + EDderxFct(respl, parmVec)}
+
         return(list(EDp, EDder[notFixed]))
     }
 

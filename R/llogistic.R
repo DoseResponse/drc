@@ -206,15 +206,24 @@ if (FALSE) {  ## will work once plotFct does not depend on drcFct
 #        {
 #            p <- 100 - p
 #        }
+        ## Converting absolute to relative if needed
         p <- EDhelper(parmVec, respl, reference, type)
     
-        tempVal <- log((100-p)/100)
+        tempVal <- log(1 - p/100)
         EDp <- parmVec[4]*(exp(-tempVal/parmVec[5])-1)^(1/parmVec[1])
 
-        EDder <- 
-        EDp*c(-log(exp(-tempVal/parmVec[5])-1)/(parmVec[1]^2), 
-        0, 0, 1/parmVec[4], 
+        EDder <- EDp * c(-log(exp(-tempVal/parmVec[5])-1)/(parmVec[1]^2), 
+                         0, 0, 1 / parmVec[4], 
         exp(-tempVal/parmVec[5])*tempVal/(parmVec[5]^2)*(1/parmVec[1])*((exp(-tempVal/parmVec[5])-1)^(-1)))
+
+        EDderxFct0 <- deriv(~e*(exp(-log((d - p)/(d - c))/f)-1)^(1/b), "p", function(p,b,c,d,e,f){})
+        EDderxFct <- function(p, parm) {
+            EDderxTemp <- as.vector(attr(EDderxFct0(p, parm[1], parm[2], parm[3], parm[4], parm[5]), "gradient"))
+            EDderxTemp * c(0, (p - parm[3]) / ((parm[3] - parm[2])^2), (parm[2] - p) / ((parm[3] - parm[2])^2), 0, 0)
+            # based on the chain rule
+        }
+        if (type == "absolute") {EDder <- EDder + EDderxFct(respl, parmVec)}
+        #EDderx <- EDderxFct(respl, parmVec)
 
 # The next lines are not needed because the lower/upper limits are independent of the parameters
 # governing the ED values     

@@ -1,5 +1,41 @@
 ## Changes in 'drc' 
 
+2026-09-23: In cedergreen.R, ucedergreen.R : Updated calculation of first derivative (thanks to Chris Sweeney for input). 
+Partly also updated arguments and output.
+
+2026-09-23: In lnormal.R: Added functionality to capture variation in c/d in case type = "absolute"
+is specified. 
+
+2026-09-23: In cedergreen.Rd, CRS.4a.RD, CRS.5a.Rd: Typo in formulas corrected. New data examples and reference added.
+
+2026-09-22: In drmc.Rd: Description of the argument "otrace" improved.
+
+2026-09-22: in anova.drc.R: Stop text updated, referring to modelFit().
+
+2026-09-22: In EDhelper.R: Warning text included.
+
+2026-09-22: In llogistic.R, weibull1.r, weibull2.r: Added functionality to capture variation in c/d in case type = "absolute"
+is specified.
+
+2026-09-22: In bread.drc.Rd: Updated methods description.
+
+2026-09-22: In algae.Rd, deguelin.Rd, EDcomp.Rd, gompertz.Rd, LL.4.Rd, llogistic.Rd, modelFit.Rd, W1.4.Rd, weibull1.Rd: "and" used in references 
+and some descriptions updated.
+
+2026-09-22: In CITATION: Updated using bibentry.
+
+2026-09-21: In test3.r: Names argument updated. r->R.
+
+2026-09-21: IN DESCRIPTION: Updated contributors and e-mail addresses. 
+
+2026-09-21: In hatvalues.drc.Rd: Typo fixed and "and" used in reference.
+
+2026-09-21: In anova.drc.Rd: Description has been updated with reference to modelFit().
+
+2026-09-21: In predict.R: Code has been improved. Argument "od" has been omitted. Also in the corresponding help file.
+
+2026-09-21: In drm.R: The returned indexMat in drm() is always a matrix.
+
 2017-12-19: Updating the event-time part of "drc", in particular in drm() (improved code provided by Andrea Onofri).
 
 2017-09-29: The argument checkND has been added to the predict method. It allows switching off comparing names of variables
@@ -44,7 +80,7 @@ Calculation of the log likelihood for binomial data has updated and improved.
 
 2015-08-07: Help page for EDcomp() updated.
 
-2015-07-30: Robust estimation is working again (ater reports from Kathy Mutambanengwe, Sten Ilmjärv, and Corina Dueñas Roca).
+2015-07-30: Robust estimation is working again (ater reports from Kathy Mutambanengwe, Sten Ilmjï¿½rv, and Corina Dueï¿½as Roca).
 
 2015-04-14: Minor labelling issue in the plot method resolved (with help from Bert Oosthuyse). 
 
@@ -114,7 +150,7 @@ was applied.
 
 2012-11-19: Small bug in drm() related to starting values for event-time models resolved. 
 
-2012-10-22: hatvalues and cooks.distance methods have been added (after a question from Sunniva Förster). 
+2012-10-22: hatvalues and cooks.distance methods have been added (after a question from Sunniva Fï¿½rster). 
 noEffect() function included for testing the dose-response model against a simpler model with no dose effect 
 (after a suggestion by Ryan Hechinger).
 
@@ -160,7 +196,7 @@ noEffect() function included for testing the dose-response model against a simpl
 
 2011-10-27: Help page of mixture() has been slightly improved. 
 
-2011-09-20: Problem with logDose argument in drm() and subsequent plotting has been solved (reported by Ralf Schäfer). 
+2011-09-20: Problem with logDose argument in drm() and subsequent plotting has been solved (reported by Ralf Schï¿½fer). 
 
 2011-09-02: Constrained estimation uses the actual limits provided (bug report by Andrew Kniss).
 
@@ -175,7 +211,7 @@ benn added.
 
 2011-07-01: Small update in the calculation of confidence intervals (after a suggestion from Scott Ray). 
 
-2011-06-24: The model function W2x.4() has been added (after a suggestion by Cécile Cornou).
+2011-06-24: The model function W2x.4() has been added (after a suggestion by Cï¿½cile Cornou).
 
 2011-05-24: Small improvement in the calculation of ED value for the log-normal and Weibull type 2 models. 
 "display" and "type" arguments have been added to maED(). 
@@ -191,7 +227,7 @@ benn added.
 2011-04-09: multdrc() has been completely removed. 
 
 2011-04-04: The model function weibull2x() (a model including a sort of "lag time" parameter) 
-has been added (after a suggestion by Cécile Cornou).
+has been added (after a suggestion by Cï¿½cile Cornou).
 
 2011-03-23: A small bug in ED() has been fixed (after a report from Nathan Pace).
 
@@ -240,7 +276,7 @@ involving several curves (after a suggestion from Andre Kleensang).
 2010-04-23: Minor bug in the predict method has been fixed. This means that type="bars" in the plot method now works again 
 (after a bug report by Andy Robinson). 
 
-2010-04-16: The help for NEC() has been improved (after a question from Inés González). 
+2010-04-16: The help for NEC() has been improved (after a question from Inï¿½s Gonzï¿½lez). 
 
 2010-04-15: The comped() has been re-introduced (after suggestion from Jochen Zubrod). 
 

@@ -1,13 +1,10 @@
-citHeader("To cite the package 'drc' in publications:")
-
-citEntry(entry = "Book",
+bibentry(bibtype = "Book",
          title = "Dose-Response Analysis Using R",
-         author = personList(as.person("C. Ritz"), as.person("S. M. Jensen"), as.person("D. Gerhard"), as.person("J. C. Streibig")),
-         publisher = "CRC Press",
-         year = 2019,
-
-         textVersion =
-         paste("Ritz, C., Jensen, S. M., Gerhard, D., Streibig, J. C. (2019)",
-               "Dose-Response Analysis Using R",
-               "CRC Press")
-)
+         author = c(person("Christian", "Ritz"),
+                    person(c("Signe", "M."), "Jensen"),
+                    person("Daniel", "Gerhard"),
+                    person(c("Jens", "C."), "Streibig")),
+         year = "2019",
+         publisher = "Chapman and Hall/CRC", address = "New York",
+         isbn = "9781315270098",
+         doi = "10.1201/b21966")

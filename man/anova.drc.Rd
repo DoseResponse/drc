@@ -23,11 +23,11 @@
 }
 
 \details{
-  Specifying only a single object gives a test for lack-of-fit, comparing the non-linear regression
-  model to a more general one-way or two-way ANOVA model.
+  If a single object is specified a message is suggesting to use the function \code{\link{modelFit}} for test of lack-of-fit, 
+  comparing the dose-response model to a more general one-way or two-way ANOVA model.
   
-  If two objects are specified a test for reduction from the larger to the smaller model is given. (This only makes statistical 
-  sense if the models are nested, that is: one model is a submodel of the other model.)
+  If two objects are specified a test for reduction from the larger (more general) model to the smaller, reduced 
+  model is given. This only makes sense if the models are nested: the reduced model is a submodel of the larger model.
 }
 
 \value{
@@ -37,25 +37,28 @@
 \references{
   Bates, D. M. and Watts, D. G. (1988) 
   \emph{Nonlinear Regression Analysis and Its Applications}, 
-  New York: Wiley \& Sons (pp. 103--104)
+  New York: Wiley and Sons (pp. 103--104)
 } 
 
 \author{Christian Ritz}
 
 \seealso{
-  For comparison of nested or non-nested model the function \code{\link{mselect}}can also be used.
+  For comparison of nested or non-nested model the function \code{\link{mselect}} can also be used.
   
   The function \code{\link{anova.lm}} for linear models.
 }
 
 \examples{
 
-## Comparing a Gompertz three- and four-parameter models using an F test
+## Comparing a four-parameter Weibull type 1 model 
+##  to a reduced three-parameter Weibull type 1 using an F test
 ryegrass.m1 <- drm(rootl ~ conc, data = ryegrass, fct = W1.4())
 ryegrass.m2 <- drm(rootl ~ conc, data = ryegrass, fct = W1.3())
-anova(ryegrass.m2, ryegrass.m1)  # reduction to 'W1.3' not possible (highly significant)   
+anova(ryegrass.m2, ryegrass.m1)  
+# reduction to 'W1.3' not possible (highly significant)   
 
-anova(ryegrass.m2, ryegrass.m1, details = FALSE)  # without details
+anova(ryegrass.m2, ryegrass.m1, details = FALSE)  
+# not showing details
 
 }
 \keyword{models}

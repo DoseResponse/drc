@@ -5,7 +5,7 @@
 \title{Assessing the model fit}
 
 \description{
-  Checking the fit of dose-response model by means of formal significance tests or graphical procedures.
+  Assessing the fit of a dose-response model by means of formal significance tests.
 }
 
 \usage{
@@ -23,7 +23,8 @@
   (Bates and Watts, 1988). The test compares the dose-response model to a more general ANOVA model 
   using an approximate F-test. For quantal data the crude goodness-of-fit test based on Pearson's statistic is used. 
   
-  None of these tests are very powerful. A significant test result is more alarming than a non-significant one. 
+  None of these tests are very powerful. A graphical assessment of the model fit is therefore recommended in 
+  addition to these formal significance tests. 
 }
 
 \value{
@@ -33,7 +34,7 @@
 \references{
   Bates, D. M. and Watts, D. G. (1988) 
   \emph{Nonlinear Regression Analysis and Its Applications}, 
-  New York: Wiley \& Sons (pp. 103--104).
+  New York: Wiley and Sons (pp. 103--104).
 }
 
 \author{Christian Ritz}

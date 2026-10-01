@@ -133,7 +133,8 @@ if (FALSE)
 #    }
     
     ## Specifying the derivatives    
-    deriv1 <- function(dose, parm)
+    deriv1OLD <- function(dose, parm)
+    # not used anymore
     {
         parmMat <- matrix(parmVec, nrow(parm), numParm, byrow=TRUE)
         parmMat[, notFixed] <- parm
@@ -149,6 +150,35 @@ if (FALSE)
                1/t3, 
                t1*t2*(parmMat[, 1]/parmMat[, 4])*t4, 
                t0/t3 )[, notFixed]
+    }
+
+    deriv1 <- function(dose, parm) {
+    
+        # Obtaining the derivatives
+        deriv1FctTemp <- function(dose, pmRow)
+        {
+            deriv1Fct <- deriv(~c+(d-c+f*exp(-1/x^alpha))/(1+(x/e)^b), c("b", "c", "d", "e", "f"), 
+                                function(x, b, c, d, e, f){})
+            dVal <- attr(deriv1Fct(dose, pmRow[1], pmRow[2], pmRow[3], pmRow[4], pmRow[5]), "gradient")
+            dVal[is.na(dVal)] <- 0
+            # NaN's for b and e are due to a power-log term not being well-defined; it should return 0
+            dVal
+        }
+
+        #notFixed <- rep(TRUE, 5)
+        #parmVec <- c(NA, NA, NA, NA, NA)
+        #numParm <- 5
+
+        nrpar <- nrow(parm)
+        parmMat <- matrix(parmVec, nrow(parm), numParm, byrow = TRUE)
+        parmMat[, notFixed] <- parm
+
+        derivMat <- matrix(NA, nrpar, numParm)
+        for (i in 1:nrpar)
+        {
+            derivMat[i, ] <- deriv1FctTemp(dose[i], parmMat[i, ])
+        }
+        derivMat[, notFixed]
     }
         
     deriv2 <- NULL
@@ -278,8 +308,8 @@ if (FALSE)
 
     
     returnList <- 
-    list(fct=fct, ssfct=ssfct, names=names, deriv1=deriv1, deriv2=deriv2,  # lowerc=lowerLimits, upperc=upperLimits, 
-    edfct=edfct, maxfct=maxfct, 
+    list(fct = fct, ssfct = ssfct, names = names, deriv1 = deriv1, deriv2 = deriv2,  # lowerc=lowerLimits, upperc=upperLimits, 
+    edfct = edfct, maxfct = maxfct, 
 #    scaleInd=scaleInd, anovaYes=anovaYes, confct=confct,
 #    name = "cedergreen",
 #    text = "Cedergreen-Ritz-Streibig", 

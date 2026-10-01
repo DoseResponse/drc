@@ -94,7 +94,7 @@ clevel = NULL, level = 0.95, type = c("relative", "absolute"), display = TRUE, n
     if (linreg)
     {
         linFit1 <- lm(object$"data"[, 2:1])
-        edLin <- ED.lin(linFit1, respLev)
+        edLin <- edlin(linFit1, respLev)
         edEst[lenfl + 2, ] <- unlist((edLin)[, 1])
         edSe[lenfl + 2, ] <- unlist((edLin)[, 2])
 

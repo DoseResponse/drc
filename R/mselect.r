@@ -1,6 +1,6 @@
 "mselect" <- 
-function(object, fctList = NULL, nested = FALSE, sorted = c("IC", "Res var", "Lack of fit", "no"), linreg = FALSE, icfct = AIC)
-{
+function(object, fctList = NULL, nested = FALSE, sorted = c("IC", "Res var", "Lack of fit", "no"), 
+linreg = FALSE, icfct = AIC) {
     sorted <- match.arg(sorted)
 
     if (!is.logical(nested)) {stop("'nested' argument takes only the values: FALSE, TRUE")}
@@ -19,7 +19,9 @@ function(object, fctList = NULL, nested = FALSE, sorted = c("IC", "Res var", "La
 
     retMat[1 ,1] <- logLik(object)
     retMat[1, 2] <- icfct(object)  # AIC(object)
-    if (nested) {retMat[1, 3] <- modelFit(object)[2, 5]}
+#    if (nested) {retMat[1, 3] <- modelFit(object)[2, 5]}   
+# commented out by Christian Ritz 2026-09-28, because it was wrong to use if (whoever introduced it?)
+    retMat[1, 3] <- modelFit(object)[2, 5]
     if (contData) 
     {
         tryRV <- try(summary(object)$"resVar", silent = TRUE)
@@ -70,8 +72,10 @@ function(object, fctList = NULL, nested = FALSE, sorted = c("IC", "Res var", "La
             
                 retMat[i+1, 1] <- logLik(tempObj)
                 retMat[i+1, 2] <- icfct(tempObj)  # AIC(tempObj)
-                if (nested) {retMat[i+1, 3] <- modelFit(tempObj)[2, 5]}
-                
+                retMat[i+1, 3] <- modelFit(tempObj)[2, 5]
+#                if (nested) {retMat[i+1, 3] <- modelFit(object)[2, 5]}                   
+# commented out by Christian Ritz 2026-09-28, because it was wrong to use if (whoever introduced it?)
+
                 if (contData)
                 {
                     tryRV2 <- try(summary(tempObj)$"resVar", silent = TRUE)

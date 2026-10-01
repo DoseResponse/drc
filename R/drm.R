@@ -1749,6 +1749,10 @@ pshifts = NULL, varcov = NULL)
     ## Constructing the index matrix
 #    parmMat <- t(parmMat)
     indexMat <- apply(t(parmMat), 2, function(x){match(x, coefVec)})
+    if (is.null(ncol(indexMat))) {
+        indexMat <- t(as.matrix(indexMat))
+    }
+    # ensuring that the index matrix is a matrix even if there is only one curve
 
     ## Constructing data list ... where is it used?
     wName <- callDetail[["weights"]]

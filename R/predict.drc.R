@@ -1,6 +1,6 @@
 "predict.drc" <- function(object, newdata, se.fit = FALSE, 
                           interval = c("none", "confidence", "prediction", "ssd"), 
-                          level = 0.95, na.action = na.pass, od = FALSE, vcov. = vcov, 
+                          level = 0.95, na.action = na.pass, vcov. = vcov, 
                           ssdSEfct = NULL, constrain = TRUE, checkND = TRUE, ...)
 {
     ## Checking arguments
@@ -26,7 +26,7 @@
         } else {
             groupLevels <- as.character(dataList[["curveid"]])
         }        
-#                
+                
 #        if (identical(respType, "event"))
 #        {
 #            newdata <- data.frame(dataList[["dose"]], dataList[["plotid"]])
@@ -123,7 +123,7 @@
 
 
     ## Retrieving variance-covariance matrix
-    sumObj <- summary(object, od = od)
+    sumObj <- summary(object)
 #    varMat <- sumObj[["varMat"]]  
     vcovMat <- vcov.(object)      
 
@@ -140,10 +140,7 @@
     retMat <- matrix(0, noNewData, 4)
     colnames(retMat) <- c("Prediction", "SE", "Lower", "Upper")
     objFct <- object[["fct"]]
-#    print(pm)
-#    print(doseVec)
     retMat[, 1] <- objFct$"fct"(doseVec, pm)
-#    print(pm)
     
     ## Checking if derivatives are available
     deriv1 <- objFct$"deriv1"
@@ -157,9 +154,9 @@
     {    
         if (identical(respType, "continuous"))
         {
-            tquan <- qt(1 - (1 - level)/2, df.residual(object))   
+            tquan <- qt(1 - (1 - level) / 2, df.residual(object))   
         } else {
-            tquan <- qnorm(1 - (1 - level)/2)
+            tquan <- qnorm(1 - (1 - level) / 2)
         }
     }  
     
@@ -209,8 +206,6 @@
 
 #        groupLevels <- newdata[, 2]
         piMat <- indexMat[, groupLevels, drop = FALSE]
-#        print(piMat)
-#        print(groupLevels)
         for (rowIndex in 1:noNewData)
         {
 #            parmInd <- indexMat[, i]
@@ -232,6 +227,7 @@
 #            dfEval <- deriv1(doseVec[rowIndex], parmChosen)
 
             dfEval <- deriv1(doseVec[rowIndex], pm[rowIndex, , drop = FALSE])
+            #dfEval <- as.vector(deriv1(doseVec[rowIndex], pm[rowIndex, , drop = FALSE]))
             varVal <- dfEval %*% varCov %*% dfEval
             retMat[rowIndex, 2] <- sqrt(varVal)  
 #            retMat[rowIndex, 2] <- sqrt(dfEval %*% varCov %*% dfEval)  
@@ -240,8 +236,10 @@
             {
                 #retMat[rowIndex, 3:4] <- rep(retMat[rowIndex, 1], 2) + 
                 #  (tquan * sqrt(varVal + sumObjRV[rowIndex])) * c(-1, 1)
-                retMat[rowIndex, 3] <- retMat[rowIndex, 1] - tquan * sqrt(varVal + sumObjRV[rowIndex])
-                retMat[rowIndex, 4] <- retMat[rowIndex, 1] + tquan * sqrt(varVal + sumObjRV[rowIndex])   
+                rm1 <- retMat[rowIndex, 1]
+                tq1 <- tquan * sqrt(varVal + sumObjRV[rowIndex]) 
+                retMat[rowIndex, 3] <- rm1 - tq1
+                retMat[rowIndex, 4] <- rm1 + tq1   
             }    
 #            if (identical(interval, "confidence"))
 #            {

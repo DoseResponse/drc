@@ -7,8 +7,8 @@
 \title{Weibull model functions}
 
 \description{
-  'weibull' and 'weibull2' provide a very general way of specifying Weibull dose response functions,
-  under various constraints on the parameters.
+  'weibull1' and 'weibull2' provide a very general ways of specifying Weibull type 1 and 2 dose-response models,
+  allowing for various constraints on the model parameters.
 }
 
 \usage{
@@ -64,13 +64,13 @@
 \references{
   Seber, G. A. F. and Wild, C. J (1989) 
   \emph{Nonlinear Regression}, 
-  New York: Wiley \& Sons (pp. 338--339).
+  New York: Wiley and Sons (pp. 338--339).
 }
 
 \author{Christian Ritz}
 
 \note{
-  The functions are for use with the function \code{\link{drm}}.
+  These model functions are for use with the function \code{\link{drm}}.
 
 }
 

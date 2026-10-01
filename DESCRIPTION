@@ -1,16 +1,34 @@
 Package: drc
-Version: 3.2-0
-Date: 2021-01-13
-Title: Analysis of Dose-Response Data
-Authors@R: c(person("Christian" , "Ritz", role = c("aut", "cre"), email="ritz@bioassay.dk"), 
-             person("Jens", "Streibig", middle="C.", email="streibig@bioassay.dk", role = "aut"))
-Maintainer: Christian Ritz <ritz@bioassay.dk>
-Depends: R (>= 2.0.0), MASS, stats, drcData
+Version: 4.0-1
+Date: 2026-10-01
+Title: Dose-Response Analysis Using R
+Authors@R: c(person("Christian" , "Ritz", 
+                    role = c("aut", "cre"), 
+                    email = "drc@ritz.lv",
+                    comment = c(ORCID = "0000-0002-5095-0624")), 
+             person("Signe M.", "Jensen",
+                    role = "ctb",
+                    email = "smj@plen.ku.dk",
+                    comment = c(ORCID = "0000-0002-7738-5231")),
+             person("Daniel", "Gerhard", 
+                    role = "ctb",
+                    email = "00gerhard@gmail.com", 
+                    comment = c(ORCID = "0000-0002-9336-3454")),
+            person("Jens C.", "Streibig", 
+                    role = "aut",
+                    email = "jstreibig@gmail.com",
+                    comment = c(ORCID = "0000-0002-6204-4004")))
+Author: Christian Ritz [aut, cre] (ORCID: <https://orcid.org/0000-0002-5095-0624>), 
+        Signe M. Jensen [ctb] (ORCID: <https://orcid.org/0000-0002-7738-5231>), 
+        Daniel Gerhard [ctb] (ORCID: <https://orcid.org/0000-0002-9336-3454>), 
+        Jens C. Streibig [aut] (ORCID: <https://orcid.org/0000-0002-6204-4004>)
+Maintainer: Christian Ritz <drc@ritz.lv>
+Depends: R (>= 4.0.0), MASS, stats
 Imports: car, gtools, multcomp, plotrix, sandwich, scales
 LazyLoad: yes
 LazyData: yes
-Description: Analysis of dose-response data is made available through a suite of flexible and versatile model fitting and after-fitting functions.
-License: GPL-2
-URL: http://www.r-project.org, http://www.bioassay.dk
+Description: Analysis of various types of dose-response data is enabled through a suite of flexible and versatile model fitting and after-fitting functions. A wide range of dose-response models is available.
+License: GPL-2 | GPL-3
+URL: https://www.r-project.org, https://github.com/DoseResponse/drc
 RoxygenNote: 6.1.1
 BugReports: https://github.com/DoseResponse/drc/issues/

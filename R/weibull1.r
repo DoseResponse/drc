@@ -188,16 +188,26 @@ if (FALSE)
     edfct <- function(parm, respl, reference, type, ...)  # function(parm, p, reference, type, ...)
     {        
         parmVec[notFixed] <- parm
+
+        ## Converting absolute to relative if needed
         p <- EDhelper(parmVec, respl, reference, type)
         
 #        if (type == "absolute") {p <- 100*((parmVec[3] - p)/(parmVec[3] - parmVec[2]))}
 #        if ( (parmVec[1] < 0) && (reference == "control") ) {p <- 100 - p}
     
-        tempVal <- log(-log((100-p)/100))
+        tempVal <- log(-log(1 - p/100))
         EDp <- exp(tempVal/parmVec[1] + log(parmVec[4]))
 
-        EDder <- EDp*c(-tempVal/(parmVec[1]^2), 0, 0, 1/parmVec[4])
+        EDder <- EDp * c(-tempVal / (parmVec[1]^2), 0, 0, 1 / parmVec[4])
     
+        EDderxFct0 <- deriv(~ exp(log(-log((d - p)/(d - c))) / b + log(e)), "p", function(p, b, c, d, e){})
+        EDderxFct <- function(p, parm) {
+            EDderxTemp <- as.vector(attr(EDderxFct0(p, parm[1], parm[2], parm[3], parm[4]), "gradient"))
+            EDderxTemp * c(0, (p - parm[3]) / ((parm[3] - parm[2])^2), (parm[2] - p) / ((parm[3] - parm[2])^2), 0)
+            # based on the chain rule
+        }
+        if (type == "absolute") {EDder <- EDder + EDderxFct(respl, parmVec)}
+
         return(list(EDp, EDder[notFixed]))
     }
 

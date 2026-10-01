@@ -1,7 +1,7 @@
 "ucedergreen" <- function(
 fixed = c(NA, NA, NA, NA, NA), names = c("b", "c", "d", "e", "f"), 
 method = c("1", "2", "3", "4"), ssfct = NULL,
-alpha)
+alpha, fctName, fctText)
 {
     numParm <- 5
     if (!is.character(names) | !(length(names) == numParm)) {stop("Not correct 'names' argument")}
@@ -77,7 +77,8 @@ alpha)
 #    }
     
     ## Specifying the derivatives    
-    deriv1 <- function(dose, parm)
+    deriv1OLD <- function(dose, parm)
+    # not used anymore
     {
         parmMat <- matrix(parmVec, nrow(parm), numParm, byrow=TRUE)
         parmMat[, notFixed] <- parm
@@ -93,6 +94,33 @@ alpha)
                1 - 1/t3, 
                -t1*t2*(parmMat[, 1]/parmMat[, 4])*t4, 
                -t0/t3 )[, notFixed]
+    }
+
+    deriv1 <- function(dose, parm)
+    {
+        # Obtaining the derivatives
+        deriv1FctTemp <- function(dose, pmRow) {
+            deriv1Fct <- deriv(~d-(d-c+f*exp(-1/x^alpha))/(1+(x/e)^b), c("b", "c", "d", "e", "f"), 
+                               function(x,b,c,d,e,f){})
+            dVal <- attr(deriv1Fct(dose, pmRow[1], pmRow[2], pmRow[3], pmRow[4], pmRow[5]), "gradient")
+            dVal[is.na(dVal)] <- 0
+            # NaN's for b and e are due to a power-log term not being well-defined; it should return 0
+            dVal
+        }
+
+        #notFixed <- rep(TRUE, 5)
+        #parmVec <- c(NA, NA, NA, NA, NA)
+        #numParm <- 5
+
+        nrpar <- nrow(parm)
+        parmMat <- matrix(parmVec, nrow(parm), numParm, byrow = TRUE)
+        parmMat[, notFixed] <- parm
+
+        derivMat <- matrix(NA, nrpar, numParm)
+        for (i in 1:nrpar) {
+            derivMat[i, ] <- deriv1FctTemp(dose[i], parmMat[i, ])
+        }
+        derivMat[, notFixed]
     }
         
     deriv2 <- NULL
@@ -124,10 +152,15 @@ alpha)
     }
 
     returnList <- 
-    list(fct = fct, ssfct = ssfct, names = names[notFixed], edfct = edfct, maxfct = maxfct,
-    name = "ucedergreen",
-    text = "U-shaped Cedergreen-Ritz-Streibig", 
+    list(fct = fct, ssfct = ssfct, names = names, deriv1 = deriv1, deriv2 = deriv2,  # lowerc=lowerLimits, upperc=upperLimits, 
+    edfct = edfct, maxfct = maxfct,
+    name = ifelse(missing(fctName), as.character(match.call()[[1]]), fctName),
+    text = ifelse(missing(fctText), "U-shaped Cedergreen-Ritz-Streibig", fctText),     
     noParm = sum(is.na(fixed)))
+    #list(fct = fct, ssfct = ssfct, names = names[notFixed], edfct = edfct, maxfct = maxfct,
+    #name = "ucedergreen",
+    #text = "U-shaped Cedergreen-Ritz-Streibig", 
+    #noParm = sum(is.na(fixed)))
     
     class(returnList) <- "UCRS"
     invisible(returnList)
