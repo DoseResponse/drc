@@ -3,7 +3,7 @@ function(x, ..., add = FALSE, level = NULL, type = c("average", "all", "bars", "
 broken = FALSE, bp, bcontrol = NULL, conName = NULL, axes = TRUE, gridsize = 100, 
 log = "x", xtsty, xttrim = TRUE, xt = NULL, xtlab = NULL, xlab, xlim, 
 yt = NULL, ytlab = NULL, ylab, ylim,
-cex, cex.axis = 1, col = FALSE, lty, pch, 
+cex, cex.axis = 1, col = FALSE, errbar.col = NULL, lty, pch, 
 legend, legendText, legendPos, cex.legend = 1,
 normal = FALSE, normRef = 1, confidence.level = 0.95)
 {    
@@ -266,12 +266,12 @@ normal = FALSE, normRef = 1, confidence.level = 0.95)
         }
 #        print(predictMat)
     
-        barFct <- function(plotPoints)
+        barFct <- function(plotPoints, col = "black")
         {
-            pp3 <- plotPoints[, 3]
-            pp4 <- plotPoints[, 4]
-            plotCI(plotPoints[, 1], pp3 + 0.5 * (pp4 - pp3), 
-            li = pp3, ui = pp4, add = TRUE, pch = NA)
+          pp3 <- plotPoints[, 3]
+          pp4 <- plotPoints[, 4]
+          plotCI(plotPoints[, 1], pp3 + 0.5 * (pp4 - pp3), 
+                 li = pp3, ui = pp4, add = TRUE, pch = NA, col = col)
         }
 
         ciFct <- function(level, ...){invisible(NULL)}
@@ -281,7 +281,7 @@ normal = FALSE, normRef = 1, confidence.level = 0.95)
     } else if (identical(type, "confidence"))
     {
       
-        barFct <- function(plotPoints){invisible(NULL)}
+        barFct <- function(plotPoints, col = "black"){invisible(NULL)}
       
         ciFct <- function(level, ...)
         {
@@ -300,8 +300,8 @@ normal = FALSE, normRef = 1, confidence.level = 0.95)
         
     } else {
       
-        barFct <- function(plotPoints){invisible(NULL)}
-  
+        barFct <- function(plotPoints, col = "black"){invisible(NULL)}
+      
         ciFct <- function(level, ...){invisible(NULL)}
   
         pointFct <- function(plotPoints, cexVal, colVal, pchVal, ...)
@@ -348,7 +348,13 @@ normal = FALSE, normRef = 1, confidence.level = 0.95)
     if (!is.logical(col) && (!(length(col) == lenlev)) ) 
     {
         colourVec <- rep(col, lenlev)
-    }   
+    }
+    if (is.null(errbar.col)) {
+      errbarColVec <- colourVec
+    } else {
+      errbarColVec <- rep(errbar.col, length.out = lenlev)
+    }
+    
     cexVec <- parFct(cex, lenlev, 1)
     ltyVec <- parFct(lty, lenlev)
     pchVec <- parFct(pch, lenlev)           
@@ -401,8 +407,8 @@ normal = FALSE, normRef = 1, confidence.level = 0.95)
             axes = FALSE, frame.plot = TRUE, col = colourVec[i], pch = pchVec[i], cex = cexVec[i], ...) 
             
             ## Adding error bars
-            barFct(plotPoints)      
-            
+            barFct(plotPoints, col = errbarColVec[i])
+          
             ## Add confidence regions
             ciFct(level=i, col=alpha(colourVec[i],0.25))            
             
@@ -422,8 +428,8 @@ normal = FALSE, normRef = 1, confidence.level = 0.95)
                 pointFct(plotPoints, cexVec[i], colourVec[i], pchVec[i], ...)
             
                 ## Adding error bars
-                barFct(plotPoints)
-                
+                barFct(plotPoints, col = errbarColVec[i])
+              
                 ## Add confidence regions
                 ciFct(level=i, col=alpha(colourVec[i],0.25))
             }

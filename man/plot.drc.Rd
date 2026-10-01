@@ -17,7 +17,7 @@
   gridsize = 100, log = "x", xtsty, xttrim = TRUE, 
   xt = NULL, xtlab = NULL, xlab, xlim, 
   yt = NULL, ytlab = NULL, ylab, ylim,
-  cex, cex.axis = 1, col = FALSE, lty, pch, 
+  cex, cex.axis = 1, col = FALSE, errbar.col = NULL, lty, pch, 
   legend, legendText, legendPos, cex.legend = 1,
   normal = FALSE, normRef = 1, confidence.level = 0.95)
 }
@@ -69,6 +69,9 @@
   relative to the current setting of cex.}  
   \item{col}{either logical or a vector of colours. If TRUE default colours are used. 
   If FALSE (default) no colours are used.}  
+  \item{errbar.col}{colour(s) for error bars when using \code{type = "bars"}. 
+  If \code{NULL} (default), error bars will match the curve colours specified by \code{col}. 
+  Use \code{errbar.col = "black"} to restore the previous behaviour of black error bars.}
   \item{legend}{logical. If TRUE a legend is displayed.}
   \item{legendText}{a character string or vector of character strings specifying the legend text 
   (the position of the upper right corner of the legend box).}
