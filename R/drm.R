@@ -428,8 +428,11 @@ pshifts = NULL, varcov = NULL)
 
     
     ## Re-setting na.action
+    ## after=FALSE so that this handler runs before the one registered above:
+    ## otherwise it would run last and restore the value set there, leaving the
+    ## option holding the deparsed na.action argument instead of the caller's.
     op3 <- options(na.action = "na.omit")  # the default
-    on.exit(options(op3), add=TRUE)
+    on.exit(options(op3), add=TRUE, after=FALSE)
 
     ## Transforming dose value if they are provided as log dose
     if ( !is.null(logDose) && is.numeric(logDose) ) 
