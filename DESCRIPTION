@@ -1,6 +1,6 @@
 Package: drc
-Version: 4.0-1
-Date: 2026-10-01
+Version: 4.0-2
+Date: 2026-10-04
 Title: Dose-Response Analysis Using R
 Authors@R: c(person("Christian" , "Ritz", 
                     role = c("aut", "cre"), 
@@ -30,5 +30,4 @@ LazyData: yes
 Description: Analysis of various types of dose-response data is enabled through a suite of flexible and versatile model fitting and after-fitting functions. A wide range of dose-response models is available.
 License: GPL-2 | GPL-3
 URL: https://www.r-project.org, https://github.com/DoseResponse/drc
-RoxygenNote: 6.1.1
 BugReports: https://github.com/DoseResponse/drc/issues/

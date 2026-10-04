@@ -28,9 +28,9 @@
 }
 
 \source{
-  Christensen, M. G. and Teicher, H. B., and Streibig, J. C. (2003) Linking fluorescence 
-  induction curve and biomass in herbicide screening, \emph{Pest Management Science},
-  \bold{59},  1303--1310.
+  Christensen, M. G. and Teicher, H. B., and Streibig, J. C. (2003) 
+  Linking fluorescence induction curve and biomass in herbicide screening, 
+  \emph{Pest Management Science}, \bold{59}, 1303--1310.
 }
 
 \seealso{
@@ -41,8 +41,8 @@
 
 ## Fitting a log-logistic model with
 ##  common lower and upper limits
-S.alba.LL.4.1 <- drm(DryMatter~Dose, Herbicide, data=S.alba, fct = LL.4(),
-pmodels=data.frame(Herbicide,1,1,Herbicide)) 
+S.alba.LL.4.1 <- drm(DryMatter ~ Dose, Herbicide, data = S.alba, fct = LL.4(),
+pmodels = data.frame(Herbicide, 1, 1, Herbicide)) 
 summary(S.alba.LL.4.1)
 
 ## Applying the optimal transform-both-sides Box-Cox transformation

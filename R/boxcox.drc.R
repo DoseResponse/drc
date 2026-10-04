@@ -32,7 +32,8 @@ xlab = expression(lambda), ylab = "log-Likelihood", ...)
         llVec <- rep(NA, lenlam)
         for (i in 1:lenlam)
         {
-            drcTemp <- try(update(object, bc = lambda[i], bcAdd = bcAdd), silent = TRUE)
+            drcTemp <- try(update(object, data = object[["origData"]], 
+                                    bc = lambda[i], bcAdd = bcAdd), silent = TRUE)
             if (!inherits(drcTemp, "try-error")) 
             {
                 llVec[i] <- llFct(drcTemp, lambda[i])  # logLik(drcTemp)

@@ -37,7 +37,7 @@
   NAs for parameter that are not fixed.}
   \item{names}{a vector of character strings giving the names of the parameters (should not contain ":"). 
   The default is reasonable (see under 'Usage'). The order of the parameters is: b, c, d, e (see under 'Details').}
-  \item{method}{character string indicating the self starter function to use.}  
+  \item{method}{character string indicating the self starter function to use; default is "1" (see under Details).}  
   \item{ssfct}{a self starter function to be used.}  
   \item{fctName}{optional character string used internally by convenience functions.}  
   \item{fctText}{optional character string used internally by convenience functions.}                    
@@ -47,13 +47,23 @@
   As pointed out in Seber and Wild (1989), there exist two different parameterisations of the Weibull model. They
   do not yield the same fitted curve for a given dataset (see under Examples).
 
-  The four-parameter Weibull type 1 model ('weibull1') is
+  The four-parameter Weibull type 1 model ('weibull1') is defined by the model function:
   \deqn{ f(x) = c + (d-c) \exp(-\exp(b(\log(x)-\log(e)))).}
  
-  Thw four-parameter Weibull type 2 model ('weibull2') is
+  Likewise, the four-parameter Weibull type 2 model ('weibull2') is defined by the model function:
   \deqn{ f(x) = c + (d-c) (1 - \exp(-\exp(b(\log(x)-\log(e))))).}  
   
-  Both four-parameter model functions are asymmetric with inflection point at the dose equal \eqn{e}. 
+  Both model functions result in asymmetric dose-response curves. Weibull type 2 exhibits 
+  a rapid descent from the upper asymptote and a slow approach to the lower asymptote (in case of a decreasing response). 
+  Weibull type 1 has the opposite behaviour.
+  
+  The four-parameter Weibull type 1 and Weibull type 2 model functions have an inflection point at the dose equal 
+  to \eqn{e(1-1/b)^{1/b}}, which is always smaller, but often not much smaller, than the model parameter \eqn{e}, 
+  which is not the EC/ED50. 
+
+  The default self starter function (method = "1") is based on linear regression applied to the linearized response obtained
+  using a suitable log-log transformation. Methods "2" and "4" are refinements of method "1" (Normolle, 1993). Method "3" 
+  is based on increments in the response.
 }
 
 \value{
@@ -65,13 +75,21 @@
   Seber, G. A. F. and Wild, C. J (1989) 
   \emph{Nonlinear Regression}, 
   New York: Wiley and Sons (pp. 338--339).
+
+  Normolle, D.P. (1993) 
+  An algorithm for robust non-linear analysis of radioimmunoassays and other bioassays,
+  \emph{Statistics in Medicine}, \bold{12}, 2025--2042. 
+  https://doi.org/10.1002/sim.4780122106
+
+  Ritz, C. and Jensen, S. M. and Gerhard, D. and Streibig, J. C. (2019)
+  \emph{Dose-Response Analysis using R}, 
+  Boca Raton: CRC Press (pp. 184--186).
 }
 
 \author{Christian Ritz}
 
 \note{
   These model functions are for use with the function \code{\link{drm}}.
-
 }
 
 \seealso{

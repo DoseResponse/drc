@@ -31,8 +31,16 @@ xlab = expression(lambda), ylab = "log-Likelihood", ...)
 
 \details{
   The optimal lambda value is determined using a profile likelihood approach: 
-  For each lambda value the dose-response regression model is fitted and the lambda value (and corresponding model fit) resulting in the largest
-  value of the log likelihood function is chosen.
+  For each lambda value the dose-response regression model is fitted and the lambda value (and corresponding model fit) 
+  resulting in the largest value of the log likelihood function is chosen.
+
+  Occasionally, for some lambda values the model fit may fail (lack of convergence). In this case the corresponding 
+  log likelihood value is set to NA and an error message (from the underlying optim() call) may be displayed.  
+  The profile likelihood is still calculated based on the remaining lambda values and the resulting final model fit is
+  still useful. 
+  
+  Also, if the optimal lambda value is at the boundary of the specified lambda range (from -2 to 2 by default), it is 
+  recommended to extend the lambda range and re-run the boxcox() function.
 }
 
 \value{
@@ -57,7 +65,7 @@ xlab = expression(lambda), ylab = "log-Likelihood", ...)
 \examples{
 
 ## Fitting log-logistic model without transformation
-ryegrass.m1 <- drm(ryegrass, fct = LL.4())
+ryegrass.m1 <- drm(rootl ~ conc, data = ryegrass, fct = LL.4())
 summary(ryegrass.m1)
 
 ## Fitting the same model with the optimal Box-Cox transformation

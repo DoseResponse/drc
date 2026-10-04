@@ -71,8 +71,9 @@ The corresponding U-shaped model is given by the expression
   Improved empirical models describing hormesis, 
   \emph{Environmental Toxicology and Chemistry} 
   \bold{24}, 3166--3172.
+  https://doi.org/10.1897/05-014R.1
 
-  Sweeney, C. J., Bottoms, M., Hutcheson, K., Lennart Schulz, L. (2026) 
+  Sweeney, C. J. and Bottoms, M. and Hutcheson, K. and Schulz, L. (2026) 
   Dose-response OECD 216 studies for agrochemicals, 
   \emph{Integrated Environmental Assessment and Management}, vjag057. 
   https://doi.org/10.1093/inteam/vjag057

@@ -4,15 +4,21 @@
     ## Extending the matrix of derivatives to have one column per parameter (not only per model parameter)
     ##  only relevant in case several curves (with different parameters) were fitted
     xderiv1 <- x$deriv1
-    indexMat0 <- x$indexMat2
-    if (is.matrix(indexMat0))
-    {
-        indMat <- t(indexMat0)
-    } else {
-        indMat <- t(matrix(indexMat0, nrow = 1))
-    }
+
+    ## Following lines not needed (3/10 2026) as original indexMat can be used
+#    indexMat0 <- x$indexMat2
+#    if (is.matrix(indexMat0))
+#    {
+#        indMat <- t(indexMat0)
+#    } else {
+#        indMat <- t(matrix(indexMat0, nrow = 1))
+#    }
+#    colnames(indMat) <- colnames(x$indexMat)
+
 #    print(indMat)
-    colnames(indMat) <- colnames(x$indexMat)
+#    print(x$indexMat)
+    indMat <- x[["indexMat"]]
+    
     curveID <- x$dataList[["curveid"]]
 #    xderiv2 <- xderiv1[, rep(1:ncol(xderiv1), apply(indMat, 1, length))]
 
@@ -29,7 +35,6 @@
     xderiv2Fct <- function(xderiv1, indMat, curveID)
     {
         xderiv2 <- xderiv1[, rep(1:ncol(xderiv1), apply(indMat, 1, function(x){length(unique(x))}))]    
-#        print(xderiv2)
         
         cnInd <- colnames(indMat)
         for (i in 1:ncol(indMat))
@@ -41,7 +46,7 @@
 
     if (identical(x$type, "continuous"))
     {
-        xderiv2 <- xderiv2Fct(xderiv1, indMat, curveID)    
+        xderiv2 <- xderiv2Fct(xderiv1, indMat, curveID)
 #        rval <- (weights(x) * residuals(x)) * x$deriv1
         rval <- (weights(x) * residuals(x)) * xderiv2
     }

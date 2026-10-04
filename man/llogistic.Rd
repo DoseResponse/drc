@@ -18,7 +18,7 @@
 
   llogistic2(fixed = c(NA, NA, NA, NA, NA), 
   names = c("b", "c", "d", "e", "f"),
-  ss = c("1", "2", "3"), ssfct = NULL,
+  method = c("1", "2", "3"), ssfct = NULL,
   fctName, fctText)  
 }
 
@@ -29,7 +29,6 @@
   The default is reasonable (see under 'Usage'). The order of the parameters is: b, c, d, e, f 
     (see under 'Details').}
   \item{method}{character string indicating the self starter function to use.} 
-  \item{ss}{character string indicating the self starter function to use.} 
   \item{ssfct}{a self starter function to be used.}  
   \item{fctName}{optional character string used internally by convenience functions.}  
   \item{fctText}{optional character string used internally by convenience functions.}  
@@ -72,7 +71,9 @@
 
 \seealso{
   For convenience several special cases are available: 
-  \code{\link{LL.2}}, \code{\link{LL.3}}, \code{\link{LL.4}} and \code{\link{LL.5}}. 
+  \code{\link{LL.2}}/\code{\link{LL2.2}}, \code{\link{LL.3}}/\code{\link{LL2.3}}, 
+  \code{\link{LL.3u}}/\code{\link{LL2.3u}}, \code{\link{LL.4}}/\code{\link{LL2.4}}, 
+  and \code{\link{LL.5}}/\code{\link{LL2.5}}. 
   Examples are provided in the help pages for these model functions.
 }
 

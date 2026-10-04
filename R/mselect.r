@@ -1,6 +1,8 @@
-"mselect" <- 
-function(object, fctList = NULL, nested = FALSE, sorted = c("IC", "Res var", "Lack of fit", "no"), 
-linreg = FALSE, icfct = AIC) {
+"mselect" <- function(
+    object, fctList = NULL, nested = FALSE, 
+    sorted = c("IC", "Res var", "Lack of fit", "no"), 
+    linreg = FALSE, icfct = AIC) {
+        
     sorted <- match.arg(sorted)
 
     if (!is.logical(nested)) {stop("'nested' argument takes only the values: FALSE, TRUE")}

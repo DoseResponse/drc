@@ -1,9 +1,10 @@
 "llogistic2" <- function(
-fixed = c(NA, NA, NA, NA, NA), names = c("b", "c", "d", "e", "f"), ss = c("1", "2", "3"), ssfct = NULL,
-fctName, fctText)
-{
+    fixed = c(NA, NA, NA, NA, NA), names = c("b", "c", "d", "e", "f"), 
+    method = c("1", "2", "3"), ssfct = NULL,
+    fctName, fctText) {
+        
     ## Matching 'adjust' argument
-    ss <- match.arg(ss)
+    method <- match.arg(method)
     
     ## Checking arguments
     numParm <- 5
@@ -15,11 +16,11 @@ fctName, fctText)
     parmVec <- rep(0, numParm)
     parmVec[!notFixed] <- fixed[!notFixed]
 
-    ## Defining the basic non-linear function
-    bfct <- function(x, parm)
-    {
-        parm[2] + (parm[3]-parm[2])/((1+(x/exp(parm[4]))^parm[1]))^parm[5]
-    }
+#    ## Defining the basic non-linear function
+#    bfct <- function(x, parm)
+#    {
+#        parm[2] + (parm[3]-parm[2])/((1+(x/exp(parm[4]))^parm[1]))^parm[5]
+#    }
 
     ## Defining the non-linear function
     fct <- function(dose, parm) 
@@ -41,7 +42,7 @@ fctName, fctText)
     } else {
         
     ## Version 1 (default)    
-    if (ss == "1")
+    if (method == "1")
     {
         ssfct <- function(dframe)
         {
@@ -71,7 +72,7 @@ fctName, fctText)
     }
 
     ## Version 2
-    if (ss == "2")
+    if (method == "2")
     {
         ssfct <- function(dframe)
         {
@@ -101,7 +102,7 @@ fctName, fctText)
     }
 
     ## Version 3
-    if (ss == "3")
+    if (method == "3")
     {
         ssfct <- function(dframe)
         {
@@ -239,33 +240,38 @@ fctName, fctText)
         
         exp(log(((parmVec[3] - parmVec[2])/(y - parmVec[2]))^(1/parmVec[5]) - 1)/parmVec[1] + parmVec[4])
     } 
+
+    ## Defining the scale function
+    scaleFct <- function(doseScaling, respScaling)
+    {        
+        c(1, respScaling, respScaling, 1, 1)[notFixed]
+    }        
     
     ## Defining functions returning lower and upper limit and monotonicity
     lowerAs <- pickParm(parmVec, notFixed, 2)
     upperAs <- pickParm(parmVec, notFixed, 3)
     monoton <- monoParm(parmVec, notFixed, 1, -1)    
     
-    ## Setting function details
-    if (missing(fctName))
-    {
-        fctName <- as.character(match.call()[[1]])
-    }  
-    if (missing(fctText))
-    {
-        fctText <- "Log-logistic (log(ED50) as parameter)"
-    }         
+#    ## Setting function details
+#    if (missing(fctName))
+#    {
+#        fctName <- as.character(match.call()[[1]])
+#    }  
+#    if (missing(fctText))
+#    {
+#        fctText <- "Log-logistic (log(ED50) as parameter)"
+#    }         
     
     ## Returning the function with self starter and names
-    returnList <- 
-    list(fct = fct, ssfct = ssfct, names = names, deriv1 = deriv1, deriv2 = deriv2, derivx = derivx,
-    edfct = edfct, bfct = bfct, inversion = invfct,
-#    lowerc=lowerLimits, upperc=upperLimits,
-    name = fctName, 
-    text = fctText, 
-    noParm = sum(is.na(fixed)),
-    lowerAs = lowerAs, 
-    upperAs = upperAs, 
-    monoton = monoton)
+    returnList <- list(
+        fct = fct, ssfct = ssfct, names = names, 
+        deriv1 = deriv1, deriv2 = deriv2, derivx = derivx,
+        edfct = edfct, inversion = invfct, scaleFct = scaleFct,
+        name = ifelse(missing(fctName), as.character(match.call()[[1]]), fctName),
+        text = ifelse(missing(fctText), "Log-logistic (log(ED50) as parameter)", fctText), 
+        noParm = sum(is.na(fixed)),
+        lowerAs = lowerAs, upperAs = upperAs, monoton = monoton,
+        fixed = fixed)
     
     class(returnList) <- "llogistic"
     invisible(returnList)

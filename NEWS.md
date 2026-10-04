@@ -1,13 +1,31 @@
 # drc 4.0-1
 
-* 2026-10-01: In drmEMPoisson.R: Wrong sign for scaling constant corrected (thanks to David Redek).
+* 2026-10-04: In nec.r: Now NEC() provides a deriv1 element as part of the output, enabling construction of confidence and prediction intervals when using predict.drc (thanks to Diego Barneche on github).
+
+* 2026-10-03: In cedergreen.Rd: References updated.
+
+* 2026-10-03: In S.alba.Rd: Example slightly improved.
+
+* 2026-10-03: In sandwich.r: estfun.drc() uses indexMat insted of indexMat2.
+
+* 2026-10-03: In weibull1.Rd: The inflection point correctly characterised (thanks to Thomas Kraft on github). More details on the self starter functions also provided.
+
+* 2026-10-03: In drm.R: Now drm() leaves global na.action unaltered (thanks to Arek Gladki on github for the PR).
+
+* 2026-10-03: In boxcox.drc.R: update() now includes that data through the data argument (thanks to Jose Luis Rodriguez Gil on github). In boxcox.drc.Rd: Example modified to include data argument explicitly and, also, more details on behaviour in case of lack of convergence occurred (thanks to HugoDENISFR on github).
+
+* 2026-10-01: In llogistic2.R: Added fixed and scalefct as part of the output and removed bfct. Argument "ss" changed into "method". In llogistic.Rd: argument "ss" changed into "method" (thanks to hjia222 on github).
+
+* 2026-10-01: In plot.drc.R and plot.drc.Rd: Now colours of error bars follow colours of curves (thanks Benjamin Reisman on github for the PR).
+
+* 2026-10-01: In drmEMPoisson.R: Wrong sign for scaling constant in log likelihood corrected (thanks to David Redek).
 
 * 2026-10-01: License updated. 
 
 
 # drc 4.0-0 
 
-* 2026-09-28: In mselect.r: Erroneous if clause removed.
+* 2026-09-28: In mselect.r: Erroneous if clause removed. Note that update() includes the data (as suggested by Rodolfo Jaffe on github).
 
 * 2026-09-28: S3 method predict.mrdrc removed.
 
@@ -24,7 +42,7 @@ Function arguments and output also partly revised.
 
 * 2026-09-23: In cedergreen.Rd, CRS.4a.RD, CRS.5a.Rd: Typo in formulas corrected. New data examples and reference added.
 
-* 2026-09-22: In drmc.Rd: Description of the argument "otrace" improved.
+* 2026-09-22: In drmc.Rd: Description of the argument "otrace" improved (thanks to Nicolas Wirth on github).
 
 * 2026-09-22: in anova.drc.R: Stop text updated, referring to modelFit().
 
@@ -38,17 +56,17 @@ Function arguments and output also partly revised.
 
 * 2026-09-22: In CITATION: Updated using bibentry.
 
-* 2026-09-21: In test3.r: Names argument updated. r->R.
+* 2026-09-21: In test3.r: Names argument updated. File name changed: .r -> .R
 
 * 2026-09-21: In DESCRIPTION: Updated contributors and e-mail addresses. 
 
 * 2026-09-21: In hatvalues.drc.Rd: Typo fixed and "and" used in reference.
 
-* 2026-09-21: In anova.drc.Rd: Description has been updated with reference to modelFit().
+* 2026-09-21: In anova.drc.Rd: Description has been updated with reference to modelFit() (thanks to Arianna D. Cascone on github).
 
 * 2026-09-21: In predict.R: Code has been improved. Argument "od" has been omitted. Also in the corresponding help file.
 
-* 2026-09-21: In drm.R: The returned indexMat in drm() is always a matrix.
+* 2026-09-21: In drm.R: The returned indexMat in drm() is always a matrix (thanks to Falco Hofmann and Hannes Reinwald on github).
 
 
 # drc 3.0-1 and older

@@ -156,8 +156,7 @@ if (FALSE)
 #    
 #        return(list(EDp, EDder[notFixed]))
 #    }
-    edfct <- function(parm, respl, reference, type, ...)
-    {   
+    edfct <- function(parm, respl, reference, type, ...) {   
         parmVec[notFixed] <- parm
 
         ## Converting absolute to relative if needed
