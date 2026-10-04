@@ -45,8 +45,9 @@ xlab = expression(lambda), ylab = "log-Likelihood", ...)
 
 \value{
   An object of class "drc" (returned invisibly). 
-  If plotit = TRUE a plot of loglik vs lambda is shown indicating a confidence interval (by default 95%) about 
-  the optimal lambda value.
+
+  If plotit = TRUE (the default) a plot of the log-likelihood vs lambda is shown indicating a confidence interval 
+  (by default 95\%) around the optimal lambda value.
 }
 
 \references{

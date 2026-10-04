@@ -1,14 +1,19 @@
-# drc 4.0-1
+# drc 4.0-2
+
+* 2026-10-04: In boxcox.drx.Rd: Improved description.
 
 * 2026-10-04: In nec.r: Now NEC() provides a deriv1 element as part of the output, enabling construction of confidence and prediction intervals when using predict.drc (thanks to Diego Barneche on github).
 
 * 2026-10-03: In cedergreen.Rd: References updated.
 
-* 2026-10-03: In S.alba.Rd: Example slightly improved.
+* 2026-10-03: In S.alba.Rd: Example text slightly improved.
 
 * 2026-10-03: In sandwich.r: estfun.drc() uses indexMat insted of indexMat2.
 
 * 2026-10-03: In weibull1.Rd: The inflection point correctly characterised (thanks to Thomas Kraft on github). More details on the self starter functions also provided.
+
+
+# drc 4.0-1
 
 * 2026-10-03: In drm.R: Now drm() leaves global na.action unaltered (thanks to Arek Gladki on github for the PR).
 
