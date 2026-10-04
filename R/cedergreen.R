@@ -1,11 +1,11 @@
 "cedergreen" <- function(
-fixed = c(NA, NA, NA, NA, NA), names = c("b", "c", "d", "e", "f"), 
-method = c("1", "2", "3", "4"), ssfct = NULL, 
-alpha, fctName, fctText)
-{
+    fixed = c(NA, NA, NA, NA, NA), names = c("b", "c", "d", "e", "f"), 
+    method = c("1", "2", "3", "4"), ssfct = NULL, 
+    alpha, fctName, fctText) {
+
     ## Checking arguments
     numParm <- 5
-    if (!is.character(names) | !(length(names)==numParm)) {stop("Not correct 'names' argument")}
+    if (!is.character(names) || !(length(names)==numParm)) {stop("Not correct 'names' argument")}
     if (!(length(fixed)==numParm)) {stop("Not correct 'fixed' argument")}    
 
 #    if (!is.logical(useD)) {stop("Not logical useD argument")}
@@ -21,8 +21,8 @@ alpha, fctName, fctText)
     
     
     ## Defining the non-linear function
-    fct <- function(dose, parm) 
-    {
+    fct <- function(dose, parm) {
+
         parmMat <- matrix(parmVec, nrow(parm), numParm, byrow=TRUE)
         parmMat[, notFixed] <- parm
         
@@ -94,7 +94,7 @@ if (FALSE)
 #        ssfct <- cedergreen.ssf(method, fixed, alpha)       
         ssfct <- function(dframe)
         {
-            initval <- llogistic()$ssfct(dframe)   
+            initval <- llogistic(method = method)$ssfct(dframe)   
             initval[5] <- (2*(median(dframe[, 2])-initval[2])-(initval[3]-initval[2]))*exp(1/(initval[4]^alpha))
     
             return(initval[notFixed])
@@ -191,8 +191,8 @@ if (FALSE)
 
     ## Defining the ED function    
 #    edfct <- function(parm, p, lower = 1e-4, upper = 10000, ...)  # upper2=1000)
-    edfct <- function(parm, respl, reference, type, lower = 1e-4, upper = 10000, ...)  # upper2=1000)
-    {
+    edfct <- function(parm, respl, reference, type, lower = 1e-4, upper = 10000, ...) {
+
 #        if (is.null(upper)) {upper <- 1000}
 #        if (missing(upper2)) {upper2 <- 1000}
         interval <- c(lower, upper) 
@@ -282,8 +282,8 @@ if (FALSE)
 
 
     ## Finding the maximal hormesis
-    maxfct <- function(parm, lower = 1e-3, upper = 1000)
-    {
+    maxfct <- function(parm, lower = 1e-3, upper = 1000) {
+
 #        if (is.null(upper)) {upper <- 1000}
 #        if (is.null(interval)) {interval <- c(1e-3, 1000)}            
 #        alpha <- 0.5
@@ -322,10 +322,10 @@ if (FALSE)
 }
 
 "CRS.4a" <-
-function(names = c("b", "d", "e", "f"), ...)
-{
+function(names = c("b", "d", "e", "f"), ...) {
+
     ## Checking arguments
-    if (!is.character(names) | !(length(names)==4)) {stop("Not correct 'names' argument")}
+    if (!is.character(names) || !(length(names)==4)) {stop("Not correct 'names' argument")}
 
     return(cedergreen(fixed = c(NA, 0, NA, NA, NA), names = c(names[1], "c", names[2:4]), alpha = 1, 
     fctName = as.character(match.call()[[1]]), 
@@ -333,13 +333,11 @@ function(names = c("b", "d", "e", "f"), ...)
     ...))
 }
 
-ml3a <- CRS.4a
-
 "CRS.4b" <-
-function(names = c("b", "d", "e", "f"), ...)
-{
+function(names = c("b", "d", "e", "f"), ...) {
+    
     ## Checking arguments
-    if (!is.character(names) | !(length(names)==4)) {stop("Not correct 'names' argument")}
+    if (!is.character(names) || !(length(names)==4)) {stop("Not correct 'names' argument")}
 
     return(cedergreen(fixed = c(NA, 0, NA, NA, NA), names = c(names[1], "c", names[2:4]), alpha = 0.5, 
     fctName = as.character(match.call()[[1]]), 
@@ -347,13 +345,11 @@ function(names = c("b", "d", "e", "f"), ...)
     ...))
 }
 
-ml3b <- CRS.4b
-
 "CRS.4c" <-
-function(names = c("b", "d", "e", "f"), ...)
-{
+function(names = c("b", "d", "e", "f"), ...) {
+
     ## Checking arguments
-    if (!is.character(names) | !(length(names)==4)) {stop("Not correct 'names' argument")}
+    if (!is.character(names) || !(length(names)==4)) {stop("Not correct 'names' argument")}
 
     return(cedergreen(fixed = c(NA, 0, NA, NA, NA), names = c(names[1], "c", names[2:4]), alpha = 0.25, 
     fctName = as.character(match.call()[[1]]), 
@@ -361,13 +357,11 @@ function(names = c("b", "d", "e", "f"), ...)
     ...))
 }
 
-ml3c <- CRS.4c
-
 "CRS.5a" <-
-function(names = c("b", "c", "d", "e", "f"), ...)
-{
+function(names = c("b", "c", "d", "e", "f"), ...) {
+
     ## Checking arguments
-    if (!is.character(names) | !(length(names)==5)) {stop("Not correct 'names' argument")}
+    if (!is.character(names) || !(length(names)==5)) {stop("Not correct 'names' argument")}
  
     return(cedergreen(fixed = c(NA, NA, NA, NA, NA), names = names, alpha = 1, 
     fctName = as.character(match.call()[[1]]), 
@@ -375,13 +369,11 @@ function(names = c("b", "c", "d", "e", "f"), ...)
     ...))
 }
 
-ml4a <- CRS.5a
-
 "CRS.5b" <-
-function(names = c("b", "c", "d", "e", "f"), ...)
-{
+function(names = c("b", "c", "d", "e", "f"), ...) {
+    
     ## Checking arguments
-    if (!is.character(names) | !(length(names)==5)) {stop("Not correct 'names' argument")}
+    if (!is.character(names) || !(length(names)==5)) {stop("Not correct 'names' argument")}
 
     return(cedergreen(fixed = c(NA, NA, NA, NA, NA), names = names, alpha = 0.5, 
     fctName = as.character(match.call()[[1]]), 
@@ -389,13 +381,11 @@ function(names = c("b", "c", "d", "e", "f"), ...)
     ...))
 }
 
-ml4b <- CRS.5b
-
 "CRS.5c" <-
-function(names = c("b", "c", "d", "e", "f"), ...)
-{
+function(names = c("b", "c", "d", "e", "f"), ...) {
+
     ## Checking arguments
-    if (!is.character(names) | !(length(names)==5)) {stop("Not correct 'names' argument")}
+    if (!is.character(names) || !(length(names)==5)) {stop("Not correct 'names' argument")}
 
     return(cedergreen(fixed = c(NA, NA, NA, NA, NA), names = names, alpha = 0.25, 
     fctName = as.character(match.call()[[1]]), 
@@ -403,5 +393,4 @@ function(names = c("b", "c", "d", "e", "f"), ...)
     ...))
 }
 
-ml4c <- CRS.5c
 

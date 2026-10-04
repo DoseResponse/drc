@@ -1,6 +1,6 @@
 Package: drc
 Version: 4.0-2
-Date: 2026-10-04
+Date: 2026-10-05
 Title: Dose-Response Analysis Using R
 Authors@R: c(person("Christian" , "Ritz", 
                     role = c("aut", "cre"), 

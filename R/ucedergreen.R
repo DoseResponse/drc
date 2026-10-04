@@ -1,10 +1,10 @@
 "ucedergreen" <- function(
-fixed = c(NA, NA, NA, NA, NA), names = c("b", "c", "d", "e", "f"), 
-method = c("1", "2", "3", "4"), ssfct = NULL,
-alpha, fctName, fctText)
-{
+    fixed = c(NA, NA, NA, NA, NA), names = c("b", "c", "d", "e", "f"), 
+    method = c("1", "2", "3", "4"), ssfct = NULL,
+    alpha, fctName, fctText) {
+
     numParm <- 5
-    if (!is.character(names) | !(length(names) == numParm)) {stop("Not correct 'names' argument")}
+    if (!is.character(names) || !(length(names) == numParm)) {stop("Not correct 'names' argument")}
     if (!(length(fixed) == numParm)) {stop("Not correct 'fixed' argument")}    
 
 #    if (!is.logical(useD)) {stop("Not logical useD argument")}
@@ -19,8 +19,7 @@ alpha, fctName, fctText)
     parmVec2 <- parmVec
 
     ## Defining the function
-    fct <- function(dose, parm)
-    {
+    fct <- function(dose, parm) {
         parmMat <- matrix(parmVec, nrow(parm), numParm, byrow = TRUE)
         parmMat[, notFixed] <- parm
 
@@ -30,13 +29,11 @@ alpha, fctName, fctText)
     }
 
     ## Defining self starter function
-    if (!is.null(ssfct))
-    {
+    if (!is.null(ssfct)){
         ssfct <- ssfct
     } else {
-        ssfct <- function(dframe)
-        {
-            initval <- llogistic()$ssfct(dframe)   
+        ssfct <- function(dframe) {
+            initval <- llogistic(method = method)$ssfct(dframe)   
             initval[1] <- -initval[1]
             initval[5] <- 0  # better solution?
     
@@ -96,9 +93,8 @@ alpha, fctName, fctText)
                -t0/t3 )[, notFixed]
     }
 
-    deriv1 <- function(dose, parm)
-    {
-        # Obtaining the derivatives
+    deriv1 <- function(dose, parm){
+        
         deriv1FctTemp <- function(dose, pmRow) {
             deriv1Fct <- deriv(~d-(d-c+f*exp(-1/x^alpha))/(1+(x/e)^b), c("b", "c", "d", "e", "f"), 
                                function(x,b,c,d,e,f){})
@@ -130,9 +126,9 @@ alpha, fctName, fctText)
 #    if (length(upperc) == numParm) {upperLimits <- upperc[notFixed]} else {upperLimits <- upperc}
 
     ## Defining the ED function
-    edfct <- function(parm, p, lower = 1e-4, upper = 10000, ...)
+    edfct <- function(parm, respl, reference, type, lower = 1e-4, upper = 10000, ...)
     {    
-        cedergreen(fixed =  fixed, names = names, alpha = alpha)$edfct(parm, 100 - p, lower, upper, ...) 
+        cedergreen(fixed =  fixed, names = names, alpha = alpha)$edfct(parm, 100 - respl, reference, type, lower, upper, ...) 
     }
 
 #    ## Defining the SI function
@@ -142,8 +138,7 @@ alpha, fctName, fctText)
 #    }    
 
     ## Finding the maximal hormesis
-    maxfct <- function(parm, upper, interval)
-    {
+    maxfct <- function(parm, upper, interval) {
        retVal <- cedergreen(fixed =  fixed, names = names, alpha = alpha)$maxfct(parm, upper, interval)
 #       retVal[2] <- (parm[2] + parm[3]) - (retVal[2] - parm[2])
        retVal[2] <- (parm[2] + parm[3]) - retVal[2]
@@ -168,67 +163,55 @@ alpha, fctName, fctText)
 
 
 "UCRS.4a" <-
-function(names = c("b", "d", "e", "f"), ...)
-{
+function(names = c("b", "d", "e", "f"), ...) {
+
     ## Checking arguments
-    if (!is.character(names) | !(length(names) == 4)) {stop("Not correct 'names' argument")}
+    if (!is.character(names) || !(length(names) == 4)) {stop("Not correct 'names' argument")}
 
     return(ucedergreen(names = c(names[1], "c", names[2:4]), fixed = c(NA, 0, NA, NA, NA), alpha = 1, ...))
 }
 
-uml3a <- UCRS.4a
-
 "UCRS.4b" <-
-function(names = c("b", "d", "e", "f"), ...)
-{
+function(names = c("b", "d", "e", "f"), ...) {
+
     ## Checking arguments
-    if (!is.character(names) | !(length(names) == 4)) {stop("Not correct 'names' argument")}
+    if (!is.character(names) || !(length(names) == 4)) {stop("Not correct 'names' argument")}
 
     return(ucedergreen(names = c(names[1], "c", names[2:4]), fixed = c(NA, 0, NA, NA, NA), alpha = 0.5, ...))
 }
 
-uml3b <- UCRS.4b
-
 "UCRS.4c" <-
-function(names = c("b", "d", "e", "f"), ...)
-{
+function(names = c("b", "d", "e", "f"), ...) {
+
     ## Checking arguments
-    if (!is.character(names) | !(length(names) == 4)) {stop("Not correct 'names' argument")}
+    if (!is.character(names) || !(length(names) == 4)) {stop("Not correct 'names' argument")}
 
     return(ucedergreen(names = c(names[1], "c", names[2:4]), fixed = c(NA, 0, NA, NA, NA), alpha = 0.25, ...))
 }
 
-uml3c <- UCRS.4c
-
 "UCRS.5a" <-
-function(names = c("b", "c", "d", "e", "f"), ...)
-{
+function(names = c("b", "c", "d", "e", "f"), ...) {
+
     ## Checking arguments
-    if (!is.character(names) | !(length(names) == 5)) {stop("Not correct 'names' argument")}
+    if (!is.character(names) || !(length(names) == 5)) {stop("Not correct 'names' argument")}
 
     return(ucedergreen(names = names, fixed = c(NA, NA, NA, NA, NA), alpha = 1, ...))
 }
 
-uml4a <- UCRS.5a
-
 "UCRS.5b" <-
-function(names = c("b", "c", "d", "e", "f"), ...)
-{
+function(names = c("b", "c", "d", "e", "f"), ...) {
+
     ## Checking arguments
-    if (!is.character(names) | !(length(names) == 5)) {stop("Not correct 'names' argument")}
+    if (!is.character(names) || !(length(names) == 5)) {stop("Not correct 'names' argument")}
 
     return(ucedergreen(names = names, fixed = c(NA, NA, NA, NA, NA), alpha = 0.5, ...))
 }
 
-uml4b <- UCRS.5b
-
 "UCRS.5c" <-
-function(names = c("b", "c", "d", "e", "f"), ...)
-{
+function(names = c("b", "c", "d", "e", "f"), ...) {
+
     ## Checking arguments
-    if (!is.character(names) | !(length(names) == 5)) {stop("Not correct 'names' argument")}
+    if (!is.character(names) || !(length(names) == 5)) {stop("Not correct 'names' argument")}
 
     return(ucedergreen(names = names, fixed = c(NA, NA, NA, NA, NA), alpha = 0.25, ...))
 }
-
-uml4c <- UCRS.5c

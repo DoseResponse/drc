@@ -42,7 +42,13 @@
 }
 
 \details{
-  There are several options for calculating confidence intervals through the argument \code{interval}. The option "delta" results in asymptotical Wald-type confidence intervals (using the delta method and the normal or t-distribution depending on the type of response). The option "fls" produces (possibly skewed) confidence intervals through back-transformation from the logarithm scale (only meaningful in case the parameter in the model is log(ED50) as for the \code{\link{llogistic2}}) models. The option "tfls" is for transforming back and forth from log scale (experimental). The option "inv" results in confidence intervals obtained through inverse regression.
+  There are several options for calculating confidence intervals through the argument \code{interval}. 
+  The option "delta" results in asymptotical Wald-type confidence intervals (using the delta method and 
+  the normal or t-distribution depending on the type of response). The option "fls" produces (possibly skewed) 
+  confidence intervals through back-transformation from the logarithm scale (only meaningful in case the 
+  parameter in the model is log(ED50) as for the \code{\link{llogistic2}}) models. The option "tfls" 
+  is for transforming back and forth from log scale (experimental). The option "inv" results in confidence 
+  intervals obtained through inverse regression.
 
   For hormesis models (\code{\link{braincousens}} and \code{\link{cedergreen}}), the additional 
   arguments \code{lower} and \code{upper} may be supplied. These arguments specify the lower and upper limits 
@@ -67,7 +73,8 @@
 %\note{This function is only implemented for the built-in functions of class 'braincousens', 'gompertz', 'logistic' and 'mlogistic'.}
 
 \seealso{
-  \code{\link{backfit}}, \code{\link{isobole}}, and \code{\link{maED}} use \code{\link{ED}} for specific calculations involving estimated ED values.
+  \code{\link{backfit}}, \code{\link{isobole}}, and \code{\link{maED}} use \code{\link{ED}} for specific calculations 
+  involving estimated ED values.
 
   The related function \code{\link{EDcomp}} may be used for estimating differences and ratios of ED values, 
   whereas \code{\link{compParm}} may be used to compare other model parameters. 

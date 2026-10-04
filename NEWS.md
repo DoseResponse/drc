@@ -1,6 +1,12 @@
 # drc 4.0-2
 
-* 2026-10-04: In boxcox.drx.Rd: Improved description.
+* 2026-10-05: In ED.drc.RD: Text improved.
+
+* 2026-10-05: In cedergreen.R: Code improved: self starter method passed on to log-logistic self starter. Short cut functions ml3/4a, ml3/4b, ml3/4c omitted.
+
+* 2026-10-05: In ucedergreen.R: Code improved: self starter method passed on to log-logistic self starter and edfct updated (same arguments as other edfct's). Short cut functions uml3/4a, uml3/4b, uml3/4c omitted (thanks to Hannes Reinwald on github).
+
+* 2026-10-04: In boxcox.drx.Rd: Explanations improved.
 
 * 2026-10-04: In nec.r: Now NEC() provides a deriv1 element as part of the output, enabling construction of confidence and prediction intervals when using predict.drc (thanks to Diego Barneche on github).
 
