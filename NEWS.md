@@ -1,8 +1,31 @@
+# drc 4.0-3
+
+* 2026-10-11: In llogistic2.R: edfct updated.
+
+* 2026-10-09: In drmRobust.R: Small bug fixed (thanks to Gary Carnahan).
+
+* 2026-10-09: In llogistic.R: Code cleaned up. Shortcut functions omitted.
+
+* 2026-10-09: In ED.drc.Rd: Updated explanations.
+
+* 2026-10-09: In fplogistic.R, logistic.R: edfct updated (thanks to Jens Baalkilde). method propagated to ss function.
+
+* 2026-10-08: In ucedergreen.R: edfct updated.
+
+* 2026-10-07: Shortcut functions bcl3 and bcl4 omitted.
+
+* 2026-10-07: In BC.Rd, braincousens.Rd, cedergreen.Rd, CRS.4a.Rd, CRS.4b.Rd: Explanations and examples updated.
+
+* 2026-10-07: In braincousens.R, cedergreen.R: fixed and derivx elements returned (thanks to Jens Baalkilde). maxfct updated. method propagated to ss function.
+
+* 2026-10-07: In llogistic.R, lnormal.R, weibull1.R, weibull2.R, braincousens.R: edfct updated to account for variation in estimates of c and d in case of an absolute effect level (thanks to Jens Baalkilde for checking the derivatives).
+
+
 # drc 4.0-2
 
 * 2026-10-05: In ED.drc.RD: Text improved.
 
-* 2026-10-05: In cedergreen.R: Code improved: self starter method passed on to log-logistic self starter. Short cut functions ml3/4a, ml3/4b, ml3/4c omitted.
+* 2026-10-05: In cedergreen.R: Code improved: self starter method passed on to log-logistic self starter. Shortcut functions ml3/4a, ml3/4b, ml3/4c omitted.
 
 * 2026-10-05: In ucedergreen.R: Code improved: self starter method passed on to log-logistic self starter and edfct updated (same arguments as other edfct's). Short cut functions uml3/4a, uml3/4b, uml3/4c omitted (thanks to Hannes Reinwald on github).
 

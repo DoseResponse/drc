@@ -1,7 +1,6 @@
 \name{LL.4}
 
 \alias{LL.4}
-\alias{l4}
 
 \alias{LL2.4}
 
@@ -15,8 +14,6 @@
 \usage{
   LL.4(fixed = c(NA, NA, NA, NA), names = c("b", "c", "d", "e"), ...)
 
-  l4(fixed = c(NA, NA, NA, NA), names = c("b", "c", "d", "e"), ...)
-  
   LL2.4(fixed = c(NA, NA, NA, NA), names = c("b", "c", "d", "e"), ...)  
 }
 

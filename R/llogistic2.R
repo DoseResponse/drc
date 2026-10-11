@@ -198,36 +198,29 @@
     }
 
 
-#    ## Setting the limits
-#    if (length(lowerc) == numParm) {lowerLimits <- lowerc[notFixed]} else {lowerLimits <- lowerc}
-#    if (length(upperc) == numParm) {upperLimits <- upperc[notFixed]} else {upperLimits <- upperc}
-
-
     ## Defining the ED function
-    ## (returning ED values and corresponding standard errors on log scale)
     edfct <- function(parm, respl, reference, type, ...)
     {
         parmVec[notFixed] <- parm
-#        if (type == "absolute") 
-#        {
-#            p <- 100*((parmVec[3] - respl)/(parmVec[3] - parmVec[2]))
-#        } else {  
-#            p <- respl
-#        }
-#        if ( (parmVec[1] < 0) && (reference == "control") )
-#        {
-#            p <- 100 - p
-#        }
-        p <- EDhelper(parmVec, respl, reference, type)        
+        p <- EDhelper(parmVec, respl, reference, type)
+        tempVal <- 1 - p / 100
     
-        tempVal1 <- 100/(100-p)
-        tempVal2 <- log(tempVal1^(1/parmVec[5]) - 1)
-        lEDp <- parmVec[4] + tempVal2 / parmVec[1]
+        tempVal0 <- 1 / (1 - p/100)  # 100/(100-p)
+        tempVal1 <- tempVal0^(1/parmVec[5])
+        tempVal2 <- log(tempVal1 - 1)
+        tempVal3 <- tempVal0^(1/parmVec[5] - 1) / (parmVec[1] * parmVec[5] * (tempVal1 - 1)) 
+        tempVal4 <- tempVal3 / (parmVec[3] - parmVec[2])
 
-        lEDder <- 
-        c(-tempVal2/(parmVec[1]^2), 
-        0, 0, 1, 
-        tempVal1^(1/parmVec[5]-1)/(parmVec[1]*parmVec[5]*(tempVal1^(1/parmVec[5]-1))))
+        lEDp <- tempVal2 / parmVec[1] + parmVec[4]
+
+        lEDder <- c(-tempVal2 / (parmVec[1]^2),
+                    tempVal4 * (1 - tempVal) / (tempVal^2),
+                    tempVal4 / tempVal,
+                    1,
+                    tempVal3)
+                    #tempVal1^(1/parmVec[5]-1)/(parmVec[1]*parmVec[5]*(tempVal1^(1/parmVec[5]-1))))
+
+        if (!identical(type, "absolute")) {lEDder[c(2, 3)] <- 0}
 
         return(list(lEDp, lEDder[notFixed]))
     }
@@ -264,7 +257,7 @@
     
     ## Returning the function with self starter and names
     returnList <- list(
-        fct = fct, ssfct = ssfct, names = names, 
+        fct = fct, ssfct = ssfct, names = names,
         deriv1 = deriv1, deriv2 = deriv2, derivx = derivx,
         edfct = edfct, inversion = invfct, scaleFct = scaleFct,
         name = ifelse(missing(fctName), as.character(match.call()[[1]]), fctName),

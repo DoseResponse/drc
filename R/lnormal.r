@@ -198,12 +198,22 @@ fctName, fctText, loge = FALSE)
             ## deriv(~e * exp(22 / b), c("b", "c", "d", "e"), function(b,c,d,e){})
             ## using "22" instead of qnorm(pProp)
             EDfct <- function (b, c, d, e) {
-                .expr2 <- exp(qnorm(pProp) / b)
+
+                qnormVal <- qnorm(pProp)
+                .expr2 <- exp(qnormVal / b)
                 .value <- e * .expr2
                 .grad <- array(0, c(length(.value), 4L), list(NULL, c("b", "c", "d", "e")))
-                .grad[, "b"] <- -(e * (.expr2 * (qnorm(pProp) / (b^2))))
-                .grad[, "c"] <- 0
-                .grad[, "d"] <- 0
+
+                .grad[, "b"] <- -.value * (qnormVal / (b^2))
+                .grad[, "c"] <- ifelse(identical(type, "absolute"), 
+                                .value * (pProp-1)/(b*dnorm(qnormVal)*(d-c)),
+                                0)
+                .grad[, "d"] <- ifelse(identical(type, "absolute"), 
+                                -.value * pProp/(b*dnorm(qnormVal)*(d-c)),
+                                0)
+                # contributed by Jens Baalkilde
+#                .grad[, "c"] <- 0
+#                .grad[, "d"] <- 0
                 .grad[, "e"] <- .expr2
                 attr(.value, "gradient") <- .grad
                 .value
@@ -235,9 +245,17 @@ fctName, fctText, loge = FALSE)
             ## using "22" instead of qnorm(pProp)
             EDfct <- function (b, c, d, e) 
             {
-                .value <- e + qnorm(pProp)/b
+                qnormVal <- qnorm(pProp)
+                .value <- e + qnormVal / b
+
                 .grad <- array(0, c(length(.value), 4L), list(NULL, c("b", "c", "d", "e")))
-                .grad[, "b"] <- -(qnorm(pProp)/ (b^2))
+                .grad[, "b"] <- -(qnormVal/ (b^2))
+                .grad[, "c"] <- ifelse(identical(type, "absolute"), 
+                                 (pProp-1) / (b*dnorm(qnormVal)*(d-c)),
+                                 0)
+                .grad[, "d"] <- ifelse(identical(type, "absolute"), 
+                                 -pProp / (b*dnorm(qnormVal)*(d-c)),
+                                 0)
                 .grad[, "c"] <- 0
                 .grad[, "d"] <- 0
                 .grad[, "e"] <- 1
@@ -247,17 +265,17 @@ fctName, fctText, loge = FALSE)
         }
 
         EDp <- EDfct(parmVec[1], parmVec[2], parmVec[3], parmVec[4])
-        EDder <- attr(EDp, "gradient")
+        EDpder <- attr(EDp, "gradient")
 
-        EDderxFct0 <- function(p, b, c, d, e){EDp / (-dnorm(qnorm((d-p)/(d-c))) * b * (d - c))}
-        EDderxFct <- function(p, parm) {
-            EDderxTemp <- EDderxFct0(p, parm[1], parm[2], parm[3], parm[4])
-            EDderxTemp * c(0, (p - parm[3]) / ((parm[3] - parm[2])^2), (parm[2] - p) / ((parm[3] - parm[2])^2), 0)
-            # based on the chain rule
-        }
-        if (type == "absolute") {EDder <- EDder + EDderxFct(respl, parmVec)}
+        #EDderxFct0 <- function(p, b, c, d, e){EDp / (-dnorm(qnorm((d-p)/(d-c))) * b * (d - c))}
+        #EDderxFct <- function(p, parm) {
+        #    EDderxTemp <- EDderxFct0(p, parm[1], parm[2], parm[3], parm[4])
+        #    EDderxTemp * c(0, (p - parm[3]) / ((parm[3] - parm[2])^2), (parm[2] - p) / ((parm[3] - parm[2])^2), 0)
+        #    # based on the chain rule
+        #}
+        #if (type == "absolute") {EDder <- EDder + EDderxFct(respl, parmVec)}
 
-        return(list(EDp, EDder[notFixed]))
+        return(list(as.vector(EDp), as.vector(EDpder[notFixed])))
     }
 
     ## Defining functions returning lower and upper limit and monotonicity

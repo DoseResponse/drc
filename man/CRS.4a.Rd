@@ -72,22 +72,18 @@
 
 \examples{
 
-## Fitting modified logistic models
-lettuce.crsm1 <- drm(lettuce[,c(2,1)], fct = CRS.4a())
-summary(lettuce.crsm1)
-ED(lettuce.crsm1, c(50))
+## Fitting four-paramter CRS models
+lettuce.CRS.4a <- drm(weight ~ conc, data = lettuce, fct = CRS.4a())
+summary(lettuce.CRS.4a)
+ED(lettuce.CRS.4a, c(10, 20, 50, 80, 90))
 
-## Need to explicitly specify that the upper limit
-## is the reference in order to get ED10 and ED90 right
-ED(lettuce.crsm1, c(10, 50, 90), reference = "upper")
+lettuce.CRS.4b <- drm(weight ~ conc, data = lettuce, fct = CRS.4b())
+summary(lettuce.CRS.4b)
+ED(lettuce.CRS.4b, c(10, 20, 50, 80, 90))
 
-lettuce.crsm2 <- drm(lettuce[,c(2,1)], fct = CRS.4b())
-summary(lettuce.crsm2)
-ED(lettuce.crsm2, c(50))
-
-lettuce.crsm3 <- drm(lettuce[,c(2,1)], fct = CRS.4c())
-summary(lettuce.crsm3)
-ED(lettuce.crsm3, c(50))
+lettuce.CRS.4c <- drm(weight ~ conc, data = lettuce, fct = CRS.4c())
+summary(lettuce.CRS.4c)
+ED(lettuce.CRS.4c, c(10, 20, 50, 80, 90))
 
 }
 

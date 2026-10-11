@@ -3,9 +3,6 @@
 \alias{LL.3}
 \alias{LL.3u}
 
-\alias{l3}
-\alias{l3u}
-
 \alias{LL2.3}
 \alias{LL2.3u}
 
@@ -22,11 +19,7 @@
   LL.3(fixed = c(NA, NA, NA), names = c("b", "d", "e"), ...)
   
   LL.3u(upper = 1, fixed = c(NA, NA, NA), names = c("b", "c", "e"), ...)
-  
-  l3(fixed = c(NA, NA, NA), names = c("b", "d", "e"), ...)
-
-  l3u(upper = 1, fixed = c(NA, NA, NA), names = c("b", "c", "e"), ...)  
-  
+    
   LL2.3(fixed = c(NA, NA, NA), names = c("b", "d", "e"), ...)
   
   LL2.3u(upper = 1, fixed = c(NA, NA, NA), names = c("b", "c", "e"), ...)  

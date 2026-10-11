@@ -49,11 +49,11 @@
 
 #        scaleEst <- 9.03  # 9.055 for phones data set
 
-        x <- x/scaleEst
-
-        retVal <- x*x
+        x <- x / scaleEst
+        retVal <- x * x
 
         indexVec <- abs(x) > cVal
+        indexVec <- !is.na(x) & abs(x) > cVal  # thanks to Gary Carnahan (Sep 13 2026)
 #        sumVec <- sum(indexVec)
         
 #        if (sumVec>0) {retVal[indexVec] <- (cVal * (2 * abs(x) - cVal))[indexVec]}

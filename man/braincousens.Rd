@@ -37,7 +37,7 @@
 }
 
 \value{
-  The value returned is a list containing the non-linear function, the self starter function, 
+  The value returned is a list containing the nonlinear function, the self starter function, 
   the parameter names and additional model specific objects.  
 }
 

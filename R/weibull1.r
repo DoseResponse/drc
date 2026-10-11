@@ -208,7 +208,38 @@ if (FALSE)
         }
         if (type == "absolute") {EDder <- EDder + EDderxFct(respl, parmVec)}
 
-        return(list(EDp, EDder[notFixed]))
+        # Using: deriv(~ exp(log(-log((y - c)/(d - c))) / b + log(e)), 
+        #        c("b", "c", "d", "e"), function(b, c, d, e, y){})
+        EDfct <- function (b, c, d, e) {
+
+            #.expr1 <- y - c
+            .expr2 <- d - c
+            .expr3 <- 1 - p/100  #.expr1/.expr2
+            # note that tempVal no longer used
+            .expr4 <- log(.expr3)
+            .expr6 <- log(-.expr4)
+            .expr10 <- e * exp(.expr6/b)
+            .expr17 <- .expr3 / .expr2  # .expr1/.expr2^2
+            
+            .value <- .expr10
+            .grad <- array(0, c(length(.value), 4L), 
+            list(NULL, c("b", "c", "d", "e")))
+    
+            .grad[, "b"] <- -(.expr10 * (.expr6/b^2))
+            .grad[, "c"] <- -(.expr10 * ((1/.expr2 - .expr17)/.expr3/.expr4/b))
+            .grad[, "d"] <- -(.expr10 * (.expr17/.expr3/.expr4/b))
+            .grad[, "e"] <- .expr10 * (1/e)
+    
+            attr(.value, "gradient") <- .grad
+            .value
+        }
+
+        EDp <- EDfct(parmVec[1], parmVec[2], parmVec[3], parmVec[4])
+        EDpder <- attr(EDp, "gradient")
+
+        return(list(as.vector(EDp), as.vector(EDpder[notFixed])))
+
+        #return(list(EDp, EDder[notFixed]))
     }
 
 #

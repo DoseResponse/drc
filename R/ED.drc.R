@@ -1,18 +1,20 @@
 ED <- function (object, ...) UseMethod("ED", object)
 
-"ED.drc" <- function(object, 
-                     respLev, 
-                     interval = c("none", "delta", "fls", "tfls", "inv"), 
-                     clevel = NULL,
-                     level = ifelse(!(interval == "none"), 0.95, NULL), 
-                     reference = c("control", "upper"), 
-                     type = c("relative", "absolute"), 
-                     lref, uref, bound = TRUE, 
-                     vcov. = vcov,
-                     display = TRUE, 
-                     logBase = NULL, 
-                     multcomp = FALSE, 
-                     intType = "confidence", ...) {
+"ED.drc" <- function(
+    object, 
+    respLev, 
+    interval = c("none", "delta", "fls", "tfls", "inv"), 
+    clevel = NULL,
+    level = ifelse(!(interval == "none"), 0.95, NULL), 
+    reference = c("control", "upper"), 
+    type = c("relative", "absolute"), 
+    lref, uref, bound = TRUE, 
+    vcov. = vcov,
+    display = TRUE, 
+    logBase = NULL, 
+    multcomp = FALSE, 
+    intType = "confidence", ...) {
+    
     interval <- match.arg(interval)
     reference <- match.arg(reference)
     type <- match.arg(type)

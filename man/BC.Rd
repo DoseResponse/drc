@@ -1,10 +1,7 @@
 \name{BC.5}
 
 \alias{BC.5}
-\alias{bcl4}
-
 \alias{BC.4}
-\alias{bcl3}
 
 \title{The Brain-Cousens hormesis models}
 
@@ -22,16 +19,16 @@
   \item{fixed}{numeric vector specifying which parameters are fixed and at which values they are fixed. 
   NAs designate parameters that are not fixed.}
   \item{names}{a vector of character strings giving the names of the parameters.}
-  \item{...}{additional arguments to be passed from the convenience functions.} 
+  \item{...}{additional arguments to be passed on to convenience functions.} 
 }
 
 \details{
-  The model function for the Brain-Cousens model (Brain and Cousens, 1989) is
+  The model function for the Brain-Cousens model is
   
-  \deqn{ f(x, b,c,d,e,f) = c + \frac{d-c+fx}{1+\exp(b(\log(x)-\log(e)))}},
+  \deqn{ f(x, b,c,d,e,f) = c + \frac{d-c+fx}{1+\exp(b(\log(x)-\log(e)))}}.
   
-  and it is a five-parameter model, obtained by extending the four-parameter log-logistic model (\code{\link{LL.4}}
-  to take into account inverse u-shaped hormesis effects.
+  It is a five-parameter model, obtained by extending the four-parameter log-logistic model (\code{\link{LL.4}}
+  to take into account inverse u-shaped hormesis effects (Brain and Cousens, 1989).
   
   The parameters have the following interpretations
   \itemize{
@@ -44,7 +41,7 @@
     This parameter should be positive in order for the model to make sense.
   }
   
-  Fixing the lower limit at 0 yields the four-parameter model 
+  Fixing the lower limit at 0 results in the four-parameter model: 
   
   \deqn{ f(x) = 0 + \frac{d-0+fx}{1+\exp(b(\log(x)-\log(e)))}}
   
@@ -56,8 +53,8 @@
 }
 
 \references{
-  Brain, P. and Cousens, R. (1989) An equation to describe dose responses 
-  where there is stimulation of growth at low doses, 
+  Brain, P. and Cousens, R. (1989) 
+  An equation to describe dose responses where there is stimulation of growth at low doses, 
   \emph{Weed Research}, \bold{29}, 93--96.
 
   van Ewijk, P. H. and Hoekstra, J. A. (1993) 
@@ -67,7 +64,7 @@
 
 \author{Christian Ritz}
 
-\note{This function is for use with the function \code{\link{drm}}.}
+\note{This model function is for use with the function \code{\link{drm}}.}
 
 \seealso{
   More details are found for the general model function \code{\link{braincousens}}.
@@ -75,32 +72,36 @@
 
 \examples{
 
-## Fitting the data in van Ewijk and Hoekstra (1993)
-lettuce.bcm1 <- drm(weight ~ conc, data = lettuce, fct=BC.5())
-modelFit(lettuce.bcm1)
-plot(lettuce.bcm1)
+## Fitting a five-parameter BC model to data from van Ewijk and Hoekstra (1993)
+lettuce.BC.m1 <- drm(weight ~ conc, data = lettuce, fct = BC.5())
+modelFit(lettuce.BC.m1)
+plot(lettuce.BC.m1)
 
-lettuce.bcm2 <- drm(weight ~conc, data = lettuce, fct=BC.4())
-summary(lettuce.bcm2)
-ED(lettuce.bcm2, c(50))  
-# compare the parameter estimate and 
-# its estimated standard error 
-# to the values in the paper by 
-# van Ewijk and Hoekstra (1993)
+lettuce.BC.m2 <- drm(weight ~ conc, data = lettuce, fct = BC.4())
+summary(lettuce.BC.m2)
+ED(lettuce.BC.m2, c(10, 20, 50))  
+# compare the parameter estimate and its estimated standard error 
+#   to the values in the paper by van Ewijk and Hoekstra (1993)
 
 
-## Brain-Cousens model with the constraint b>3
-ryegrass.bcm1 <- drm(rootl ~conc, data = ryegrass, fct = BC.5(), 
-lower = c(3, -Inf, -Inf, -Inf, -Inf), control = drmc(constr=TRUE))
+## Fitting a five-parameter BC model to the ryegrass data
+ryegrass.BC.m1 <- drm(rootl ~ conc, data = ryegrass, fct = BC.5())
+summary(ryegrass.BC.m1)
+# No hormesis effect: the estimate of f is equal 0.357 (p=0.61)
+ED(ryegrass.BC.m1, c(10, 20, 50, 80, 90))
 
-summary(ryegrass.bcm1)
+## Fitting a model with the constraint b>3
+ryegrass.BC.m2 <- drm(rootl ~ conc, data = ryegrass, fct = BC.5(), 
+lower = c(3, -Inf, -Inf, -Inf, -Inf), control = drmc(constr = TRUE))
 
-## Brain-Cousens model with the constraint f>0 
+summary(ryegrass.BC.m2)
+
+## Fitting a model with the constraint f>0 
 ## (no effect as the estimate of f is positive anyway)
-ryegrass.bcm2 <- drm(rootl ~conc, data = ryegrass, fct = BC.5(), 
-lower = c(-Inf, -Inf, -Inf, -Inf, 0), control = drmc(constr=TRUE))
+ryegrass.BC.m3 <- drm(rootl ~conc, data = ryegrass, fct = BC.5(), 
+lower = c(-Inf, -Inf, -Inf, -Inf, 0), control = drmc(constr = TRUE))
 
-summary(ryegrass.bcm2)
+summary(ryegrass.BC.m3)
 
 }
 

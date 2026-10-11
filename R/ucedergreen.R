@@ -40,39 +40,8 @@
             return(initval[notFixed])
         }
     }   
-    
-#    ## Setting the names of the parameters
-#    names <- names[notFixed]
 
 
-#    ## Defining parameter to be scaled
-#    if ( (scaleDose) && (is.na(fixed[4])) ) 
-#    {
-#        scaleInd <- sum(is.na(fixed[1:4]))
-#    } else {
-#        scaleInd <- NULL
-#    }
-
-
-    ## Defining derivatives
-    
-#    ## Constructing a helper function
-#    xlogx <- function(x, p)
-#    {
-#        lv <- (x < 1e-12)
-#        nlv <- !lv
-#        
-#        rv <- rep(0, length(x))
-#        
-#        xlv <- x[lv] 
-#        rv[lv] <- log(xlv^(xlv^p[lv]))
-#        
-#        xnlv <- x[nlv]
-#        rv[nlv] <- (xnlv^p[nlv])*log(xnlv)
-#    
-#        rv
-#    }
-    
     ## Specifying the derivatives    
     deriv1OLD <- function(dose, parm)
     # not used anymore
@@ -93,6 +62,21 @@
                -t0/t3 )[, notFixed]
     }
 
+
+#    ## Defining parameter to be scaled
+#    if ( (scaleDose) && (is.na(fixed[4])) ) 
+#    {
+#        scaleInd <- sum(is.na(fixed[1:4]))
+#    } else {
+#        scaleInd <- NULL
+#    }
+
+
+    ## Defining names
+    names <- names[notFixed]
+
+
+    ## Defining the first derivative (in the parameters)
     deriv1 <- function(dose, parm){
         
         deriv1FctTemp <- function(dose, pmRow) {
@@ -121,41 +105,117 @@
         
     deriv2 <- NULL
 
-    ## Setting limits
-#    if (length(lowerc) == numParm) {lowerLimits <- lowerc[notFixed]} else {lowerLimits <- lowerc}
-#    if (length(upperc) == numParm) {upperLimits <- upperc[notFixed]} else {upperLimits <- upperc}
 
-    ## Defining the ED function
-    edfct <- function(parm, respl, reference, type, lower = 1e-4, upper = 10000, ...)
-    {    
-        cedergreen(fixed =  fixed, names = names, alpha = alpha)$edfct(parm, 100 - respl, reference, type, lower, upper, ...) 
+    ## Defining the first derivative (in the dose)
+    derivx <- function(dose, parm) {
+        parmMat <- matrix(parmVec, nrow(parm), numParm, byrow = TRUE)
+        parmMat[, notFixed] <- parm
+
+        t1 <- exp(parmMat[, 1]*(log(dose) - log(parmMat[, 4])))
+        t2 <- 1 + t1
+        t3 <- exp(-1/(dose^alpha)) * alpha * (dose^(-alpha - 1))
+
+        -(parmMat[, 5] * t3 / t2 - (parmMat[, 3] - parmMat[, 2] + parmMat[, 5]*exp(-1/(dose^alpha))) * t1 * parmMat[, 1] / (t2^2 * dose) + parmMat[, 5] * t3 / t2)
+    }
+    # Identical to derivx in cedergreen.R, but with a - in front of the last term
+
+
+    ## Defining the ED function    
+    edfct <- function(parm, respl, reference, type, lower = NULL, upper = NULL, ...) {
+
+        parmVec[notFixed] <- parm
+        p <- EDhelper(parmVec, respl, reference, type, TRUE)       
+        tempVal <- p / 100
+        
+        ## Defining the numerator of derivative of the BC model function wrt. dose
+        derx <- function(dose) {
+            expVal1 <- exp(parmVec[1]*(log(dose)-log(parmVec[4])))
+            expVal2 <- exp(-1/(dose^alpha)) * alpha * (dose^(-alpha - 1))
+
+            -(parmVec[5]*(1+expVal1)*expVal2 - (parmVec[3]-parmVec[2]+parmVec[5]*exp(-1/(dose^alpha)))*expVal1*parmVec[1]/dose)
+        
+        }
+        tempVal2 <- parmVec[3] - parmVec[2]
+        nearzepVal1 <- parmVec[4] * ((tempVal2) / parmVec[5])^(1 / parmVec[1])
+        nearzepval2 <- ifelse((tempVal2)/2 - parmVec[5]*exp(-(parmVec[4]/2)^(-alpha)) > 0, 
+        parmVec[4]/2, ifelse((tempVal2)/2 - parmVec[5]*exp(-parmVec[4]^(-alpha)) > 0, 
+        parmVec[4], NA))
+        print(c(nearzepVal1, nearzepval2))
+        nearzepVal <- min(nearzepVal1, nearzepval2, na.rm = TRUE)
+        print(nearzepVal)
+
+        if (is.null(lower)) {
+            xvalues <- 10^(runif(100, -10, log10(nearzepVal)))
+            dffVec <- derx(xvalues)
+            dffVec[dffVec>0] <- NA
+            lower <- xvalues[which.min(abs(dffVec))]
+        }
+      
+        # Checking if the curve is effectively decreasing
+        if (length(lower) == 0) {maxAt <- 1e-20} else {
+            maxAt <- uniroot(derx, lower = lower, upper = nearzepVal)$root 
+        } 
+        if (is.null(upper)) {
+            upper <- parmVec[4] * 10000
+        }
+        #print(maxAt)
+
+        eqn <- function(dose) {
+            (1 - tempVal)*(1+exp(parmVec[1]*(log(dose)-log(parmVec[4]))))-(1+parmVec[5]*exp(-1/(dose^alpha))/(parmVec[3]-parmVec[2]))}
+        EDp <- uniroot(eqn, lower = maxAt, upper = upper)$root
+
+        tempVal1 <- exp(parmVec[1] * (log(EDp) - log(parmVec[4])))
+        #tempVal2 <- parmVec[3] - parmVec[2]
+
+        derNum <- c(-(1 - tempVal) * tempVal1 * (log(EDp) - log(parmVec[4])), 
+                     -1 / tempVal2, 
+                     -(tempVal * tempVal2 + parmVec[5] * exp(-1/(EDp^alpha))) / ((1 - tempVal) * tempVal2^2),
+                     (1 - tempVal) * tempVal1 * parmVec[1] / parmVec[4],
+                     exp(-1/(EDp^alpha)) / tempVal2)
+        derDenom <- (1 - tempVal) * tempVal1 *parmVec[1] / EDp - (exp(-1/(EDp^alpha)) * alpha * (EDp^(-alpha - 1))) * parmVec[5] / tempVal2
+        EDder <- derNum / derDenom
+        
+        return(list(EDp, EDder[notFixed]))
     }
 
-#    ## Defining the SI function
-#    sifct <- function(parm1, parm2, pair, upper = 10000, interval = c(1e-4, 10000))
-#    {
-#        cedergreen(alpha = alpha)$sifct(parm1, parm2, 100-pair, upper, interval)
-#    }    
 
     ## Finding the maximal hormesis
-    maxfct <- function(parm, upper, interval) {
-       retVal <- cedergreen(fixed =  fixed, names = names, alpha = alpha)$maxfct(parm, upper, interval)
-#       retVal[2] <- (parm[2] + parm[3]) - (retVal[2] - parm[2])
-       retVal[2] <- (parm[2] + parm[3]) - retVal[2]
-              
-       return(retVal)
-    }
+    maxfct <- function(parm, lower = NULL, noRan = 100) {
+        # Note that the code is mostly copied from the edfct function above, 
+        #   but with some changes to find the maximum hormesis
 
-    returnList <- 
-    list(fct = fct, ssfct = ssfct, names = names, deriv1 = deriv1, deriv2 = deriv2,  # lowerc=lowerLimits, upperc=upperLimits, 
-    edfct = edfct, maxfct = maxfct,
-    name = ifelse(missing(fctName), as.character(match.call()[[1]]), fctName),
-    text = ifelse(missing(fctText), "U-shaped Cedergreen-Ritz-Streibig", fctText),     
-    noParm = sum(is.na(fixed)))
-    #list(fct = fct, ssfct = ssfct, names = names[notFixed], edfct = edfct, maxfct = maxfct,
-    #name = "ucedergreen",
-    #text = "U-shaped Cedergreen-Ritz-Streibig", 
-    #noParm = sum(is.na(fixed)))
+        parmVec[notFixed] <- parm
+        # No parameter check yet, but should be added
+        
+         ## Defining the numerator of derivative of the CRS model function wrt. dose
+        derx <- function(dose) {
+            expVal1 <- exp(parmVec[1]*(log(dose)-log(parmVec[4])))
+            expVal2 <- exp(-1/(dose^alpha)) * alpha * (dose^(-alpha - 1))
+
+            -(parmVec[5]*(1+expVal1)*expVal2 - (parmVec[3]-parmVec[2]+parmVec[5]*exp(-1/(dose^alpha)))*expVal1*parmVec[1]/dose)
+        }
+        nearzepVal <- parmVec[4] * ((parmVec[3]-parmVec[2]) / parmVec[5])^(1 / parmVec[1])
+
+        if (is.null(lower)) {
+            xvalues <- 10^(runif(noRan, -10, log10(nearzepVal)))
+            dffVec <- derx(xvalues)
+            dffVec[dffVec<0] <- NA
+            lower <- xvalues[which.min(abs(dffVec))]
+        } 
+        maxAt <- uniroot(derx, lower = lower, upper = nearzepVal)$root
+
+        return(c(maxAt, fct(maxAt, matrix(parm, 1, length(names)))))
+    }
+    # Identical to maxfct in cedergreen.R, but with a - in front of the derivative function derx
+
+
+    returnList <- list(
+        fct = fct, ssfct = ssfct, names = names, 
+        deriv1 = deriv1, deriv2 = deriv2, derivx = derivx,
+        edfct = edfct, maxfct = maxfct,
+        name = ifelse(missing(fctName), as.character(match.call()[[1]]), fctName),
+        text = ifelse(missing(fctText), "U-shaped Cedergreen-Ritz-Streibig", fctText),     
+        noParm = sum(is.na(fixed)), fixed = fixed)
     
     class(returnList) <- "UCRS"
     invisible(returnList)

@@ -1,7 +1,6 @@
 \name{LL.5}
 
 \alias{LL.5}
-\alias{l5}
 
 \alias{LL2.5}
 
@@ -13,9 +12,7 @@
 
 \usage{
   LL.5(fixed = c(NA, NA, NA, NA, NA), names = c("b", "c", "d", "e", "f"), ...)
-
-  l5(fixed = c(NA, NA, NA, NA, NA), names = c("b", "c", "d", "e", "f"), ...)
-  
+ 
   LL2.5(fixed = c(NA, NA, NA, NA, NA), names = c("b", "c", "d", "e", "f"), ...)  
 }
 

@@ -88,17 +88,17 @@
 \examples{
 
 ## Modified logistic model
-lettuce.m1 <- drm(lettuce[,c(2,1)], fct = CRS.5a())
-summary(lettuce.m1)
-ED(lettuce.m1, c(50))
+lettuce.CRS.5a <- drm(weight ~ conc, data = lettuce, fct = CRS.5a())
+summary(lettuce.CRS.5a)
+ED(lettuce.CRS.5a, c(10, 20, 50, 80, 90))
 
-lettuce.m2 <- drm(lettuce[,c(2,1)], fct = CRS.5b())
-summary(lettuce.m2)
-ED(lettuce.m2, c(50))
+lettuce.CRS.5b <- drm(weight ~ conc, data = lettuce, fct = CRS.5b())
+summary(lettuce.CRS.5b)
+ED(lettuce.CRS.5b, c(10, 20, 50, 80, 90))
 
-lettuce.m3 <- drm(lettuce[,c(2,1)], fct = CRS.5c())
-summary(lettuce.m3)
-ED(lettuce.m3, c(50))
+lettuce.CRS.5c <- drm(weight ~ conc, data = lettuce, fct = CRS.5c())
+summary(lettuce.CRS.5c)
+ED(lettuce.CRS.5c, c(10, 20, 50, 80, 90))
 
 }
 \keyword{models}

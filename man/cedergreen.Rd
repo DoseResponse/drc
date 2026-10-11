@@ -123,6 +123,9 @@ fitted(ex.ucrs.5b)
 predict(ex.ucrs.5b, se.fit = TRUE)
 predict(ex.ucrs.5b, interval = "confidence")
 
+ED(ex.ucrs.5b, c(1, 10, 20, 50, 80, 90), interval = "delta")
+ED(ex.ucrs.5b, c(-5, -7), interval = "delta", bound = FALSE)
+
 }
 
 \keyword{models}

@@ -1,7 +1,6 @@
 \name{LL.2}
 
 \alias{LL.2}
-\alias{l2}
 
 \alias{LL2.2}
 
@@ -14,9 +13,7 @@
 
 \usage{
   LL.2(upper = 1, fixed = c(NA, NA), names = c("b", "e"), ...)
-  
-  l2(upper = 1, fixed = c(NA, NA), names = c("b", "e"), ...)
-  
+    
   LL2.2(upper = 1, fixed = c(NA, NA), names = c("b", "e"), ...)  
 }
 

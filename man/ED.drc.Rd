@@ -46,18 +46,20 @@
   The option "delta" results in asymptotical Wald-type confidence intervals (using the delta method and 
   the normal or t-distribution depending on the type of response). The option "fls" produces (possibly skewed) 
   confidence intervals through back-transformation from the logarithm scale (only meaningful in case the 
-  parameter in the model is log(ED50) as for the \code{\link{llogistic2}}) models. The option "tfls" 
+  parameter in the model is log(ED50) as for the \code{\link{llogistic2}} models). The option "tfls" 
   is for transforming back and forth from log scale (experimental). The option "inv" results in confidence 
-  intervals obtained through inverse regression.
+  intervals obtained through inverse regression of the confidence limits for the predicted values.
 
-  For hormesis models (\code{\link{braincousens}} and \code{\link{cedergreen}}), the additional 
-  arguments \code{lower} and \code{upper} may be supplied. These arguments specify the lower and upper limits 
-  of the bisection method used to find the ED values.  The lower and upper limits need to be smaller/larger 
-  than the EDx level to be calculated. The default limits are 0.001 and 1000 for \code{braincousens} and 
-  0.0001 and 10000 for \code{cedergreen} and \code{\link{ucedergreen}}, but this may need to be modified 
-  (for \code{\link{cedergreen}} the upper limit may need to be increased and for \code{\link{ucedergreen}} 
-  the lower limit may need to be increased). Note that the lower limit should not be set to 0 (use instead 
-  something like 1e-3, 1e-6, ...).
+  For hormesis models \code{\link{braincousens}}, \code{\link{cedergreen}}, and \code{\link{ucedergreen}} as well as
+  for the fractional polynomial models (\code{\link{fplogistic}}), the additional arguments 
+  \code{lower} and \code{upper} may be supplied. These arguments specify the lower and 
+  upper limits of the bisection method used to find the ED values.  
+  
+  For hormesis models, if specified, the lower limit should be below the dose resulting in the maximum (hormetic) response 
+  whereas the upper limit should be well above the effective doses to be estimated. Note that the lower limit should not 
+  be set to 0 (use instead something like 1e-3, 1e-6, ...). Sensible values are automatically calculated, 
+  but in some cases they may need to be overridden. For instance, in case the error message "f() values at end points 
+  not of opposite sign" is returned, the upper limit may possibly need to be increased.
 }
 
 \value{
@@ -90,15 +92,14 @@ ED(ryegrass.m1, c(10, 50, 90))
 ## first column: the estimates of ED10, ED50 and ED90
 ## second column: the corresponding estimated standard errors 
 
-### How to use the argument 'ci'
-
 ## Also displaying 95% confidence intervals
 ED(ryegrass.m1, c(10, 50, 90), interval = "delta")
+
 
 ## Comparing delta method and back-transformed 
 ##  confidence intervals for ED values
 
-## Fitting 4-parameter log-logistic 
+## First fitting 4-parameter log-logistic 
 ##  in different parameterisation (using LL2.4)
 ryegrass.m2 <- drm(ryegrass, fct = LL2.4())  
 
@@ -109,20 +110,19 @@ ED(ryegrass.m2, c(10, 50, 90), interval = "delta")
 ### How to use the argument 'bound'
 
 ## Fitting the Brain-Cousens model
-lettuce.m1 <- drm(weight ~ conc, 
-data = lettuce, fct = BC.4())
+lettuce.m1 <- drm(weight ~ conc, data = lettuce, fct = BC.4())
 
 ### Calculating ED[-10]
 
 # This does not work
 #ED(lettuce.m1, -10)  
 
-## Now it does work
+## Now it does work, with the argument 'bound' set to FALSE
 ED(lettuce.m1, -10, bound = FALSE)  # works
-ED(lettuce.m1, -20, bound = FALSE)  # works
+ED(lettuce.m1, -15, bound = FALSE)  # works
 
-## The following does not work for another reason: ED[-30] does not exist 
-#ED(lettuce.m1, -30, bound = FALSE)  
+## The following does not work for another reason: ED[-20] does not exist 
+#ED(lettuce.m1, -20, bound = FALSE)  
 
 }
 

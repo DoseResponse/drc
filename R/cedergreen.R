@@ -51,42 +51,8 @@
 #    if (!binVar) {binVar <- NULL}
 #    anovaYes <- list(bin = binVar, cont = TRUE)
 
+
     ## Defining self starter function
-if (FALSE)
-{    
-    ssfct <- function(dataFra)
-    {
-        dose2 <- dataFra[,1]
-        resp3 <- dataFra[,2]
-
-        startVal <- rep(0, numParm)
-
-#        startVal[3]<-max(resp3)+0.001  # the d parameter
-#        startVal[2]<-min(resp3)-0.001  # the c parameter
-        startVal[3] <- 1.05 * resp3[which.min(dose2)]
-        startVal[2] <- 0.95 * min(resp3)
-        
-#        startVal[!notFixed] <- fixed[!notFixed] 
-
-        if (length(unique(dose2))==1) {return((c(NA,NA,startVal[3],NA,NA))[notFixed])}
-
-        indexT2<-(dose2>0)
-        if (!any(indexT2)) {return((rep(NA, numParm))[notFixed])}
-        dose3<-dose2[indexT2]
-        resp3<-resp3[indexT2]
-
-        logitTrans<-log((startVal[3]-resp3)/(resp3-startVal[2] + 0.001))  # 0.001 to avoid 0 in the denominator
-        logitFit<-lm(logitTrans~log(dose3))
-        startVal[4]<-exp((-coef(logitFit)[1]/coef(logitFit)[2]))  # the e parameter
-        startVal[1]<-coef(logitFit)[2]  # the b parameter
-
-#        startVal[5] <- 0  # the f parameter
-        ## Solving equation at x=e
-        startVal[5] <- (2*(median(resp3) - startVal[2]) - (startVal[3] - startVal[2]))*exp(1/(startVal[4]^alpha))
-
-        return(startVal[notFixed])
-    }
-}
     if (!is.null(ssfct))
     {
         ssfct <- ssfct
@@ -100,9 +66,7 @@ if (FALSE)
             return(initval[notFixed])
         }        
     }
-       
-    ## Defining names
-    names <- names[notFixed]
+
 
 #    ## Defining parameter to be scaled
 #    if ( (scaleDose) && (is.na(fixed[4])) ) 
@@ -113,24 +77,9 @@ if (FALSE)
 #    }
 
 
-    ## Defining derivatives
-    
-#    ## Constructing a helper function
-#    xlogx <- function(x, p)
-#    {
-#        lv <- (x < 1e-12)
-#        nlv <- !lv
-#        
-#        rv <- rep(0, length(x))
-#        
-#        xlv <- x[lv] 
-#        rv[lv] <- log(xlv^(xlv^p[lv]))
-#        
-#        xnlv <- x[nlv]
-#        rv[nlv] <- (xnlv^p[nlv])*log(xnlv)
-#    
-#        rv
-#    }
+    ## Defining names
+    names <- names[notFixed]
+
     
     ## Specifying the derivatives    
     deriv1OLD <- function(dose, parm)
@@ -184,138 +133,106 @@ if (FALSE)
     deriv2 <- NULL
 
 
-    ## Limits
-#    if (length(lowerc)==numParm) {lowerLimits <- lowerc[notFixed]} else {lowerLimits <- lowerc}
-#    if (length(upperc)==numParm) {upperLimits <- upperc[notFixed]} else {upperLimits <- upperc}
+    ## Defining the first derivative (in the dose)
+    derivx <- function(dose, parm) {
+        parmMat <- matrix(parmVec, nrow(parm), numParm, byrow = TRUE)
+        parmMat[, notFixed] <- parm
+
+        t1 <- exp(parmMat[, 1]*(log(dose) - log(parmMat[, 4])))
+        t2 <- 1 + t1
+        t3 <- exp(-1/(dose^alpha)) * alpha * (dose^(-alpha - 1))
+
+        parmMat[, 5] * t3 / t2 - (parmMat[, 3] - parmMat[, 2] + parmMat[, 5]*exp(-1/(dose^alpha))) * t1 * parmMat[, 1] / (t2^2 * dose) + parmMat[, 5] * t3 / t2
+    }
 
 
     ## Defining the ED function    
-#    edfct <- function(parm, p, lower = 1e-4, upper = 10000, ...)  # upper2=1000)
-    edfct <- function(parm, respl, reference, type, lower = 1e-4, upper = 10000, ...) {
+    edfct <- function(parm, respl, reference, type, lower = NULL, upper = NULL, ...) {
 
-#        if (is.null(upper)) {upper <- 1000}
-#        if (missing(upper2)) {upper2 <- 1000}
-        interval <- c(lower, upper) 
+        # lower = 1e-4, upper = 10000
         parmVec[notFixed] <- parm
         p <- EDhelper(parmVec, respl, reference, type, TRUE)  # FALSE)  Changed 2010-06-02 after e-mail from Claire       
-        tempVal <- (100-p)/100
+        tempVal <- 1 - p / 100
+        
+        ## Defining the numerator of derivative of the BC model function wrt. dose
+        derx <- function(dose) {
+            expVal1 <- exp(parmVec[1]*(log(dose)-log(parmVec[4])))
+            expVal2 <- exp(-1/(dose^alpha)) * alpha * (dose^(-alpha - 1))
 
-        helpFct <- function(dose) {parmVec[2]+(parmVec[3]-parmVec[2]+parmVec[5]*exp(-1/(dose^alpha)))/(1+exp(parmVec[1]*(log(dose)-log(parmVec[4]))))}
-#        doseVec <- exp(seq(-upper2, upper2, length=1000))
-        doseVec <- exp(seq(log(interval[1]), log(interval[2]), length=1000))
-        maxAt <- doseVec[which.max(helpFct(doseVec))]
-#        print(maxAt)
-#        print(upper)
-    
-        eqn <- function(dose) {tempVal*(1+exp(parmVec[1]*(log(dose)-log(parmVec[4]))))-(1+parmVec[5]*exp(-1/(dose^alpha))/(parmVec[3]-parmVec[2]))}
-        EDp <- uniroot(eqn, lower=maxAt, upper=upper)$root
+            parmVec[5]*(1+expVal1)*expVal2 - (parmVec[3]-parmVec[2]+parmVec[5]*exp(-1/(dose^alpha)))*expVal1*parmVec[1]/dose
+        }
+        nearzepVal <- parmVec[4] * (parmVec[5] / (parmVec[3]-parmVec[2]))^(1 / parmVec[1])
 
-        EDdose <- EDp
-        tempVal1 <- exp(parmVec[1]*(log(EDdose)-log(parmVec[4])))
-        tempVal2 <- parmVec[3]-parmVec[2]
-        derParm <- c(tempVal*tempVal1*(log(EDdose)-log(parmVec[4])), -parmVec[5]*exp(-1/(EDdose^alpha))/((tempVal2)^2),
-                     parmVec[5]*exp(-1/(EDdose^alpha))/((tempVal2)^2), -tempVal*tempVal1*parmVec[1]/parmVec[4],
-                     -exp(-1/(EDdose^alpha))/tempVal2)
-        derDose <- tempVal*tempVal1*parmVec[1]/EDdose-parmVec[5]/tempVal2*exp(-1/(EDdose^alpha))/(EDdose^(1+alpha))*alpha 
+        if (is.null(lower)) {
+            xvalues <- 10^(runif(100, -10, log10(nearzepVal)))
+            dffVec <- derx(xvalues)
+            dffVec[dffVec<0] <- NA
+            lower <- xvalues[which.min(abs(dffVec))]
+        }
+      
+        # Checking if the curve is effectively decreasing
+        if (length(lower) == 0) {maxAt <- 1e-20} else {
+            maxAt <- uniroot(derx, lower = lower, upper = nearzepVal)$root 
+        } 
+        if (is.null(upper)) {
+            upper <- parmVec[4] * 10000
+        }
 
-        EDder <- derParm/derDose
+        eqn <- function(dose) {
+            tempVal*(1+exp(parmVec[1]*(log(dose)-log(parmVec[4]))))-(1+parmVec[5]*exp(-1/(dose^alpha))/(parmVec[3]-parmVec[2]))}
+        EDp <- uniroot(eqn, lower = maxAt, upper = upper)$root
+
+        tempVal1 <- exp(parmVec[1] * (log(EDp) - log(parmVec[4])))
+        tempVal2 <- parmVec[3] - parmVec[2]
+
+        derNum <- c(-tempVal * tempVal1 * (log(EDp) - log(parmVec[4])), 
+                     ((1-tempVal) * tempVal2 + parmVec[5] * exp(-1/(EDp^alpha))) / (tempVal * tempVal2^2),
+                     1 / tempVal2, 
+                     tempVal * tempVal1 * parmVec[1] / parmVec[4],
+                     exp(-1/(EDp^alpha)) / tempVal2)
+        derDenom <- tempVal * tempVal1 *parmVec[1] / EDp - (exp(-1/(EDp^alpha)) * alpha * (EDp^(-alpha - 1))) * parmVec[5] / tempVal2
+        EDder <- derNum / derDenom
         
         return(list(EDp, EDder[notFixed]))
     }
 
-#
-#    ## Defining the SI function
-#    sifct <- function(parm1, parm2, pair, upper = 10000, interval = c(1e-4, 10000))
-#    {
-##        if (is.null(upper)) {upper <- 1000}
-##        if (missing(upper2)) {upper2 <- 1000}
-#    
-#        parmVec1[notFixed] <- parm1
-#        parmVec2[notFixed] <- parm2
-#    
-#        tempVal1 <- (100-pair[1])/100
-#        tempVal2 <- (100-pair[2])/100
-#
-##        doseVec <- exp(seq(-upper2, upper2, length=max(c(1000, upper2))))
-#        doseVec <- exp(seq(log(interval[1]), log(interval[2]), length=1000))        
-#        helpFct1 <- function(dose) 
-#                    {
-#                        parmVec1[2]+(parmVec1[3]-parmVec1[2]+parmVec1[5]*exp(-1/(dose^alpha)))/(1+exp(parmVec1[1]*(log(dose)-log(parmVec1[4]))))
-#                    }
-#        maxAt1 <- doseVec[which.max(helpFct1(doseVec))]
-#
-#        helpFct2 <- function(dose) 
-#                    {
-#                        parmVec2[2]+(parmVec2[3]-parmVec2[2]+parmVec2[5]*exp(-1/(dose^alpha)))/(1+exp(parmVec2[1]*(log(dose)-log(parmVec2[4]))))
-#                    }
-#        maxAt2 <- doseVec[which.max(helpFct2(doseVec))]
-#
-#        eqn1 <- function(dose) {tempVal1*(1+exp(parmVec1[1]*(log(dose)-log(parmVec1[4]))))-(1+parmVec1[5]*exp(-1/(dose^alpha))/(parmVec1[3]-parmVec1[2]))}
-#        EDp1 <- uniroot(eqn1, lower=maxAt1, upper=upper)$root
-#        eqn2 <- function(dose) {tempVal2*(1+exp(parmVec2[1]*(log(dose)-log(parmVec2[4]))))-(1+parmVec2[5]*exp(-1/(dose^alpha))/(parmVec2[3]-parmVec2[2]))}
-#        EDp2 <- uniroot(eqn2, lower=maxAt2, upper=upper)$root
-#
-#        SIpair <- EDp1/EDp2
-#
-#        EDdose1 <- EDp1
-#        EDdose2 <- EDp2
-#        tempVal11 <- exp(parmVec1[1]*(log(EDdose1)-log(parmVec1[4])))
-#        tempVal12 <- parmVec1[3]-parmVec1[2]
-#        derParm1 <- c(tempVal1*tempVal11*(log(EDdose1)-log(parmVec1[4])), -parmVec1[5]*exp(-1/(EDdose1^alpha))/((tempVal12)^2),
-#                     parmVec1[5]*exp(-1/(EDdose1^alpha))/((tempVal12)^2), -tempVal1*tempVal11*parmVec1[1]/parmVec1[4],
-#                     -exp(-1/(EDdose1^alpha))/tempVal12)
-#        derDose1 <- tempVal1*tempVal11*parmVec1[1]/EDdose1-parmVec1[5]/tempVal12*exp(-1/(EDdose1^alpha))/(EDdose1^(1+alpha))*alpha 
-#
-#        SIder1 <- (derParm1/derDose1)/EDp2
-#
-#        tempVal21 <- exp(parmVec2[1]*(log(EDdose2)-log(parmVec2[4])))
-#        tempVal22 <- parmVec2[3]-parmVec2[2]
-#        derParm2 <- c(tempVal2*tempVal21*(log(EDdose2)-log(parmVec2[4])), -parmVec2[5]*exp(-1/(EDdose2^alpha))/((tempVal22)^2),
-#                     parmVec2[5]*exp(-1/(EDdose2^alpha))/((tempVal22)^2), -tempVal2*tempVal21*parmVec2[1]/parmVec2[4],
-#                     -exp(-1/(EDdose2^alpha))/tempVal22)
-#        derDose2 <- tempVal2*tempVal21*parmVec2[1]/EDdose2-parmVec2[5]/tempVal22*exp(-1/(EDdose2^alpha))/(EDdose2^(1+alpha))*alpha 
-#
-#        SIder2 <- (derParm2/derDose2)*(-EDp1/(EDp2*EDp2))
-#
-#        return(list(SIpair, SIder1[notFixed], SIder2[notFixed]))
-#    }
-
 
     ## Finding the maximal hormesis
-    maxfct <- function(parm, lower = 1e-3, upper = 1000) {
+    maxfct <- function(parm, lower = NULL, noRan = 100) {
+        # Note that the code is mostly copied from the edfct function above, 
+        #   but with some changes to find the maximum hormesis
 
-#        if (is.null(upper)) {upper <- 1000}
-#        if (is.null(interval)) {interval <- c(1e-3, 1000)}            
-#        alpha <- 0.5
         parmVec[notFixed] <- parm
+        # No parameter check yet, but should be added
         
-        optfct <- function(t)
-        {
-            expTerm1 <- parmVec[5]*exp(-1/(t^alpha))
-            expTerm2 <- exp(parmVec[1]*(log(t)-log(parmVec[4])))
-            
-            return(expTerm1*alpha/(t^(alpha+1))*(1+expTerm2)-(parmVec[3]-parmVec[2]+expTerm1)*expTerm2*parmVec[1]/t)
-        }
-    
-        ED1 <- edfct(parm, 1, lower, upper)[[1]]
-               
-        doseVec <- exp(seq(log(1e-6), log(ED1), length = 100))
-#        print((doseVec[optfct(doseVec)>0])[1])
+         ## Defining the numerator of derivative of the CRS model function wrt. dose
+        derx <- function(dose) {
+            expVal1 <- exp(parmVec[1]*(log(dose)-log(parmVec[4])))
+            expVal2 <- exp(-1/(dose^alpha)) * alpha * (dose^(-alpha - 1))
 
-        maxDose <- uniroot(optfct, c((doseVec[optfct(doseVec)>0])[1], ED1))$root
-        return(c(maxDose, fct(maxDose, matrix(parm, 1, length(names)))))
+            parmVec[5]*(1+expVal1)*expVal2 - (parmVec[3]-parmVec[2]+parmVec[5]*exp(-1/(dose^alpha)))*expVal1*parmVec[1]/dose
+        }
+        nearzepVal <- parmVec[4] * (parmVec[5] / (parmVec[3]-parmVec[2]))^(1 / parmVec[1])
+
+        if (is.null(lower)) {
+            xvalues <- 10^(runif(noRan, -10, log10(nearzepVal)))
+            dffVec <- derx(xvalues)
+            dffVec[dffVec<0] <- NA
+            lower <- xvalues[which.min(abs(dffVec))]
+        }  
+        maxAt <- uniroot(derx, lower = lower, upper = nearzepVal)$root
+
+        return(c(maxAt, fct(maxAt, matrix(parm, 1, length(names)))))
     }
 
     
-    returnList <- 
-    list(fct = fct, ssfct = ssfct, names = names, deriv1 = deriv1, deriv2 = deriv2,  # lowerc=lowerLimits, upperc=upperLimits, 
-    edfct = edfct, maxfct = maxfct, 
-#    scaleInd=scaleInd, anovaYes=anovaYes, confct=confct,
-#    name = "cedergreen",
-#    text = "Cedergreen-Ritz-Streibig", 
-    name = ifelse(missing(fctName), as.character(match.call()[[1]]), fctName),
-    text = ifelse(missing(fctText), "Cedergreen-Ritz-Streibig", fctText),     
-    noParm = sum(is.na(fixed)))
+    returnList <- list(
+        fct = fct, ssfct = ssfct, names = names, 
+        deriv1 = deriv1, deriv2 = deriv2, derivx = derivx,
+        edfct = edfct, maxfct = maxfct, 
+        name = ifelse(missing(fctName), as.character(match.call()[[1]]), fctName),
+        text = ifelse(missing(fctText), "Cedergreen-Ritz-Streibig", fctText),     
+        noParm = sum(is.na(fixed)), fixed = fixed)
 
     class(returnList) <- "mllogistic"
     invisible(returnList)
