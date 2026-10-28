@@ -31,7 +31,7 @@
   or in another parameterisation
   \deqn{ f(x) = \frac{1}{1+\exp(b(\log(x)-e))}}  
   
-  The model function is symmetric about the inflection point (\eqn{e}).  
+  The model function is symmetric about the inflection point at \eqn{e}.  
 }
 
 \value{
@@ -43,7 +43,7 @@
 \author{Christian Ritz}
 
 \note{
-  This function is for use with the function \code{\link{drm}}.
+  These functions are for use with the function \code{\link{drm}}.
 }
 
 \seealso{
@@ -55,7 +55,7 @@
 
 ## Fitting a two-parameter logistic model 
 ##  to binomial responses (a logit model)
-earthworms.m1 <- drm(number/total~dose, weights=total, 
+earthworms.m1 <- drm(number/total ~ dose, weights = total, 
 data = earthworms, fct = LL.2(), type = "binomial")
 
 plot(earthworms.m1)  # not fitting at the upper limit!

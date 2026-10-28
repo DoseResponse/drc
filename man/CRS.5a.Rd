@@ -4,17 +4,9 @@
 \alias{CRS.5b}
 \alias{CRS.5c}
 
-\alias{ml4a}
-\alias{ml4b}
-\alias{ml4c}
-
 \alias{UCRS.5a}
 \alias{UCRS.5b}
 \alias{UCRS.5c}
-
-\alias{uml4a}
-\alias{uml4b}
-\alias{uml4c}
 
 
 \title{Cedergreen-Ritz-Streibig dose-reponse model for describing hormesis}
@@ -63,7 +55,7 @@
   This model also simplifies to the four-parameter log-logistic model in case \eqn{f=0} (in a slightly
   different parameterization as compared to the one used in \code{\link{LL.4}}).
   
-  The models denoted a,b,c are obtained by fixing the alpha parameter at 1, 0.5 and 0.25, respectively.  
+  The models denoted a,b, and c correspond to fixing the alpha parameter at 1, 0.5 and 0.25, respectively.  
 }
 
 \value{
@@ -77,7 +69,7 @@
 \author{Christian Ritz}
 
 \note{
-  This function is for use with the function \code{\link{drm}}.  
+  These functions are for use with the function \code{\link{drm}}.  
 }
 
 \seealso{

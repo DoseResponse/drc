@@ -4,7 +4,7 @@
 
 \docType{data}
 
-\title{Potency of two herbicides}
+\title{Potency of two herbicides in white mustard}
 
 \description{
   Data are from an experiment, comparing the potency of the two herbicides glyphosate and bentazone in

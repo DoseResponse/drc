@@ -4,17 +4,9 @@
 \alias{CRS.4b}
 \alias{CRS.4c}
 
-\alias{ml3a}
-\alias{ml3b}
-\alias{ml3c}
-
 \alias{UCRS.4a}
 \alias{UCRS.4b}
 \alias{UCRS.4c}
-
-\alias{uml3a}
-\alias{uml3b}
-\alias{uml3c}
 
 \title{The Cedergreen-Ritz-Streibig model}
 
@@ -42,11 +34,13 @@
   The model is given by the expression
   
   \deqn{ f(x) = 0 + \frac{d-0+f \exp(-1/x)}{1+\exp(b(\log(x)-\log(e)))}}
+  
   which is a five-parameter model.
   
   It is a modification of the four-parameter logistic curve to take hormesis into account.
 
   The U-shaped model is given by the expression
+
   \deqn{ f(x) = d - \frac{d-0+f \exp(-1/x^{\alpha})}{1+\exp(b(\log(x)-\log(e)))}}
   
   The a, b, and c models are obtained by setting alpha equal to 1, 0.5 and 0.25, respectively.    
@@ -84,6 +78,10 @@ ED(lettuce.CRS.4b, c(10, 20, 50, 80, 90))
 lettuce.CRS.4c <- drm(weight ~ conc, data = lettuce, fct = CRS.4c())
 summary(lettuce.CRS.4c)
 ED(lettuce.CRS.4c, c(10, 20, 50, 80, 90))
+
+plot(lettuce.CRS.4a)
+plot(lettuce.CRS.4b, add = TRUE)
+plot(lettuce.CRS.4c, add = TRUE)
 
 }
 
