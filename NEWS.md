@@ -1,5 +1,7 @@
 # drc 4.0-3
 
+* 2026-10-28: Unused aliases deleted for the model functions CRS4/5abc. Improved explanation in LL.2.Rd and S.alba.Rd. Code cleaned up in llogistic.R
+
 * 2026-10-11: In llogistic2.R: edfct updated.
 
 * 2026-10-09: In drmRobust.R: Small bug fixed (thanks to Gary Carnahan).
